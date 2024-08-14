@@ -4,6 +4,8 @@ import Logo from "../../public/img/Logo Reconocimiento Facial - Blanco.png";
 import escudo from "../../public/img/logo-sena-naranja-png-2022.png";
 import { useAuth } from '../auth/authProvider';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { loginUser } from '../api/userController';
+
 
 const Login = () => {
   const [tipoId, setTipoId] = useState("");
@@ -16,9 +18,9 @@ const Login = () => {
   // hooks
   const Autenticador = useAuth();
   const navegar = useNavigate();
-  
 
-  // Verifica si el usuario ya está autenticado y segun el rol no se permite regresar al login
+
+  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login
 
   // if (Autenticador.isAuthenticated) {
   //   console.log(Rol);
@@ -26,26 +28,25 @@ const Login = () => {
   //   return <Navigate to="/inicioInstructor" />
   // }
 
-  const rol2="Instructor"
+  // const rol2="Instructor"
 
-  if (Autenticador.isAuthenticated ) {
-    // console.log(Rol);
-    // return <Navigate to="/inicioInstructor" />
+  // if (Autenticador.isAuthenticated ) {
+  //   // console.log(Rol);
+  //   // return <Navigate to="/inicioInstructor" />
 
-    switch (rol2) {
-      case "Instructor":
-        return <Navigate to="/inicioInstructor" />
+  //   switch (rol2) {
+  //     case "Instructor":
+  //       return <Navigate to="/inicioInstructor" />
        
-      case "Administrador":
-        return <Navigate to="/inicioAdministrador" />
+  //     case "Administrador":
+  //       return <Navigate to="/inicioAdministrador" />
 
-      default:
-        break;
-    }
+  //     default:
+  //       break;
+  //   }
     
-  }
-
-
+  // }
+  
 
   const validateForm = () => {
     const newErrors = {};
@@ -84,55 +85,33 @@ const Login = () => {
       setErrors(validationErrors);
       return;
     }
-    
+
     try {
-      const response = await fetch("http://127.0.0.1:8000/senauthenticator/inicioSesion/", {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          "tipo_documento_usuario": tipoId,
-          "numero_documento_usuario": numId,
-          "password": contraseña,
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        // const json = await response.json();
-       
-
-        // if (json.body.token) {
-        //   Autenticador.saveUser(json);
-        // }
-
-        // redirigir a la página según su rol
-        switch (data.user.rol_usuario) {
-          case "Instructor":
-            setRol(data.user.rol_usuario)
-          
-            navegar("/inicioInstructor");
-            break;
-          case "Administrador":
-            setRol(json.user.rol_usuario)
-            navegar("/inicioAdministrador");
-            break;
-          default:
-            alert("Rol no reconocido");
-            break;
-        }
-
-      } else {
-        const errorData = await response.json(); // Leer la respuesta del error
-        setErrorsBack(errorData.error);
-        console.log(errorData.error);
+      // se envian los datos a la funcion
+      const data = await loginUser(tipoId, numId, contraseña);
+      console.log(data);
+      
+      // Redirigir a la página según su rol
+      switch (data.user.rol_usuario) {
+        case "Instructor":
+          setRol(data.user.rol_usuario);
+          navegar("/inicioInstructor");
+          break;
+        case "Administrador":
+          setRol(data.user.rol_usuario);
+          navegar("/inicioAdministrador");
+          break;
+        default:
+          alert("Rol no reconocido");
+          break;
       }
     } catch (error) {
-      console.log(error);
+      setErrorsBack(error.message);
+      console.log(error.message);
     }
   };
 
+  
 
   return (
     <div

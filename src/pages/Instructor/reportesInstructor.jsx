@@ -28,12 +28,17 @@ const ReportesInstructor = () => {
         </div>
 
         <form action="" className="flex gap-10 justify-center mt-20">
-          <input
-            type="text"
+        <select
+            name=""
+            id=""
+            className="bg-white p-3 border rounded-lg"
            
-            className=" border rounded-lg pl-4 bg-white text-black"
-            placeholder="# Ficha"
-          />
+          >
+            <option value="">Ficha</option>
+            <option value="">2669742</option>
+            <option value="">2669756</option>
+            <option value="">2669723</option>
+          </select>
           <input
             type="text"
             
