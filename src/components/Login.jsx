@@ -40,6 +40,10 @@ const Login = () => {
     }
   };
 
+  const cerrarModal = (e)=>{
+    setAbrirRegister(e)
+  }
+
   const enviarForm = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -76,18 +80,16 @@ const Login = () => {
     <>
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <Register />
-            <button
-              className="absolute top-4 right-4 text-black"
-              onClick={() => setAbrirRegister(false)}
-            >
-              <i className="fas fa-times"></i>
-            </button>
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl  w-full">
+            <Register cerrarModal2={cerrarModal} />
           </div>
         </div>
       )}
-      <div className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${abrirRegister ? 'opacity-50' : ''}`}>
+      <div
+        className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
+          abrirRegister ? "opacity-50" : ""
+        }`}
+      >
         <div className="bg-opacity-70 p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
           <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
             <div className="flex gap-4 mb-6 [@media(max-width:381px)]:justify-center">
@@ -169,9 +171,7 @@ const Login = () => {
                     onChange={handleChangeContraseña}
                   />
                   {errors.contraseña && (
-                    <p className="text-red-500 text-sm">
-                      {errors.contraseña}
-                    </p>
+                    <p className="text-red-500 text-sm">{errors.contraseña}</p>
                   )}
                   {errorsBack && (
                     <p className="text-red-500 text-sm">{errorsBack}</p>
@@ -187,10 +187,11 @@ const Login = () => {
               >
                 Entrar
               </button>
-              <h2 className="text-center my-3">No tienes cuenta? 
-                <button 
-                  type="button" 
-                  onClick={() => setAbrirRegister(true)} 
+              <h2 className="text-center my-3">
+                No tienes cuenta? 
+                <button
+                  type="button"
+                  onClick={() => setAbrirRegister(true)}
                   className="hover:text-green-600"
                 >
                   Registrate.
