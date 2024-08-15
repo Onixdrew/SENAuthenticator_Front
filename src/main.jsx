@@ -16,7 +16,7 @@ import Admin from "./pages/Instructor/admin.jsx";
 const router = createBrowserRouter([
   // Ruta Principal
   { path: "/", element: <Login /> },
-  { path: "/Register", element: <Register/> },
+  
 
   // se llama al archivo rutasProtegidas donde se verifa que exista el
   // usuario para ceder el permiso a las rutas del children

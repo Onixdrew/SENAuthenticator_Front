@@ -3,7 +3,7 @@ import { useAuth } from "../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-const Register = ({cerrarModal2}) => {
+const Register = ({ cerrarModal2, datosRegister2 }) => {
   const [passwordError, setPasswordError] = useState("");
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -13,8 +13,6 @@ const Register = ({cerrarModal2}) => {
   const [rol, setRol] = useState("");
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
-  // const [cerrarModal, setCerrarModal] = useState(false);
-
 
   const Autenticador = useAuth();
   const navegar = useNavigate();
@@ -29,63 +27,66 @@ const Register = ({cerrarModal2}) => {
 
   const enviarForm = async (e) => {
     e.preventDefault();
-    
     try {
-      const userName = nombre.split(' ')[0];
-      const response = await fetch("http://127.0.0.1:8000/senauthenticator/usuario/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          "username": userName,
-          "first_name": nombre,
-          "last_name": apellido,
-          "tipo_documento_usuario": tipoId,
-          "numero_documento_usuario": numId,
-          "genero_usuario": genero,
-          "email": correo,
-          "password": contraseña,
-          "rol_usuario": rol,
-        }),
-      });
+      const userName = nombre.split(" ")[0];
+      const response = await fetch(
+        "http://127.0.0.1:8000/senauthenticator/usuario/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: userName,
+            first_name: nombre,
+            last_name: apellido,
+            tipo_documento_usuario: tipoId,
+            numero_documento_usuario: numId,
+            genero_usuario: genero,
+            email: correo,
+            password: contraseña,
+            rol_usuario: rol,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok || response.status === 201) {
-        console.log("Usuario creado correctamente");
         alert("Usuario creado correctamente");
-        navegar("/");
+        enviarDatosLogin(data)
+        // se cierra el modal
+        cerrarModalProp(false)
+        
       } else {
-        console.log(data.error || "Ocurrió un error desconocido");
         alert(data.error || "Ocurrió un error desconocido");
       }
-
     } catch (error) {
-      console.log(error);
       alert("Error en la solicitud: " + error.message);
     }
   };
 
-  const cerrarModalProp = (cerrarModal)=>{
-    cerrarModal2(cerrarModal)
-  }
+  const cerrarModalProp = (cerrarModal) => {
+    cerrarModal2(cerrarModal);
+  };
 
+
+  const enviarDatosLogin=(datos)=>{
+    datosRegister2(datos);
+  };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="flex justify-between">
-        <h2 className="text-3xl ml-44 font-semibold text-gray-800 mb-6 font-serif text-center">
-          Crea tu cuenta.
+    <div className="w-full  max-w-4xl mx-auto p-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 font-serif text-center">
+          Crea tu cuenta
         </h2>
-        <a href="#">
-          <i className="fas fa-times text-xl hover:text-gray-4
-          00 text-black inline-block" onClick={()=>{ cerrarModalProp(false)}}></i>
-        </a>
-
+        <button onClick={() => cerrarModalProp(false)} className="text-xl">
+          <i className="fas fa-times text-black hover:text-gray-400"></i>
+        </button>
       </div>
       <form className="space-y-6" onSubmit={enviarForm}>
-        <div className="grid grid-cols-2  gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-blue-800" htmlFor="first-name">
               Nombres:

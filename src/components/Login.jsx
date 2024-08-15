@@ -14,11 +14,16 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
+  const [recibirDatos, setRecibirDatos] = useState();
+
 
   // hooks
   const Autenticador = useAuth();
   const navegar = useNavigate();
 
+
+
+  // mensajes de errores si los campos estan vacios
   const validateForm = () => {
     const newErrors = {};
     if (!numId) newErrors.numId = "El número de identificación es obligatorio.";
@@ -26,6 +31,7 @@ const Login = () => {
     return newErrors;
   };
 
+  // validar que no este vacio el campo del numero de ID
   const handleChangeNumId = (e) => {
     setNumId(e.target.value);
     if (e.target.value) {
@@ -33,6 +39,7 @@ const Login = () => {
     }
   };
 
+  //validar que no este vacio el campo de la contraseña
   const handleChangeContraseña = (e) => {
     setContraseña(e.target.value);
     if (e.target.value) {
@@ -40,10 +47,18 @@ const Login = () => {
     }
   };
 
-  const cerrarModal = (e)=>{
-    setAbrirRegister(e)
-  }
+  // cerrar modal
+  const cerrarModal = (e) => {
+    setAbrirRegister(e);
+  };
 
+  // recibir datos del registro una vez creado el user
+  const datosRegister = (e) => {
+    console.log(e.usuario);
+    setRecibirDatos(e.usuario);
+  };
+
+  // enviar datos del login para ingresar
   const enviarForm = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -52,6 +67,7 @@ const Login = () => {
       setErrors(validationErrors);
       return;
     }
+
 
     try {
       const data = await loginUser(numId, contraseña);
@@ -76,23 +92,26 @@ const Login = () => {
     }
   };
 
+
+
   return (
     <>
       {abrirRegister && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl  w-full">
-            <Register cerrarModal2={cerrarModal} />
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75  z-50">
+          <div className="bg-white mx-auto p-8 rounded-lg shadow-lg   max-w-3xl">
+            <Register cerrarModal2={cerrarModal} datosRegister2={datosRegister} />
           </div>
         </div>
       )}
+
       <div
         className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
           abrirRegister ? "opacity-50" : ""
         }`}
       >
-        <div className="bg-opacity-70 p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
+        <div className="bg-opacity-70  p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
           <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
-            <div className="flex gap-4 mb-6 [@media(max-width:381px)]:justify-center">
+            <div className="flex gap-4  mb-6 [@media(max-width:381px)]:justify-center">
               <img
                 src={logoSena}
                 alt="Escudo"
@@ -121,7 +140,7 @@ const Login = () => {
               Leer más...
             </p>
           </div>
-          <div className="w-full lg:w-1/3 bg-white p-6 lg:p-10 rounded-3xl border">
+          <div className="w-full lg:w-1/3  bg-white p-6 lg:p-10 rounded-3xl border">
             <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">
               Iniciar sesión
             </h2>
@@ -141,7 +160,7 @@ const Login = () => {
                     id="username"
                     type="number"
                     placeholder="Identificación"
-                    value={numId}
+                    value={recibirDatos? recibirDatos.numero_documento_usuario: numId }
                     onChange={handleChangeNumId}
                   />
                   {errors.numId && (
@@ -167,7 +186,7 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="Contraseña"
-                    value={contraseña}
+                    value={recibirDatos? recibirDatos.password: contraseña}
                     onChange={handleChangeContraseña}
                   />
                   {errors.contraseña && (
@@ -188,7 +207,7 @@ const Login = () => {
                 Entrar
               </button>
               <h2 className="text-center my-3">
-                No tienes cuenta? 
+                No tienes cuenta?
                 <button
                   type="button"
                   onClick={() => setAbrirRegister(true)}
