@@ -87,13 +87,13 @@ const Register = () => {
       className=" min-h-screen flex items-center justify-center py-12"
    
     >
-      <div className="container  mx-auto">
+      <div className="  mx-auto w-[100%] ">
         <div className="bg-white  bg-opacity-90 border border-black shadow-lg rounded-lg p-8 max-w-2xl mx-auto">
           <h2 className="text-3xl font-semibold text-gray-800 mb-6 font-serif text-center">
             Crea tu cuenta.
           </h2>
           <form className="space-y-6" onSubmit={enviarForm}>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="">
               <div className="md:col-span-1">
                 <label
                   className="block text-sm font-medium text-blue-800"
