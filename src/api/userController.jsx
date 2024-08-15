@@ -4,10 +4,9 @@ const API_URL = "http://127.0.0.1:8000/senauthenticator/inicioSesion/";
 
 
 
-export const loginUser = async (tipoId, numId, contraseña) => {
+export const loginUser = async (numId, contraseña) => {
   try {
     const response = await axios.post(API_URL, {
-      tipo_documento_usuario: tipoId,
       numero_documento_usuario: numId,
       password: contraseña,
     }, {
