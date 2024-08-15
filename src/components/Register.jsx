@@ -85,12 +85,7 @@ const Register = () => {
   return (
     <div
       className=" min-h-screen flex items-center justify-center py-12"
-      style={{
-        backgroundImage:
-          "url('https://cloudfront-us-east-1.images.arcpublishing.com/semana/NRFYARCDZRFGJNJTN7X7LE4GCU.jpg')",
-       
-        backgroundPosition: "center",
-      }}
+   
     >
       <div className="container  mx-auto">
         <div className="bg-white  bg-opacity-90 border border-black shadow-lg rounded-lg p-8 max-w-2xl mx-auto">
