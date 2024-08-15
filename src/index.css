@@ -7,3 +7,7 @@
 .body{
     
 }
+
+input::placeholder {
+    color: #6b7280; /* Gris claro */
+}

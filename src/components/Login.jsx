@@ -28,22 +28,24 @@ const Login = () => {
 
   const rol2="Instructor"
 
-  if (Autenticador.isAuthenticated ) {
-    // console.log(Rol);
-    // return <Navigate to="/inicioInstructor" />
+  // if (Autenticador.isAuthenticated ) {
+  //   // console.log(Rol);
+  //   // return <Navigate to="/inicioInstructor" />
 
-    switch (rol2) {
-      case "Instructor":
-        return <Navigate to="/inicioInstructor" />
+  //   switch (rol2) {
+  //     case "Instructor":
+  //       return <Navigate to="/inicioInstructor" />
        
-      case "Administrador":
-        return <Navigate to="/inicioAdministrador" />
+  //     case "Administrador":
+  //       return <Navigate to="/inicioAdministrador" />
 
-      default:
-        break;
-    }
+  //     default:
+  //       break;
+  //   }
     
-  }
+  // }
+
+  // const rol3 = "Guarda"
 
 
 
