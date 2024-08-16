@@ -127,3 +127,101 @@ export default AuthProvider
 // Hook que permite acceder a funciones de useContext en cualquier componente, solo hay que llamarlo
 
 export const useAuth =()=> useContext(AuthContext);
+
+
+
+
+
+
+
+// //////////////////////////////////////////////////
+
+
+// import { useContext, createContext, useState, useEffect } from 'react';
+
+// const AuthContext = createContext({
+//   isAuthenticated: false,
+//   getAccessToken: () => {},
+//   getRefreshToken: () => {},
+//   saveUser: (userData) => {},
+// });
+
+// const AuthProvider = ({ children }) => {
+//   const [isAuthenticated, setIsAuthenticated] = useState(false);
+//   const [accessToken, setAccessToken] = useState('');
+
+//   async function requestNewAccessToken(refreshToken) {
+//     try {
+//       const response = await fetch("http://127.0.0.1:8000/senauthenticator/usuario/", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Authorization": `Bearer ${refreshToken}`
+//         }
+//       });
+
+//       if (!response.ok) {
+//         throw new Error(response.statusText);
+//       }
+
+//       const data = await response.json();
+//       if (data.error) {
+//         throw new Error(data.error);
+//       }
+
+//       return data.body.token;
+//     } catch (error) {
+//       console.error("Error fetching new access token:", error);
+//       return null;
+//     }
+//   }
+
+//   useEffect(() => {
+//     const checkAuth = async () => {
+//       const token = getRefreshToken();
+//       if (token) {
+//         const newAccessToken = await requestNewAccessToken(token);
+//         if (newAccessToken) {
+//           setAccessToken(newAccessToken);
+//           setIsAuthenticated(true);
+//         } else {
+//           setIsAuthenticated(false);
+//         }
+//       } else {
+//         setIsAuthenticated(false);
+//       }
+//     };
+
+//     checkAuth();
+//   }, []);
+
+//   function getAccessToken() {
+//     return accessToken;
+//   }
+
+//   function getRefreshToken() {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       const { refreshToken } = JSON.parse(token);
+//       return refreshToken;
+//     }
+//     return null;
+//   }
+
+//   function saveUser(userData) {
+//     setAccessToken(userData.body.token);
+//     // Uncomment and adjust as needed
+//     // localStorage.setItem("token", JSON.stringify(userData.body.refreshToken));
+//     setIsAuthenticated(true);
+//   }
+
+//   return (
+//     <AuthContext.Provider value={{ isAuthenticated, getAccessToken, saveUser, getRefreshToken }}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+// export default AuthProvider;
+
+// export const useAuth = () => useContext(AuthContext);

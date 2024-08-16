@@ -14,11 +14,15 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
+  const [recibirDatos, setRecibirDatos] = useState();
+
 
   // hooks
   const Autenticador = useAuth();
   const navegar = useNavigate();
 
+
+  // NOOOOOOOOOOOOOOOOOOOOOO quitar
 
   // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login
 
@@ -46,8 +50,10 @@ const Login = () => {
   //   }
     
   // }
-  
 
+
+
+  // mensajes de errores si los campos estan vacios
   const validateForm = () => {
     const newErrors = {};
     if (!numId) newErrors.numId = "El número de identificación es obligatorio.";
@@ -55,6 +61,7 @@ const Login = () => {
     return newErrors;
   };
 
+  // validar que no este vacio el campo del numero de ID
   const handleChangeNumId = (e) => {
     setNumId(e.target.value);
     if (e.target.value) {
@@ -62,6 +69,7 @@ const Login = () => {
     }
   };
 
+  //validar que no este vacio el campo de la contraseña
   const handleChangeContraseña = (e) => {
     setContraseña(e.target.value);
     if (e.target.value) {
@@ -69,6 +77,18 @@ const Login = () => {
     }
   };
 
+  // cerrar modal
+  const cerrarModal = (e) => {
+    setAbrirRegister(e);
+  };
+
+  // recibir datos del registro una vez creado el user
+  const datosRegister = (e) => {
+    console.log(e.usuario);
+    setRecibirDatos(e.usuario);
+  };
+
+  // enviar datos del login para ingresar
   const enviarForm = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -77,6 +97,7 @@ const Login = () => {
       setErrors(validationErrors);
       return;
     }
+
 
     try {
       const data = await loginUser(numId, contraseña);
@@ -101,108 +122,148 @@ const Login = () => {
     }
   };
 
+
+
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 "
-      // style={{
-      //   backgroundImage: "url('https://img.freepik.com/vector-premium/fondo-estructura-molecular-fondo-pantalla-plantilla-ciencia-o-banner-moleculas-adn_191234-1142.jpg')",
-      //   backgroundSize: 'cover',
-      //   backgroundPosition: 'center'
-      // }}
-    >
-      <div className=" bg-opacity-70 p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
-        <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
-          <div className="flex gap-4 mb-6 [@media(max-width:381px)]:justify-center">
-            <img src={logoSena} alt="Escudo" className=" top-4 left-4 w-16 sm:w-16 md:w-16 lg:w-14 xl:w-16 [@media(max-width:381px)]:w-12" />
-            <div className='flex items-center'>
-              <img src={logoSENAuthenticator} alt="Logo" className="mr-3 w-11 sm:w-14 md:w-16 lg:w-11 xl:w-14 " />
-              <h1 className="text-black text-lg [@media(max-width:381px)]:hidden sm:text-3xl md:text-3xl lg:text-2xl font-bold">SENAuthenticator</h1>
-            </div>  
+    <>
+      {abrirRegister && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75  content-center  z-50">
+          <div className="bg-white  md:max-w-2xl [@media(max-width:1024px)]:max-w-4xl [@media(max-width:768px)]:max-w-xl mx-auto p-8 rounded-lg shadow-lg   lg:max-w-6xl  ">
+            <Register cerrarModal2={cerrarModal} datosRegister2={datosRegister} />
           </div>
-          <h1 className="text-black text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">Bienvenido!</h1>
-          <p className="text-black-300 mb-6 text-lg mt-16">
-            El reconocimiento facial ofrece una forma segura y cómoda de autenticación. 
-            Al utilizar las características únicas de cada rostro, esta tecnología permite un acceso rápido y preciso.
-          </p>
-          <p className="inline-block text-black hover:text-blue-400 text-lg">Leer más...</p>
         </div>
-        <div className="w-full lg:w-1/3 bg-white p-6 lg:p-10 rounded-3xl border">
-          <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">Iniciar sesión</h2>
-          <form onSubmit={enviarForm}>
-            <div className="mb-6">
-              <label className="block text-black-300 mb-2 text-lg" htmlFor="selection">Tipo de identificación</label>
-              <div className="relative">
-                <select
-                  className={`w-full p-3 rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.tipoId ? 'border-red-500' : ''}`}
-                  id="selection"
-                  value={tipoId}
-                  onChange={handleChangeTipoId}
+      )}
+
+      
+      <div
+        className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
+          abrirRegister ? "opacity-50" : ""
+        }`}
+      >
+        <div className="bg-opacity-70  p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
+          <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
+            <div className="flex gap-4  mb-6 [@media(max-width:381px)]:justify-center">
+              <img
+                src={logoSena}
+                alt="Escudo"
+                className="top-4 left-4 w-16 sm:w-16 md:w-16 lg:w-14 xl:w-16 [@media(max-width:381px)]:w-12"
+              />
+              <div className="flex items-center">
+                <img
+                  src={logoSENAuthenticator}
+                  alt="Logo"
+                  className="mr-3 w-11 sm:w-14 md:w-16 lg:w-11 xl:w-14"
+                />
+                <h1 className="text-black text-lg [@media(max-width:381px)]:hidden sm:text-3xl md:text-3xl lg:text-2xl font-bold">
+                  SENAuthenticator
+                </h1>
+              </div>
+            </div>
+            <h1 className="text-black text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+              Bienvenido!
+            </h1>
+            <p className="text-black-300 mb-6 text-lg mt-16">
+              El reconocimiento facial ofrece una forma segura y cómoda de
+              autenticación. Al utilizar las características únicas de cada
+              rostro, esta tecnología permite un acceso rápido y preciso.
+            </p>
+            <p className="inline-block text-black hover:text-blue-400 text-lg">
+              Leer más...
+            </p>
+          </div>
+          <div className="w-full lg:w-1/3  bg-white p-6 lg:p-10 rounded-3xl border">
+            <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">
+              Iniciar sesión
+            </h2>
+            <form onSubmit={enviarForm}>
+              <div className="mb-6">
+                <label
+                  className="block text-black-300 mb-2 text-lg"
+                  htmlFor="username"
                 >
-                  <option value="">Seleccionar...</option>
-                  <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
-                  <option value="Cedula de ciudadania">Cedula de ciudadania</option>
-                  <option value="Cedula de extranjeria">Cedula de extranjeria</option>
-                </select>
-                {errors.tipoId && <p className="text-red-500 text-sm">{errors.tipoId}</p>}
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i className="fas fa-chevron-down text-black"></i>
+                  Número identificación
+                </label>
+                <div className="relative">
+                  <input
+                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
+                      errors.numId ? "border-red-500" : ""
+                    }`}
+                    id="username"
+                    type="number"
+                    placeholder="Identificación"
+                    value={recibirDatos? recibirDatos.numero_documento_usuario: numId }
+                    onChange={handleChangeNumId}
+                  />
+                  {errors.numId && (
+                    <p className="text-red-500 text-sm">{errors.numId}</p>
+                  )}
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <i className="fas fa-address-book text-black"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="mb-6">
-              <label className="block text-black-300 mb-2 text-lg" htmlFor="username">Número identificación</label>
-              <div className="relative">
-                <input
-                  className={`w-full p-3 rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.numId ? 'border-red-500' : ''}`}
-                  id="username"
-                  type="number"
-                  placeholder="Identificación"
-                  value={numId}
-                  onChange={handleChangeNumId}
-                />
-                {errors.numId && <p className="text-red-500 text-sm">{errors.numId}</p>}
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i className="fas fa-address-book text-black"></i>
+              <div className="mb-8">
+                <label
+                  className="block text-black-300 mb-2 text-lg"
+                  htmlFor="password"
+                >
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
+                      errors.contraseña ? "border-red-500" : ""
+                    }`}
+                    id="password"
+                    type="password"
+                    placeholder="Contraseña"
+                    value={recibirDatos? recibirDatos.password: contraseña}
+                    onChange={handleChangeContraseña}
+                  />
+                  {errors.contraseña && (
+                    <p className="text-red-500 text-sm">{errors.contraseña}</p>
+                  )}
+                  {errorsBack && (
+                    <p className="text-red-500 text-sm">{errorsBack}</p>
+                  )}
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <i className="fas fa-lock text-black"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="mb-8">
-              <label className="block text-black-300 mb-2 text-lg" htmlFor="password">Contraseña</label>
-              <div className="relative">
-                <input
-                  className={`w-full p-3 rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.contraseña ? 'border-red-500' : ''}`}
-                  id="password"
-                  type="password"
-                  placeholder="Contraseña"
-                  value={contraseña}
-                  onChange={handleChangeContraseña}
-                />
-                {errors.contraseña && <p className="text-red-500 text-sm">{errors.contraseña}</p>}
-                {errorsBack && <p className="text-red-500 text-sm">{errorsBack}</p>}
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i className="fas fa-lock text-black"></i>
-                </div>
+              <button
+                className="w-full bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
+                type="submit"
+              >
+                Entrar
+              </button>
+              <h2 className="text-center my-3">
+                No tienes cuenta?
+                <button
+                  type="button"
+                  onClick={() => setAbrirRegister(true)}
+                  className="hover:text-green-600"
+                >
+                  Registrate.
+                </button>
+              </h2>
+              <div className="flex justify-around mt-6 text-black text-2xl">
+                <a href="#">
+                  <i className="fab fa-facebook-f"></i>
+                </a>
+                <a href="#">
+                  <i className="fab fa-instagram"></i>
+                </a>
+                <a href="#">
+                  <i className="fab fa-pinterest-p"></i>
+                </a>
               </div>
-            </div>
-            <button
-              className="w-full bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
-              type="submit"
-            >
-              Entrar
-            </button>
-            <div className="flex justify-around mt-6 text-black text-2xl">
-              <a href="#"><i className="fab fa-facebook-f"></i></a>
-              <a href="#"><i className="fab fa-instagram"></i></a>
-              <a href="#"><i className="fab fa-pinterest-p"></i></a>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
-    
-}
+};
 
-
-  
 export default Login;
