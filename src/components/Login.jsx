@@ -22,6 +22,36 @@ const Login = () => {
   const navegar = useNavigate();
 
 
+  // NOOOOOOOOOOOOOOOOOOOOOO quitar
+
+  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login
+
+  // if (Autenticador.isAuthenticated) {
+  //   console.log(Rol);
+    
+  //   return <Navigate to="/inicioInstructor" />
+  // }
+
+  // const rol2="Instructor"
+
+  // if (Autenticador.isAuthenticated ) {
+  //   // console.log(Rol);
+  //   // return <Navigate to="/inicioInstructor" />
+
+  //   switch (rol2) {
+  //     case "Instructor":
+  //       return <Navigate to="/inicioInstructor" />
+       
+  //     case "Administrador":
+  //       return <Navigate to="/inicioAdministrador" />
+
+  //     default:
+  //       break;
+  //   }
+    
+  // }
+
+
 
   // mensajes de errores si los campos estan vacios
   const validateForm = () => {
@@ -97,13 +127,12 @@ const Login = () => {
   return (
     <>
       {abrirRegister && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75  z-50">
-          <div className="bg-white mx-auto p-8 rounded-lg shadow-lg   max-w-3xl">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75  content-center  z-50">
+          <div className="bg-white  md:max-w-2xl [@media(max-width:1024px)]:max-w-4xl [@media(max-width:768px)]:max-w-xl mx-auto p-8 rounded-lg shadow-lg   lg:max-w-6xl  ">
             <Register cerrarModal2={cerrarModal} datosRegister2={datosRegister} />
           </div>
         </div>
       )}
-
       <div
         className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
           abrirRegister ? "opacity-50" : ""

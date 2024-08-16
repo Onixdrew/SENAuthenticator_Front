@@ -1,24 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../auth/authProvider";
-import { getAllUsers } from "../../api/userController";
+// import { getAllUsers } from "../../api/userController";
 
 const ReportesInstructor = async () => {
   // Traer rol de la bd del user para comprobar
   const rol2 = "Instructor";
   const Autenticador = useAuth();
-  const [datos, setDatos] = useState();
 
-  const cargarDatos = async () => {
-    try {
-      const data = await getAllUsers(); // Usa await para esperar a que getAllUsers termine
-      setDatos(data); // Actualiza el estado con los datos obtenidos
-    } catch (error) {
-      console.error('Error al cargar los datos:', error.message);
-      // Maneja el error como lo necesites, por ejemplo, mostrando un mensaje al usuario
-    }
-  };
+  // const [datos, setDatos] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await getAllUsers();
+  //       setDatos(result);
+  //     } catch (error) {
+  //       console.error("Error al cargar los datos:", error.message);
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p className="text-red-500">Error: {error}</p>;
+
   return (
     <>
       {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
@@ -86,40 +99,65 @@ const ReportesInstructor = async () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-200 text-center">
-                {data.map((registro) => {
-                  <tr
-                    key={registro.id}
-                    className="bg-white border-b border-gray-200"
-                  >
-                    <td className="px-4 py-2">{registro.id}</td>
-                    <td className="px-4 py-2 font-semibold">
-                      {registro.first_name}
-                    </td>
-                    <td className="px-4 py-2">
-                      {registro.tipo_documento_usuario}
-                    </td>
-                    <td className="px-4 py-2">
-                      {registro.numero_documento_usuario}
-                    </td>
-                    <td className="px-4 py-2 text-center text-green-500 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="#7DDF0C"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <path d="M5 12l5 5l10 -10" />
-                      </svg>
-                    </td>
-                    <td className="px-4 py-2">05/06/2020</td>
-                    <td className="px-4 py-2">10:00</td>
-                  </tr>;
-                })}
+                
+                <tr className="bg-white border-b border-gray-200">
+                  <td className="px-4 py-2">sfdsdf</td>
+                  <td className="px-4 py-2 font-semibold">sfsdf</td>
+                  <td className="px-4 py-2">sfsd</td>
+                  <td className="px-4 py-2">sfsdf</td>
+                  <td className="px-4 py-2 text-center text-green-500 flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="#7DDF0C"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" />
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg>
+                  </td>
+                  <td className="px-4 py-2">05/06/2020</td>
+                  <td className="px-4 py-2">10:00</td>
+                </tr>
+
+                {/* {datos.map((registro) => (
+                    <tr
+                      key={registro.id}
+                      className="bg-white border-b border-gray-200"
+                    >
+                      <td className="px-4 py-2">{registro.id}</td>
+                      <td className="px-4 py-2 font-semibold">
+                        {registro.first_name}
+                      </td>
+                      <td className="px-4 py-2">
+                        {registro.tipo_documento_usuario}
+                      </td>
+                      <td className="px-4 py-2">
+                        {registro.numero_documento_usuario}
+                      </td>
+                      <td className="px-4 py-2 text-center text-green-500 flex items-center justify-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-5 h-5"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="#7DDF0C"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" />
+                          <path d="M5 12l5 5l10 -10" />
+                        </svg>
+                      </td>
+                      <td className="px-4 py-2">05/06/2020</td>
+                      <td className="px-4 py-2">10:00</td>
+                    </tr>
+                  ))} */}
               </tbody>
             </table>
           </div>
