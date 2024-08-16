@@ -130,32 +130,12 @@ const Login = () => {
           <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">Iniciar sesión</h2>
           <form onSubmit={enviarForm}>
             <div className="mb-6">
-              <label className="block text-black-300 mb-2 text-lg" htmlFor="selection">Tipo de identificación</label>
-              <div className="relative">
-                <select
-                  className={`w-full p-3 rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.tipoId ? 'border-red-500' : ''}`}
-                  id="selection"
-                  value={tipoId}
-                  onChange={handleChangeTipoId}
-                >
-                  <option value="">Seleccionar...</option>
-                  <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
-                  <option value="Cedula de ciudadania">Cedula de ciudadania</option>
-                  <option value="Cedula de extranjeria">Cedula de extranjeria</option>
-                </select>
-                {errors.tipoId && <p className="text-red-500 text-sm">{errors.tipoId}</p>}
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i className="fas fa-chevron-down text-black"></i>
-                </div>
-              </div>
-            </div>
-            <div className="mb-6">
               <label className="block text-black-300 mb-2 text-lg" htmlFor="username">Número identificación</label>
               <div className="relative">
                 <input
-                  className={`w-full p-3 rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.numId ? 'border-red-500' : ''}`}
+                  className={`w-full p-3 bg-white rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.numId ? 'border-red-500' : ''}`}
                   id="username"
-                  type="number"
+                  type="text"
                   placeholder="Identificación"
                   value={numId}
                   onChange={handleChangeNumId}
@@ -170,7 +150,7 @@ const Login = () => {
               <label className="block text-black-300 mb-2 text-lg" htmlFor="password">Contraseña</label>
               <div className="relative">
                 <input
-                  className={`w-full p-3 rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.contraseña ? 'border-red-500' : ''}`}
+                  className={`w-full p-3 bg-white rounded border text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.contraseña ? 'border-red-500' : ''}`}
                   id="password"
                   type="password"
                   placeholder="Contraseña"
