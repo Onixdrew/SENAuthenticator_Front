@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+
 import Logo from "../../public/img/Logo Reconocimiento Facial - Blanco.png";
 
 const Navbar = ({
@@ -104,16 +105,16 @@ const Navbar = ({
                 <div className="w-16 rounded-full">
                   <img
                     alt="Profile"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    src="https://www.shutterstock.com/image-photo/young-police-caucasian-man-isolated-260nw-2391831079.jpg"
                   />
                 </div>
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+                className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow "
               >
                 <li>
-                  <Link className="justify-between">Perfil</Link>
+                  <Link className="justify-between ">Perfil</Link>
                 </li>
                 <li>
                   <Link>Configuraciòn</Link>

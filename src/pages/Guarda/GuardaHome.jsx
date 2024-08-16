@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useAuth } from '../../auth/authProvider';
 import Navbar from '../../components/Navbar';
+import foto from "../Guarda/emmanuel.jpg"
 
 const Admin = () => {
     // Traer rol de la base de datos del usuario para comprobar
@@ -33,80 +34,69 @@ const Admin = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col  ">
             <Navbar
-                item1="Inicio"
-                item2="REGISTRO FACIAL"
+                item1="REGISTRO FACIAL"
+                item2="REGISTRO PERSONAS"
                 item3="MAS"
                 ruta1="/InicioGuardia"
                 ruta2="/ReconocimientoGuardia"
                 ruta3="/Mas"
-                color=""
+                color=""  
             />
-            <div className="flex flex-col lg:flex-row w-full max-w-screen-lg mx-auto p-4 gap-8">
-                {/* Sección de la cámara */}
-                <div className="lg:w-1/2 p-4">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Bienvenido al registro facial</h1>
-                    <div className="relative w-full h-80 shadow-lg rounded-lg overflow-hidden border-4 border-red-500">
+            <div className='flex p-4 gap-4 '>
+                {/* Camara */}
+                <div className="lg:w-1/2 p-4 w-2/5">
+                    <div className="relative w-full h-full shadow-lg rounded-lg overflow-hidden border-4 border-green-500">
                         <video ref={videoRef} autoPlay className="w-full h-full object-cover" />
                     </div>
                 </div>
 
-                
-                <div className="lg:w-1/2 p-4">
-                    <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-                        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">REGISTRO</h2>
-                        <form>
-                            <div className="mb-4">
-                                <label htmlFor="nombre" className="block text-gray-700 text-sm font-medium mb-2">Nombre</label>
-                                <input type="text" id="nombre" name="nombre" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                <div>
+                    
+                </div>
+                {/* Formulario */}
+
+                <div className=" p-4 w-4/12 mt-5">
+                    <div className="bg-white shadow-lg   rounded-lg p-6 mb-8">
+                        <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Usuario</h2>
+                        <form className='flex items-center flex-col gap-3 '>
+                            <div className='flex  justify-center w-40 h-90'>
+                                <img className='w-auto h-auto max-w-full max-h-full  text-center object-cover rounded  border-gray-300' src={foto} alt="" />
                             </div>
-                            <div className="mb-4">
-                                <label htmlFor="apellidos" className="block text-gray-700 text-sm font-medium mb-2">Apellidos</label>
-                                <input type="text" id="apellidos" name="apellidos" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="rol" className="block text-gray-700 text-sm font-medium mb-2">Rol</label>
-                                <input type="text" id="rol" name="rol" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="tipo_identificacion" className="block text-gray-700 text-sm font-medium mb-2">Tipo de Identificación</label>
-                                <input type="text" id="tipo_identificacion" name="tipo_identificacion" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="numero_identificacion" className="block text-gray-700 text-sm font-medium mb-2">Número de Identificación</label>
-                                <input type="text" id="numero_identificacion" name="numero_identificacion" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="programa" className="block text-gray-700 text-sm font-medium mb-2">Programa</label>
-                                <input type="text" id="programa" name="programa" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="ficha" className="block text-gray-700 text-sm font-medium mb-2">Ficha</label>
-                                <input type="text" id="ficha" name="ficha" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="centro_formacion" className="block text-gray-700 text-sm font-medium mb-2">Centro de Formación</label>
-                                <input type="text" id="centro_formacion" name="centro_formacion" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                            <div className='flex flex-col gap-3 items-center'>
+                                <div className="mb-4">
+                                    <label htmlFor="nombre" className="block text-gray-700 text-sm font-medium mb-2">Emmanuel Castañeda</label>
+                                </div>
+
+                                <div className="mb-4">
+                                    <label htmlFor="rol" className="block text-gray-700 text-sm font-medium mb-2">Aprendiz</label>
+                                </div>
+
+
+                                <div className="mb-4">
+                                    <label htmlFor="programa" className="block text-gray-700 text-sm font-medium mb-2">Analisis y desarrollo de software</label>
+                                </div>
                             </div>
                         </form>
                     </div>
+                </div>´
 
-                    
-                    <div className="bg-white shadow-lg rounded-lg p-6">
-                        <div className="flex items-center">
-                            <img src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png" alt="Objeto" className="w-16 h-16 rounded-full border border-gray-300 mr-4" />
-                            <div className="ml-4">
-                                <span className="text-gray-700 text-lg font-medium block">Portatil Gris</span>
-                                <span className="text-gray-600 text-sm block">Marca: ACER</span>
-                                <span className="text-gray-600 text-sm block">Serie: DE34021</span>
-                                <span className="text-gray-600 text-sm block">Nombre: Daniel</span>
-                                <span className="text-gray-600 text-sm block">Apellidos: Astaiza</span>
-                            </div>
+                                {/* Objetos */}
+
+                <div className="bg-white h-64 shadow-lg mt-36 rounded-lg p-2 w-1/4">
+                    <div className="flex  flex-col gap-5 justify-center items-center">
+                        <img src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png"
+                            alt="Objeto" className="w-28 rounded border border-gray-300 mr-4" />
+                        <div className="ml-4 flex flex-col text-center gap-3">
+                            <span className="text-gray-700 text-lg font-medium block">Portatil Gris</span>
+                            <span className="text-gray-600 text-sm block"> ACER</span>
+                            <span className="text-gray-600 text-sm block"> DE34021</span>
+                            <span className="text-gray-600 text-sm block">Emmanuel Castañeda</span>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
     );
