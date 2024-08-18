@@ -76,7 +76,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
   };
 
   return (
-    <div className="w-full  max-w-4xl mx-auto p-4">
+    <div className="w-full [@media(max-width:1024px)]:max-w-4xl [@media(max-width:768px)]:max-w-xl  md:max-w-2xl lg:max-w-6xl p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 font-serif text-center">
           Crea tu cuenta
@@ -86,7 +86,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
         </button>
       </div>
       <form className="space-y-6" onSubmit={enviarForm}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-y-7  lg:gap-x-10 md:gap-x-10  lg:gap-y-10">
           <div>
             <label className="block text-sm font-medium text-blue-800" htmlFor="first-name">
               Nombres:

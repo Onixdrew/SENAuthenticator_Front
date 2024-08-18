@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Ocultar los íconos de incremento y decremento en Chrome, Safari y Edge */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -37,3 +38,22 @@ input[type="number"] {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
 }
+
+
+
+/* animacion del cargando... */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader {
+  border: 4px solid #f3f3f3; 
+  border-top: 4px solid #cdd9e0; 
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  animation: spin 1s linear infinite;
+}
+
+

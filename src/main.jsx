@@ -10,7 +10,12 @@ import Register from "./components/Register.jsx";
 import "./index.css";
 import InicioIntructor from "./pages/Instructor/inicioIntructor.jsx";
 import ReportesInstructor from "./pages/Instructor/reportesInstructor.jsx";
-import Admin from "./pages/Instructor/admin.jsx";
+
+///////////////////////////
+
+import GuardiaHome from "./pages/Guarda/GuardaHome.jsx"
+import Sobrenosotros from "./pages/Guarda/Sobrenosotros.jsx";
+import InicioGuardia from "./pages/Guarda/RegistroPersona.jsx";
 
 
 const router = createBrowserRouter([
@@ -28,21 +33,28 @@ const router = createBrowserRouter([
       {
         path: "/inicioInstructor",
         element: <InicioIntructor></InicioIntructor>,
-
-
       },
+      
       {
         path: "/ReportesInstructor",
         element: <ReportesInstructor></ReportesInstructor>,
 
       },
+//////////////RUTAS GUARDA DE SEGURIDAD////////
       {
-        path: "/inicioAdministrador",
-        element: <Admin></Admin>,
-
-
+        path: "/InicioGuardia", 
+        element: <GuardiaHome></GuardiaHome>,
       },
       
+      {
+        path: "/ReconocimientoGuardia", 
+        element: <InicioGuardia></InicioGuardia>,
+      },
+
+      {
+        path: "/Mas", 
+        element: <Sobrenosotros></Sobrenosotros>
+      }
     ],
   },
 ]);
