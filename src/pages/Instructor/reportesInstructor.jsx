@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../auth/authProvider";
-import { getAllUsers } from "../../api/userController";
+// import { getAllUsers } from "../../api/userController";
 
 const ReportesInstructor = async () => {
   // Traer rol de la bd del user para comprobar
@@ -10,15 +10,15 @@ const ReportesInstructor = async () => {
   const Autenticador = useAuth();
   const [datos, setDatos] = useState();
 
-  const cargarDatos = async () => {
-    try {
-      const data = await getAllUsers(); // Usa await para esperar a que getAllUsers termine
-      setDatos(data); // Actualiza el estado con los datos obtenidos
-    } catch (error) {
-      console.error('Error al cargar los datos:', error.message);
-      // Maneja el error como lo necesites, por ejemplo, mostrando un mensaje al usuario
-    }
-  };
+  // const cargarDatos = async () => {
+  //   try {
+  //     const data = await getAllUsers(); // Usa await para esperar a que getAllUsers termine
+  //     setDatos(data); // Actualiza el estado con los datos obtenidos
+  //   } catch (error) {
+  //     console.error('Error al cargar los datos:', error.message);
+  //     // Maneja el error como lo necesites, por ejemplo, mostrando un mensaje al usuario
+  //   }
+  // };
   return (
     <>
       {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
@@ -86,7 +86,7 @@ const ReportesInstructor = async () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-200 text-center">
-                {data.map((registro) => {
+                {/* {data.map((registro) => {
                   <tr
                     key={registro.id}
                     className="bg-white border-b border-gray-200"
@@ -119,7 +119,7 @@ const ReportesInstructor = async () => {
                     <td className="px-4 py-2">05/06/2020</td>
                     <td className="px-4 py-2">10:00</td>
                   </tr>;
-                })}
+                })} */}
               </tbody>
             </table>
           </div>

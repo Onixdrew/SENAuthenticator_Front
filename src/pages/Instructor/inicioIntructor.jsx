@@ -14,6 +14,8 @@ const InicioIntructor = () => {
         ruta3=""
         color="activo"
         ></Navbar>
+
+        <h1 className='text-2xl font-bold text-center mt-10'>Inicio Instructor </h1>
     </div>
 
   )
