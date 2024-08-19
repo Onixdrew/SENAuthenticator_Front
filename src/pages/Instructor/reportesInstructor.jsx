@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../auth/authProvider";
-// import { getAllUsers } from "../../api/userController";
+import { getAllUsers } from "../../api/userController";
+
 
 const ReportesInstructor = () => {
   const rol2 = "Instructor";
+
+  // los hooks solo pueden ser llamados dentro de un componente funcional
   const Autenticador = useAuth();
 
   const [datos, setDatos] = useState([]);
@@ -46,14 +49,6 @@ const ReportesInstructor = () => {
     }
   }, [documentoFiltro, datos]);
 
-  //  if (loading) return (
-  //   <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-  //     <div className="loader"></div>
-  //     <p className="text-center z-50 text-xl font-serif mt-4">Cargando...</p>
-  //   </div>
-  // );
-
-  // if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
     <>
@@ -72,7 +67,7 @@ const ReportesInstructor = () => {
           </div>
 
           {/* Inputs de filtro */}
-          <form action="" className="flex gap-10 justify-center mt-20">
+          <form action="" className="flex gap-10 justify-center mt-20 [@media(max-width:1024px)]:grid [@media(max-width:1024px)]:grid-cols-2 [@media(max-width:1024px)]:w-40">
             <select name="" id="" className="bg-white p-3 border rounded-lg">
               <option value="">Ficha</option>
               <option value="">2669742</option>
@@ -101,7 +96,7 @@ const ReportesInstructor = () => {
           </form>
 
           {/* Tarjeta con los registros */}
-          <div className="absolute top-36 right-80 bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md">
+          <div className="absolute top-36 sm:right-36 [@media(max-width:768px)]:right-28 right-80 bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md">
             <p className="text-center text-2xl font-semibold">10/20</p>
             <p className="text-center text-lg">Ingresos</p>
           </div>
@@ -180,6 +175,9 @@ const ReportesInstructor = () => {
         <p className="text-red-500">
           Error: No tienes permiso para acceder a esta página.
         </p>
+
+        //  se redirecciona al login si no esta autenticado
+        // <Navigate to="/" />
       )}
     </>
   );

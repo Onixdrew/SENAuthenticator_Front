@@ -1,5 +1,7 @@
 import React from 'react'
 import Navbar from '../../components/Navbar'
+import { useAuth } from '../../auth/authProvider';
+import { useNavigate } from 'react-router-dom';
 
 const InicioIntructor = () => {
   return (
