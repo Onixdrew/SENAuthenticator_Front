@@ -22,7 +22,7 @@ const Login = () => {
 
   // NOOOOOOOOOOOOOOOOOOOOOO quitar
 
-  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login
+  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login hasta que se cierre la sesión
 
   // if (Autenticador.isAuthenticated) {
   //   console.log(Rol);
@@ -30,24 +30,21 @@ const Login = () => {
   //   return <Navigate to="/inicioInstructor" />
   // }
 
-  // const rol2="Instructor"
+  const rol2 = "Instructor";
 
-  // if (Autenticador.isAuthenticated ) {
-  //   // console.log(Rol);
-  //   // return <Navigate to="/inicioInstructor" />
+  if (Autenticador.isAuthenticated) {
+    
+    switch (rol2) {
+      case "Instructor":
+        return <Navigate to="/inicioInstructor" />;
 
-  //   switch (rol2) {
-  //     case "Instructor":
-  //       return <Navigate to="/inicioInstructor" />
+      case "Administrador":
+        return <Navigate to="/inicioAdministrador" />;
 
-  //     case "Administrador":
-  //       return <Navigate to="/inicioAdministrador" />
-
-  //     default:
-  //       break;
-  //   }
-
-  // }
+      default:
+        break;
+    }
+  }
 
   // mensajes de errores si los campos estan vacios
   const validateForm = () => {
@@ -62,6 +59,7 @@ const Login = () => {
     setNumId(e.target.value);
     if (e.target.value) {
       setErrors((prevErrors) => ({ ...prevErrors, numId: "" }));
+      // setErrorsBack("")
     }
   };
 
@@ -70,6 +68,7 @@ const Login = () => {
     setContraseña(e.target.value);
     if (e.target.value) {
       setErrors((prevErrors) => ({ ...prevErrors, contraseña: "" }));
+      // setErrorsBack("")
     }
   };
 
@@ -99,28 +98,25 @@ const Login = () => {
       console.log(data);
 
       if (data) {
+        // setRol(data.user.rol_usuario);
+
         switch (data.user.rol_usuario) {
           case "Instructor":
-            setRol(data.user.rol_usuario);
             navegar("/inicioInstructor");
             break;
           case "Administrador":
-            setRol(data.user.rol_usuario);
             navegar("/inicioAdministrador");
             break;
           case "Guardia":
-            setRol(data.user.rol_usuario);
             navegar("/InicioGuardia");
             break;
           default:
             alert("Rol no reconocido");
             break;
         }
-
       } else {
         console.log("No se obtuvieron datos del inicio de sesión");
       }
-
     } catch (error) {
       setErrorsBack(error.message);
       console.log(error.message);
@@ -188,11 +184,13 @@ const Login = () => {
           </div>
           <div className="w-full lg:w-1/3  bg-white p-6 lg:p-10 rounded-3xl border">
             {/* mensaje error */}
-            {errorsBack && (
+            {/* {errorsBack && (
               <p className="text-red-500 text-lg text-center ">
                 El usuario no existe. Registrate!
               </p>
-            )}
+            )} */}
+
+            <h1 className="text-red-500 text-lg text-center">{errorsBack}</h1>
 
             <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">
               Iniciar sesión
@@ -256,8 +254,9 @@ const Login = () => {
                 </div>
               </div>
               <button
-                className="w-full bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
+                className="w-full hover:bg-green-700  bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
                 type="submit"
+                // onClick={()=>setErrorsBack("")}
               >
                 Entrar
               </button>
