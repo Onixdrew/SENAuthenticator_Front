@@ -133,12 +133,12 @@ const ReportesInstructor = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-200 text-center">
-                {datosFiltrados.map((registro) => (
+                {datosFiltrados.map((registro,index) => (
                   <tr
-                    key={registro.id}
+                    key={index}
                     className="bg-white border-b border-gray-200"
                   >
-                    <td className="px-4 py-2">{registro.id}</td>
+                    <td className="px-4 py-2">{index}</td>
                     <td className="px-4 py-2 font-semibold">
                       {registro.first_name}
                     </td>
