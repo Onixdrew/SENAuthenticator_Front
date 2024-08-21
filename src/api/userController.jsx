@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://backendsenauthenticator.onrender.com/api/inicioSesion/";
+const API_URL =
+  "https://backendsenauthenticator.onrender.com/api/inicioSesion/";
 
 export const inicioSesion = async (numId, contraseña, Autenticador) => {
   try {
@@ -42,8 +43,6 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
   }
 };
 
-
-
 const API_URL2 = "https://backendsenauthenticator.onrender.com/api/usuario/";
 
 export const getAllUsers = async () => {
@@ -56,7 +55,7 @@ export const getAllUsers = async () => {
 
     // Axios automáticamente convierte la respuesta a JSON
     const data = response.data; // Asegúrate de devolver los datos
-    // console.log(data);
+    console.log(data);
     return data;
   } catch (error) {
     if (error.response) {
