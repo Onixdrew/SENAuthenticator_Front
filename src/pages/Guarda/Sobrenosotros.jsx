@@ -5,9 +5,9 @@ const Sobrenosotros = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             <Navbar
-                item1="REGISTRO FACIAL"
-                item2="REGISTRO PERSONAS"
-                item3="MAS"
+                item1="Registro Facial"
+                item2="Registro Personas"
+                item3="Mas"
                 ruta1="/InicioGuardia"
                 ruta2="/ReconocimientoGuardia"
                 ruta3="/Mas"
