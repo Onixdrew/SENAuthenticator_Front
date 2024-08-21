@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../auth/authProvider";
 import { getAllUsers } from "../../api/userController";
+import { Link } from "react-router-dom";
 
 const ReportesInstructor = () => {
   const rol2 = "Instructor";
@@ -22,7 +23,7 @@ const ReportesInstructor = () => {
 
         // Esta es la variable de contexto
         // const result = await Autenticador.getAllUsers();
-        
+
         setDatos(result);
         setDatosFiltrados(result);
       } catch (error) {
@@ -69,7 +70,6 @@ const ReportesInstructor = () => {
                   id=""
                   className="bg-white p-3 border rounded-lg flex-1"
                 >
-                  <option value="">Ficha</option>
                   <option value="">2669742</option>
                   <option value="">2669756</option>
                   <option value="">2669723</option>
@@ -99,9 +99,11 @@ const ReportesInstructor = () => {
                   <option value="">Semanal</option>
                   <option value="">Mensual</option>
                 </select>
-                <button className="btn bg-white flex-1 md:flex-none">
-                  Graficas
-                </button>
+                <Link to="/ReportesGraficas">
+                  <button className="btn bg-white flex-1 md:flex-none">
+                    Graficas
+                  </button>
+                </Link>
               </form>
 
               <div className="mt-6 bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto md:max-w-sm lg:max-w-md">
@@ -184,7 +186,7 @@ const ReportesInstructor = () => {
             </div>
           </div>
 
-          <div className={`${loading?"mt-52 ":""} `}>
+          <div className={`${loading ? "mt-52 " : ""} `}>
             <Footer />
           </div>
         </div>

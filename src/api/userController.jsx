@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  "https://backendsenauthenticator.onrender.com/api/inicioSesion/";
+  "https://backprojecto.onrender.com/api/inicioSesion/";
 
 export const inicioSesion = async (numId, contraseña, Autenticador) => {
   try {
@@ -43,7 +43,7 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
   }
 };
 
-const API_URL2 = "https://backendsenauthenticator.onrender.com/api/usuario/";
+const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
 
 export const getAllUsers = async () => {
   try {
