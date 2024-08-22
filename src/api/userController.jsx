@@ -1,5 +1,7 @@
 import axios from "axios";
 
+
+// /////////////////////////////////////////// inicioSesion
 const API_URL =
   "https://backprojecto.onrender.com/api/inicioSesion/";
 
@@ -43,6 +45,52 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
   }
 };
 
+
+// /////////////////////////////////////////// Register
+
+const registerUser = async (nombre,tipoId,numId,correo,contraseña) => {
+  e.preventDefault();
+  try {
+    // Toma el primer nombre para ponerlo de username
+    const userName = nombre.split(" ")[0];
+    const response = await fetch(
+      "ttps://backprojecto.onrender.com/api/usuario/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: userName,
+          first_name: nombre,
+          tipo_documento_usuario: tipoId,
+          numero_documento_usuario: numId,
+          email: correo,
+          password: contraseña,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok || response.status === 201) {
+      alert("Usuario creado correctamente");
+      enviarDatosLogin(data);
+      // se cierra el modal
+      cerrarModalProp(false);
+    } else {
+      alert(data.error || "Ocurrió un error desconocido");
+    }
+  } catch (error) {
+    alert("Error en la solicitud: " + error.message);
+  }
+};
+
+
+
+
+
+// /////////////////////////////////////////// obtener todos los user
 const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
 
 export const getAllUsers = async () => {

@@ -6,11 +6,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 const Register = ({ cerrarModal2, datosRegister2 }) => {
   const [passwordError, setPasswordError] = useState("");
   const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
   const [tipoId, setTipoId] = useState("");
   const [numId, setNumId] = useState("");
-  const [genero, setGenero] = useState("");
-  const [rol, setRol] = useState("");
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
 
@@ -25,43 +22,21 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
     }
   };
 
-  const enviarForm = async (e) => {
+  const enviarForm = async () => {
     e.preventDefault();
-    try {
-      const userName = nombre.split(" ")[0];
-      const response = await fetch(
-        "http://127.0.0.1:8000/senauthenticator/usuario/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: userName,
-            first_name: nombre,
-            last_name: apellido,
-            tipo_documento_usuario: tipoId,
-            numero_documento_usuario: numId,
-            genero_usuario: genero,
-            email: correo,
-            password: contraseña,
-            rol_usuario: rol,
-          }),
-        }
-      );
 
-      const data = await response.json();
-
-      if (response.ok || response.status === 201) {
-        alert("Usuario creado correctamente");
-        enviarDatosLogin(data);
-        // se cierra el modal
-        cerrarModalProp(false);
-      } else {
-        alert(data.error || "Ocurrió un error desconocido");
-      }
-    } catch (error) {
-      alert("Error en la solicitud: " + error.message);
+    const response = await registerUser (
+      nombre,
+      tipoId,
+      numId,
+      correo,
+      contraseña
+    );
+    if (response.ok || response.status === 201) {
+      // se cierra el modal
+      cerrarModalProp(false);
+    } else {
+      alert(data.error || "Ocurrió un error desconocido");
     }
   };
 
@@ -90,7 +65,10 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
         <form className="space-y-6 p-10" onSubmit={enviarForm}>
           <div className="flex flex-col md:gap-y-7 lg:gap-x-10 md:gap-x-10 lg:gap-y-10">
             <div>
-              <label className="block text-sm font-medium text-gray-600" htmlFor="first-name">
+              <label
+                className="block text-sm font-medium text-gray-600"
+                htmlFor="first-name"
+              >
                 Nombre Completo:
               </label>
               <input
@@ -103,7 +81,10 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-600" htmlFor="id-type">
+              <label
+                className="block text-sm font-medium text-gray-600"
+                htmlFor="id-type"
+              >
                 Tipo de identificación
               </label>
               <select
@@ -114,13 +95,22 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 onChange={(e) => setTipoId(e.target.value)}
               >
                 <option value="">Seleccionar...</option>
-                <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
-                <option value="Cedula de ciudadania">Cédula de ciudadanía</option>
-                <option value="Cedula de extranjeria">Cédula de extranjería</option>
+                <option value="Tarjeta de Identidad">
+                  Tarjeta de Identidad
+                </option>
+                <option value="Cedula de ciudadania">
+                  Cédula de ciudadanía
+                </option>
+                <option value="Cedula de extranjeria">
+                  Cédula de extranjería
+                </option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-600" htmlFor="id-number">
+              <label
+                className="block text-sm font-medium text-gray-600"
+                htmlFor="id-number"
+              >
                 Número de identificación
               </label>
               <input
@@ -150,7 +140,10 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
               </select>
             </div> */}
             <div>
-              <label className="block text-sm font-medium text-gray-600" htmlFor="email">
+              <label
+                className="block text-sm font-medium text-gray-600"
+                htmlFor="email"
+              >
                 Correo electrónico
               </label>
               <input
@@ -163,7 +156,10 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-600" htmlFor="password">
+              <label
+                className="block text-sm font-medium text-gray-600"
+                htmlFor="password"
+              >
                 Contraseña
               </label>
               <input
@@ -176,7 +172,10 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-600" htmlFor="confirm-password">
+              <label
+                className="block text-sm font-medium text-gray-600"
+                htmlFor="confirm-password"
+              >
                 Confirmar Contraseña
               </label>
               <input
