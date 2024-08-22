@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./components/Login.jsx";
 
 import RutasProtegidas from "./auth/authRoutes.jsx";
 import AuthProvider from "./auth/authProvider.jsx";
@@ -13,15 +12,15 @@ import ReportesInstructor from "./pages/Instructor/reportesInstructor.jsx";
 
 ///////////////////////////
 
-import GuardiaHome from "./pages/Guarda/GuardaHome.jsx"
+import GuardiaHome from "./pages/Guarda/GuardaHome.jsx";
 import Sobrenosotros from "./pages/Guarda/Sobrenosotros.jsx";
 import InicioGuardia from "./pages/Guarda/RegistroPersona.jsx";
-
+import Login from "./pages/Login/Login.jsx";
+import Graficas from "./pages/Instructor/Graficas/graficas.jsx";
 
 const router = createBrowserRouter([
   // Ruta Principal
   { path: "/", element: <Login /> },
-  
 
   // se llama al archivo rutasProtegidas donde se verifa que exista el
   // usuario para ceder el permiso a las rutas del children
@@ -30,31 +29,37 @@ const router = createBrowserRouter([
     element: <RutasProtegidas />,
 
     children: [
+      //////////////RUTAS Instructor////////
+
       {
         path: "/inicioInstructor",
         element: <InicioIntructor></InicioIntructor>,
       },
-      
+
       {
         path: "/ReportesInstructor",
         element: <ReportesInstructor></ReportesInstructor>,
-
       },
-//////////////RUTAS GUARDA DE SEGURIDAD////////
       {
-        path: "/InicioGuardia", 
+        path: "/ReportesGraficas",
+        element: <Graficas></Graficas>
+      },
+
+      //////////////RUTAS GUARDA DE SEGURIDAD////////
+      {
+        path: "/InicioGuardia",
         element: <GuardiaHome></GuardiaHome>,
       },
-      
+
       {
-        path: "/ReconocimientoGuardia", 
+        path: "/ReconocimientoGuardia",
         element: <InicioGuardia></InicioGuardia>,
       },
 
       {
-        path: "/Mas", 
-        element: <Sobrenosotros></Sobrenosotros>
-      }
+        path: "/Mas",
+        element: <Sobrenosotros></Sobrenosotros>,
+      },
     ],
   },
 ]);
