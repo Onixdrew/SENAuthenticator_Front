@@ -3,6 +3,7 @@ import axios from "axios";
 const API_URL =
   "https://backprojecto.onrender.com/api/inicioSesion/";
 
+
 export const inicioSesion = async (numId, contraseña, Autenticador) => {
   try {
     // creo la peticcion http
@@ -42,6 +43,8 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
     }
   }
 };
+
+
 
 const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
 
