@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import { useAuth } from "../../auth/authProvider";
 import { getAllUsers } from "../../api/userController";
 import { Link } from "react-router-dom";
+import { MdOutlineRefresh } from "react-icons/md";
 
 const ReportesInstructor = () => {
   const rol2 = "Instructor";
@@ -48,6 +49,11 @@ const ReportesInstructor = () => {
       setDatosFiltrados(datos);
     }
   }, [documentoFiltro, datos]);
+
+
+  useEffect(()=>{
+
+  },[])
 
   return (
     <>
@@ -106,11 +112,15 @@ const ReportesInstructor = () => {
                 </Link>
               </form>
 
-              <div className="mt-6 bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto md:max-w-sm lg:max-w-md">
-                <p className="text-center text-2xl font-semibold">
-                  10/{datos.length}
-                </p>
+              <div className="mt-6 flex flex-col bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto md:max-w-sm lg:max-w-md">
+                <div className="flex mx-auto">
+                  <p className="text-center text-2xl font-semibold">
+                    10/{datos.length}
+                  </p>
+                  
                 <p className="text-center text-lg">Ingresos</p>
+                </div>
+                  <MdOutlineRefresh className="text-3xl ml-10"/>
               </div>
 
               {loading && (
