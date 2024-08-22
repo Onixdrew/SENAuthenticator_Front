@@ -30,7 +30,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
     try {
       const userName = nombre.split(" ")[0];
       const response = await fetch(
-        "http://127.0.0.1:8000/senauthenticator/usuario/",
+        "https://backprojecto.onrender.com/api/usuario/",
         {
           method: "POST",
           headers: {

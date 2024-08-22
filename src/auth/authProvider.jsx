@@ -23,7 +23,7 @@ const AuthProvider = ({children}) => {
 
   async function requestNewAccessToken(refreshToken) {
     try {
-      const response = await fetch("http://127.0.0.1:8000/senauthenticator/usuario/", {
+      const response = await fetch("https://backprojecto.onrender.com/api/usuario/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
