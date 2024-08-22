@@ -136,14 +136,14 @@ const Login = () => {
   return (
     <>
       {abrirRegister && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75  content-center  z-50">
-          <div className="bg-white  md:max-w-2xl [@media(max-width:1024px)]:max-w-4xl [@media(max-width:768px)]:max-w-xl mx-auto p-8 rounded-lg shadow-lg   lg:max-w-6xl  ">
-            <Register
-              cerrarModal2={cerrarModal}
-              datosRegister2={datosRegister}
-            />
-          </div>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+        <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
+          <Register
+            cerrarModal2={cerrarModal}
+            datosRegister2={datosRegister}
+          />
         </div>
+      </div>
       )}
 
       <div
@@ -258,7 +258,7 @@ const Login = () => {
                 type="submit"
                 // onClick={()=>setErrorsBack("")}
               >
-                Entrar
+                Aceptar
               </button>
               <h2 className="text-center my-3">
                 No tienes cuenta?

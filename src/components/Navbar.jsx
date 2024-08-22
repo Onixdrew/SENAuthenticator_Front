@@ -68,7 +68,7 @@ const Navbar = ({
               to={ruta3}
               className={`text-xl font-medium ${
                 color3 == "activo" ? "text-red-700" : "text-white"
-              }hover:text-green-800`}
+              } hover:text-green-800`}
             >
               {item3}
             </Link>

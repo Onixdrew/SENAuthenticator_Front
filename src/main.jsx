@@ -16,6 +16,7 @@ import GuardiaHome from "./pages/Guarda/GuardaHome.jsx";
 import Sobrenosotros from "./pages/Guarda/Sobrenosotros.jsx";
 import InicioGuardia from "./pages/Guarda/RegistroPersona.jsx";
 import Login from "./pages/Login/Login.jsx";
+import Graficas from "./pages/Instructor/Graficas/graficas.jsx";
 
 const router = createBrowserRouter([
   // Ruta Principal
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/ReportesInstructor",
         element: <ReportesInstructor></ReportesInstructor>,
+      },
+      {
+        path: "/ReportesGraficas",
+        element: <Graficas></Graficas>
       },
 
       //////////////RUTAS GUARDA DE SEGURIDAD////////
