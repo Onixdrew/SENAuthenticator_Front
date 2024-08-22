@@ -22,6 +22,11 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
   const enviarForm = async (e) => {
     e.preventDefault();
 
+    
+
+  
+  
+
     const response = await registerUser(
       nombre,
       tipoId,
