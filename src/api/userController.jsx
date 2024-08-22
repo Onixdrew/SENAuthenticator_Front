@@ -6,6 +6,7 @@ import { useEffect } from "react";
 const API_URL =
   "https://backprojecto.onrender.com/api/inicioSesion/";
 
+
 export const inicioSesion = async (numId, contraseña, Autenticador) => {
   try {
     // creo la peticcion http
@@ -45,6 +46,7 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
     }
   }
 };
+
 
 
 // /////////////////////////////////////////// Register
