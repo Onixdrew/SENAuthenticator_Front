@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "https://backprojecto.onrender.com/inicioSesion/";
+const API_URL = "https://backprojecto.onrender.com/api/inicioSesion/";
 
 
 
