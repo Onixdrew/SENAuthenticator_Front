@@ -48,41 +48,40 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
 
 // /////////////////////////////////////////// Register
 
-const registerUser = async (nombre,tipoId,numId,correo,contraseña) => {
-  e.preventDefault();
+export const registerUser = async (nombre, tipoId, numId, correo, contraseña, enviarDatosLogin) => {
   try {
+    console.log(nombre, tipoId, numId, correo, contraseña, enviarDatosLogin);
+    
     // Toma el primer nombre para ponerlo de username
     const userName = nombre.split(" ")[0];
-    const response = await fetch(
-      "ttps://backprojecto.onrender.com/api/usuario/",
+
+    const response = await axios.post(
+      "https://backprojecto.onrender.com/api/usuario/",
       {
-        method: "POST",
+        username: userName,
+        first_name: nombre,
+        tipo_documento_usuario: tipoId,
+        numero_documento_usuario: numId,
+        email: correo,
+        password: contraseña,
+      },
+      {
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: userName,
-          first_name: nombre,
-          tipo_documento_usuario: tipoId,
-          numero_documento_usuario: numId,
-          email: correo,
-          password: contraseña,
-        }),
+        }
       }
+
     );
 
-    const data = await response.json();
-
-    if (response.ok || response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       alert("Usuario creado correctamente");
-      enviarDatosLogin(data);
-      // se cierra el modal
-      cerrarModalProp(false);
+      enviarDatosLogin(response.data);
+      return response
     } else {
-      alert(data.error || "Ocurrió un error desconocido");
+      alert(response.data.error || "Ocurrió un error desconocido");
     }
   } catch (error) {
-    alert("Error en la solicitud: " + error.message);
+    alert("Error en la solicitud: " + (error.response?.data?.error || error.message));
   }
 };
 

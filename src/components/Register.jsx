@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useAuth } from "../auth/authProvider";
-import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { registerUser } from "../api/userController";
 
 const Register = ({ cerrarModal2, datosRegister2 }) => {
   const [passwordError, setPasswordError] = useState("");
@@ -11,8 +10,6 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
 
-  const Autenticador = useAuth();
-  const navegar = useNavigate();
 
   const validarContraseña = (e) => {
     if (e.target.value !== contraseña) {
@@ -22,21 +19,22 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
     }
   };
 
-  const enviarForm = async () => {
+  const enviarForm = async (e) => {
     e.preventDefault();
 
-    const response = await registerUser (
+    const response = await registerUser(
       nombre,
       tipoId,
       numId,
       correo,
-      contraseña
+      contraseña,
+      enviarDatosLogin
     );
-    if (response.ok || response.status === 201) {
+    console.log(`Hola desde el  register:  ${response}`);
+    
+    if (response || response.status === 201) {
       // se cierra el modal
       cerrarModalProp(false);
-    } else {
-      alert(data.error || "Ocurrió un error desconocido");
     }
   };
 
@@ -122,23 +120,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 onChange={(e) => setNumId(e.target.value)}
               />
             </div>
-            {/* <div>
-              <label className="block text-sm font-medium text-blue-800" htmlFor="rol">
-                Rol
-              </label>
-              <select
-                className="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                id="rol"
-                required
-                value={rol}
-                onChange={(e) => setRol(e.target.value)}
-              >
-                <option value="">Seleccionar...</option>
-                <option value="Instructor">Instructor</option>
-                <option value="Aprendiz">Aprendiz</option>
-                <option value="Administrador">Administrador</option>
-              </select>
-            </div> */}
+
             <div>
               <label
                 className="block text-sm font-medium text-gray-600"
