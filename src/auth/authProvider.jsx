@@ -17,7 +17,7 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [user, setUser] = useState(true);
 
   // Manejo de tokens
@@ -82,6 +82,8 @@ const AuthProvider = ({ children }) => {
   //   }
   // };
 
+
+
   // //////////////////////////////////////////////////////////-------FALTA IMPLEMENTAR EN EL BACK
   // se solicita datos del user por medio del accessToken
   async function ObtenerUserInfo(accessToken) {
@@ -124,8 +126,9 @@ const AuthProvider = ({ children }) => {
   async function verificarAccessToken() {
     // verifica si sea iniciado sesion con el primer token, el temporal
     if (accessToken) {
-      // si el usuario no esta auhenticado
+      // si el usuario esta auhenticado
       const userInfo = await ObtenerUserInfo(accessToken);
+      
       if (userInfo) {
         //  se pasan como argumento los resultados de la consultas,pero conservo el refreshToken, ya que este solo cambia cuando el usuario cierra la sesion y se borra el.
         // refresToken de mongo

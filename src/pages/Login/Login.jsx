@@ -107,7 +107,7 @@ const Login = () => {
           case "Administrador":
             navegar("/inicioAdministrador");
             break;
-          case "Guardia":
+          case "Guardia de seguridad":
             navegar("/InicioGuardia");
             break;
           default:

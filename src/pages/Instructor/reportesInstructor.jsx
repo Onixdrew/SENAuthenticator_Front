@@ -186,7 +186,7 @@ const ReportesInstructor = () => {
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : ""} `}>
+          <div className={`${loading ? "mt-52 " : "mt-60"} `}>
             <Footer />
           </div>
         </div>

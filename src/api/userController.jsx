@@ -1,5 +1,7 @@
 import axios from "axios";
 
+
+// /////////////////////////////////////////// inicioSesion
 const API_URL =
   "https://backprojecto.onrender.com/api/inicioSesion/";
 
@@ -46,6 +48,50 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
 
 
 
+// /////////////////////////////////////////// Register
+
+export const registerUser = async (nombre, tipoId, numId, correo, contraseña, enviarDatosLogin) => {
+  try {
+    console.log(nombre, tipoId, numId, correo, contraseña, enviarDatosLogin);
+    
+    // Toma el primer nombre para ponerlo de username
+    const userName = nombre.split(" ")[0];
+
+    const response = await axios.post(
+      "https://backprojecto.onrender.com/api/usuario/",
+      {
+        username: userName,
+        first_name: nombre,
+        tipo_documento_usuario: tipoId,
+        numero_documento_usuario: numId,
+        email: correo,
+        password: contraseña,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+
+    );
+
+    if (response.status === 201 || response.status === 200) {
+      alert("Usuario creado correctamente");
+      enviarDatosLogin(response.data);
+      return response
+    } else {
+      alert(response.data.error || "Ocurrió un error desconocido");
+    }
+  } catch (error) {
+    alert("Error en la solicitud: " + (error.response?.data?.error || error.message));
+  }
+};
+
+
+
+
+
+// /////////////////////////////////////////// obtener todos los user
 const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
 
 export const getAllUsers = async () => {
