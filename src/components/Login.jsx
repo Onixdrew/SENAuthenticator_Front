@@ -3,57 +3,23 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import logoSENAuthenticator from "../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../public/img/logoVerdeSENA.png";
 import { useAuth } from "../auth/authProvider";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/userController";
 import Register from "./Register";
+
 
 const Login = () => {
   const [numId, setNumId] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [errors, setErrors] = useState({});
-  const [errorsBack, setErrorsBack] = useState();
-  const [Rol, setRol] = useState("");
+  const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
   const [recibirDatos, setRecibirDatos] = useState();
 
-
-  // hooks
   const Autenticador = useAuth();
   const navegar = useNavigate();
 
-
-  // NOOOOOOOOOOOOOOOOOOOOOO quitar
-
-  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login
-
-  // if (Autenticador.isAuthenticated) {
-  //   console.log(Rol);
-    
-  //   return <Navigate to="/inicioInstructor" />
-  // }
-
-  // const rol2="Instructor"
-
-  // if (Autenticador.isAuthenticated ) {
-  //   // console.log(Rol);
-  //   // return <Navigate to="/inicioInstructor" />
-
-  //   switch (rol2) {
-  //     case "Instructor":
-  //       return <Navigate to="/inicioInstructor" />
-       
-  //     case "Administrador":
-  //       return <Navigate to="/inicioAdministrador" />
-
-  //     default:
-  //       break;
-  //   }
-    
-  // }
-
-
-
-  // mensajes de errores si los campos estan vacios
+  // Mensajes de errores si los campos están vacíos
   const validateForm = () => {
     const newErrors = {};
     if (!numId) newErrors.numId = "El número de identificación es obligatorio.";
@@ -61,7 +27,7 @@ const Login = () => {
     return newErrors;
   };
 
-  // validar que no este vacio el campo del numero de ID
+  // Validar que no esté vacío el campo del número de ID
   const handleChangeNumId = (e) => {
     setNumId(e.target.value);
     if (e.target.value) {
@@ -69,7 +35,7 @@ const Login = () => {
     }
   };
 
-  //validar que no este vacio el campo de la contraseña
+  // Validar que no esté vacío el campo de la contraseña
   const handleChangeContraseña = (e) => {
     setContraseña(e.target.value);
     if (e.target.value) {
@@ -77,27 +43,29 @@ const Login = () => {
     }
   };
 
-  // cerrar modal
+  // Cerrar modal
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
 
-  // recibir datos del registro una vez creado el user
+  // Recibir datos del registro una vez creado el usuario
   const datosRegister = (e) => {
-    console.log(e.usuario);
     setRecibirDatos(e.usuario);
   };
 
-  // enviar datos del login para ingresar
+ 
+
+  // Enviar datos del login para ingresar
   const enviarForm = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      if (validationErrors.numId) showAlert('numId');
+      if (validationErrors.contraseña) showAlert('contraseña');
       return;
     }
-
 
     try {
       const data = await loginUser(numId, contraseña);
@@ -105,44 +73,38 @@ const Login = () => {
 
       switch (data.user.rol_usuario) {
         case "Instructor":
-          setRol(data.user.rol_usuario);
           navegar("/inicioInstructor");
           break;
         case "Administrador":
-          setRol(data.user.rol_usuario);
           navegar("/inicioAdministrador");
           break;
-        default:
-          alert("Rol no reconocido");
+        case "Guardia de seguridad":
+          navegar("/InicioGuardia");
           break;
       }
     } catch (error) {
-      setErrorsBack(error.message);
-      console.log(error.message);
+
     }
   };
-
-
 
   return (
     <>
       {abrirRegister && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75  content-center  z-50">
-          <div className="bg-white  md:max-w-2xl [@media(max-width:1024px)]:max-w-4xl [@media(max-width:768px)]:max-w-xl mx-auto p-8 rounded-lg shadow-lg   lg:max-w-6xl  ">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 content-center z-50">
+          <div className="bg-white md:max-w-2xl [@media(max-width:1024px)]:max-w-4xl [@media(max-width:768px)]:max-w-xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl">
             <Register cerrarModal2={cerrarModal} datosRegister2={datosRegister} />
           </div>
         </div>
       )}
 
-      
       <div
         className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
           abrirRegister ? "opacity-50" : ""
         }`}
       >
-        <div className="bg-opacity-70  p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
+        <div className="bg-opacity-70 p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
           <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
-            <div className="flex gap-4  mb-6 [@media(max-width:381px)]:justify-center">
+            <div className="flex gap-4 mb-6 [@media(max-width:381px)]:justify-center">
               <img
                 src={logoSena}
                 alt="Escudo"
@@ -171,7 +133,7 @@ const Login = () => {
               Leer más...
             </p>
           </div>
-          <div className="w-full lg:w-1/3  bg-white p-6 lg:p-10 rounded-3xl border">
+          <div className="w-full lg:w-1/3 bg-white p-6 lg:p-10 rounded-3xl border">
             <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">
               Iniciar sesión
             </h2>
@@ -191,7 +153,7 @@ const Login = () => {
                     id="username"
                     type="number"
                     placeholder="Identificación"
-                    value={recibirDatos? recibirDatos.numero_documento_usuario: numId }
+                    value={recibirDatos ? recibirDatos.numero_documento_usuario : numId}
                     onChange={handleChangeNumId}
                   />
                   {errors.numId && (
@@ -217,7 +179,7 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="Contraseña"
-                    value={recibirDatos? recibirDatos.password: contraseña}
+                    value={recibirDatos ? recibirDatos.password : contraseña}
                     onChange={handleChangeContraseña}
                   />
                   {errors.contraseña && (
@@ -239,14 +201,16 @@ const Login = () => {
               </button>
               <h2 className="text-center my-3">
                 No tienes cuenta?
+              </h2>
+              <div className="text-center my-3">
                 <button
                   type="button"
                   onClick={() => setAbrirRegister(true)}
                   className="hover:text-green-600"
                 >
-                  Registrate.
+                  Regístrate.
                 </button>
-              </h2>
+              </div>
               <div className="flex justify-around mt-6 text-black text-2xl">
                 <a href="#">
                   <i className="fab fa-facebook-f"></i>
@@ -267,4 +231,3 @@ const Login = () => {
 };
 
 export default Login;
-

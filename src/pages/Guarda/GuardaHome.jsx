@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useAuth } from '../../auth/authProvider';
 import Navbar from '../../components/Navbar';
-import foto from "../Guarda/emmanuel.jpg";
+import foto from "../../../public/img/emmanuel.jpg";
 import "./guardia.css";
 import ModalGuarda from './modalGuarda';
 
@@ -37,9 +37,9 @@ const Admin = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar
-                item1="Registro Facial"
+                item1="Inicio"
                 item2="Registro Personas"
-                item3="Más"
+                item3="Mas"
                 ruta1="/InicioGuardia"
                 ruta2="/ReconocimientoGuardia"
                 ruta3="/Mas"

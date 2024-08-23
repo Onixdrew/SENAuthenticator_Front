@@ -5,7 +5,7 @@ const Inicio = () => {
     return (
         <div className="bg-gray-100 h-screen flex flex-col">
             <Navbar
-                item1="Registro Facial"
+                item1="Inicio"
                 item2="Registro Personas"
                 item3="Mas"
                 ruta1="/InicioGuardia"

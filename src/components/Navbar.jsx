@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 import Logo from "../../public/img/Logo Reconocimiento Facial - Blanco.png";
@@ -15,6 +16,10 @@ const Navbar = ({
   color2,
   color3,
 }) => {
+
+
+  const navigate = useNavigate();
+
   // Estado para controlar la visibilidad del menú móvil
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -50,25 +55,22 @@ const Navbar = ({
           <div className="hidden md:flex space-x-14">
             <Link
               to={ruta1}
-              className={`text-xl font-medium ${
-                color == "activo" ? "text-red-700" : "text-white"
-              } hover:text-green-800`}
+              className={`text-xl font-medium ${color == "activo" ? "text-red-700" : "text-white"
+                } hover:text-green-800`}
             >
               {item1}
             </Link>
             <Link
               to={ruta2}
-              className={`text-xl font-medium ${
-                color2 == "activo" ? "text-red-700" : "text-white"
-              } hover:text-green-800`}
+              className={`text-xl font-medium ${color2 == "activo" ? "text-red-700" : "text-white"
+                } hover:text-green-800`}
             >
               {item2}
             </Link>
             <Link
               to={ruta3}
-              className={`text-xl font-medium ${
-                color3 == "activo" ? "text-red-700" : "text-white"
-              } hover:text-green-800`}
+              className={`text-xl font-medium ${color3 == "activo" ? "text-red-700" : "text-white"
+                } hover:text-green-800`}
             >
               {item3}
             </Link>
@@ -120,7 +122,14 @@ const Navbar = ({
                   <Link>Configuraciòn</Link>
                 </li>
                 <li>
-                  <Link>Salir</Link>
+                  <Link
+                    to="#"
+                    className=""
+                    onClick={() => navigate('/volver')} 
+                  >
+                    Salir
+                  </Link>
+
                 </li>
               </ul>
             </div>
@@ -130,9 +139,8 @@ const Navbar = ({
         {/* Mobile Menu */}
         <div
           ref={menuRef}
-          className={`md:hidden ${
-            isMenuOpen ? "block" : "hidden"
-          } bg-green-500 `}
+          className={`md:hidden ${isMenuOpen ? "block" : "hidden"
+            } bg-green-500 `}
         >
           <Link
             to={ruta1}
