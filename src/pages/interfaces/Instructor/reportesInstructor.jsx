@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import { useAuth } from "../../auth/authProvider";
-import { getAllUsers } from "../../api/userController";
+import Navbar from "../../../components/Navbar/Navbar";
+import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
+import { useAuth } from "../../../auth/authProvider";
+import { getAllUsers } from "../../../api/userController";
 
 const ReportesInstructor = () => {
   const rol2 = "Instructor";

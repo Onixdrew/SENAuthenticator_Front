@@ -1,16 +1,16 @@
 import React from "react";
-import Navbar from "../../components/Navbar";
-import { useAuth } from "../../auth/authProvider";
+import Navbar from "../../../components/Navbar/Navbar";
+import { useAuth } from "../../../auth/authProvider";
+// import Footer from "../../../components/Footer/Footer";
 
 
-const InicioAdmin = () => {
+
+const InicioIntructor = () => {
 
  
 
   // traer el rol de la base de datos
-  const rol2="Administrador"
-  
-  
+  const rol2 = "Instructor";
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const Autenticador = useAuth();
@@ -18,17 +18,17 @@ const InicioAdmin = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Administrador"  ? (
+      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
         <div>
           <Navbar
             item1="inicio"
             item2="Reportes"
-            ruta2="/ReportesAdmin"
+            ruta2="/ReportesInstructor"
             color="activo"
           ></Navbar>
 
           <h1 className="text-2xl font-bold text-center mt-10">
-            Inicio Administrador{" "}
+            Inicio Instructor{" "}
           </h1>
         </div>
       ) : (
@@ -43,4 +43,4 @@ const InicioAdmin = () => {
   );
 };
 
-export default InicioAdmin;
+export default InicioIntructor;

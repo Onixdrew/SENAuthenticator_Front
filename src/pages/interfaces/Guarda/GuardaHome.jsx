@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react';
-import { useAuth } from '../../auth/authProvider';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../../components/Navbar/Navbar';
 import foto from "../Guarda/emmanuel.jpg";
 import "./guardia.css";
 import ModalGuarda from './modalGuarda';
+import { useAuth } from '../../../auth/authProvider';
 
 const Admin = () => {
     // Traer rol de la base de datos del usuario para comprobar

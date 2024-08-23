@@ -16,10 +16,10 @@ import {
   Pie,
 } from "recharts";
 
-import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
+import Navbar from "../../../../components/Navbar/Navbar";
+import Footer from "../../../../components/Footer/Footer";
 
-const GraficasAdmin = () => {
+const GraficasInstructor = () => {
   const data = [
     { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
     { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
@@ -48,8 +48,8 @@ const GraficasAdmin = () => {
           item1="inicio"
           item2="Reportes"
           item3="Graficas"
-          ruta1="/inicioAdmin"
-          ruta2="/ReportesAdmin"
+          ruta1="/inicioInstructor"
+          ruta2="/ReportesInstructor"
           color3="activo"
         />
         <form className="flex flex-col md:flex-row sm:px-10 [@media(max-width:650px)]:max-w-4xl gap-4 md:gap-6 justify-center mt-6 mb-10 md:mb-16">
@@ -149,4 +149,4 @@ const GraficasAdmin = () => {
   );
 };
 
-export default GraficasAdmin;
+export default GraficasInstructor;

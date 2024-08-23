@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 
-import Logo from "../../public/img/Logo Reconocimiento Facial - Blanco.png";
-import { useAuth } from "../auth/authProvider";
+import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
+import { useAuth } from "../../auth/authProvider";
 
 const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
   // Estado para controlar la visibilidad del menú móvil

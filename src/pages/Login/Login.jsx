@@ -5,7 +5,7 @@ import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { useAuth } from "../../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
-import Register from "../../components/Register";
+import Register from "../../components/Register/Register";
 
 const Login = () => {
   const [numId, setNumId] = useState("");

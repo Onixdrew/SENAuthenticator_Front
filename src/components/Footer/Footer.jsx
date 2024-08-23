@@ -1,6 +1,6 @@
 import React from "react";
-import logoSENAuthenticator from "../../public/img/Logo Reconocimiento Facial - Verde.png";
-import logoSena from "../../public/img/logoVerdeSENA.png";
+import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
+import logoSena from "../../../public/img/logoVerdeSENA.png";
 
 const Footer = () => {
   return (

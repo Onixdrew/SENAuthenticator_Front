@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { registerUser } from "../api/userController";
+import { registerUser } from "../../api/userController"
 
 const Register = ({ cerrarModal2, datosRegister2 }) => {
   const [passwordError, setPasswordError] = useState("");
