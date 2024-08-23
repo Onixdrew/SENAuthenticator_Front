@@ -125,7 +125,7 @@ const Navbar = ({
                   <Link
                     to="#"
                     className=""
-                    onClick={() => navigate('/volver')} 
+                  
                   >
                     Salir
                   </Link>

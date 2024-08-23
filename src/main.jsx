@@ -57,6 +57,21 @@ const router = createBrowserRouter([
         path: "/Mas",
         element: <Sobrenosotros></Sobrenosotros>,
       },
+
+
+      //////////////RUTAS DE ADMINISTRADOR////////
+      {
+        path: "/InicioGuardia",
+        element: <GuardiaHome></GuardiaHome>,
+      },
+
+      {
+        path: "/ReconocimientoGuardia",
+        element: <InicioGuardia></InicioGuardia>,
+      },
+
+
+   
     ],
   },
 ]);
