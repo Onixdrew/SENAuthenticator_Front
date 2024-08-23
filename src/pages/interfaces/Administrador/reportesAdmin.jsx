@@ -118,7 +118,7 @@ const ReportesAdmin= () => {
               <div className="mt-6 flex  bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto  ">
                 <div className="flex flex-col mx-auto">
                   <p className="text-center text-2xl font-semibold">
-                    10/{datos.length}
+                    0/{datos.length}
                   </p>
                   <h1 className="text-center text-lg">Ingresos</h1>
                 </div>
