@@ -6,8 +6,9 @@ import { getAllUsers } from "../../api/userController";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 
-const ReportesInstructor = () => {
-  const rol2 = "Instructor";
+
+const ReportesAdmin= () => {
+  const rol2 = "Administrador";
 
   const Autenticador = useAuth();
 
@@ -52,24 +53,21 @@ const ReportesInstructor = () => {
   }, [documentoFiltro, datos]);
 
   const actualizarUsers = () => {
-    setLoading(true);
-    setRefrescar((prevRefresh) => !prevRefresh); // Alterna el valor de `refrescar`
+    setLoading(true)
+    setRefrescar(prevRefresh => !prevRefresh); // Alterna el valor de `refrescar`
   };
 
-  // const filtroAprendiz = () => {
-  //   const onlyAprendiz = datosFiltrados.filter((registro) => registro.rol_usuario === "Aprendiz");
-  // };
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
+      {Autenticador.isAuthenticated && rol2 === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
                 item1="inicio"
                 item2="Reportes"
-                ruta1="/inicioInstructor"
+                ruta1="/inicioAdmin"
                 color2="activo"
               />
             </div>
@@ -110,7 +108,7 @@ const ReportesInstructor = () => {
                   <option value="">Semanal</option>
                   <option value="">Mensual</option>
                 </select>
-                <Link to="/GraficasInstructor">
+                <Link to="/GraficasAdmin">
                   <button className="btn bg-white flex-1 md:flex-none">
                     Graficas
                   </button>
@@ -120,14 +118,12 @@ const ReportesInstructor = () => {
               <div className="mt-6 flex  bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto  ">
                 <div className="flex flex-col mx-auto">
                   <p className="text-center text-2xl font-semibold">
-                    0/{datos.length}
+                    10/{datos.length}
                   </p>
                   <h1 className="text-center text-lg">Ingresos</h1>
                 </div>
 
-                <button onClick={actualizarUsers} title="Refrescar">
-                  <MdOutlineRefresh className="text-3xl ml-10" />
-                </button>
+                <button onClick={actualizarUsers}   title="Refrescar"><MdOutlineRefresh className="text-3xl ml-10" /></button>
               </div>
 
               {loading && (
@@ -165,7 +161,7 @@ const ReportesInstructor = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-gray-100 text-center">
-                      {datosFiltrados
+                    {datosFiltrados
                         .filter(
                           (registro) => registro.rol_usuario === "Aprendiz"
                         )
@@ -220,4 +216,4 @@ const ReportesInstructor = () => {
   );
 };
 
-export default ReportesInstructor;
+export default ReportesAdmin;

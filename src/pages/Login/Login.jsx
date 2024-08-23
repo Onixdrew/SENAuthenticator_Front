@@ -249,7 +249,7 @@ const Login = () => {
                   )}
 
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <i className="fas fa-lock text-black"></i>
+                    <i className="fas f .&&a-lock text-black"></i>
                   </div>
                 </div>
               </div>

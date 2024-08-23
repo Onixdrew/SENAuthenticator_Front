@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RutasProtegidas from "./auth/authRoutes.jsx";
 import AuthProvider from "./auth/authProvider.jsx";
-import Register from "./components/Register.jsx";
+
 
 import "./index.css";
 import InicioIntructor from "./pages/Instructor/inicioIntructor.jsx";
@@ -16,7 +16,10 @@ import GuardiaHome from "./pages/Guarda/GuardaHome.jsx";
 import Sobrenosotros from "./pages/Guarda/Sobrenosotros.jsx";
 import InicioGuardia from "./pages/Guarda/RegistroPersona.jsx";
 import Login from "./pages/Login/Login.jsx";
-import Graficas from "./pages/Instructor/Graficas/graficas.jsx";
+import InicioAdmin from "./pages/Administrador/inicioAdmin.jsx";
+import ReportesAdmin from "./pages/Administrador/reportesAdmin.jsx";
+import GraficasAdmin from "./pages/Administrador/Graficas/graficas.jsx";
+import GraficasInstructor from "./pages/Instructor/Graficas/graficas.jsx";
 
 const router = createBrowserRouter([
   // Ruta Principal
@@ -41,9 +44,27 @@ const router = createBrowserRouter([
         element: <ReportesInstructor></ReportesInstructor>,
       },
       {
-        path: "/ReportesGraficas",
-        element: <Graficas></Graficas>
+        path: "/GraficasInstructor",
+        element: <GraficasInstructor></GraficasInstructor>
       },
+
+      //////////////RUTAS Administrador///////////
+
+      {
+        path: "/inicioAdmin",
+        element: <InicioAdmin></InicioAdmin>
+      },
+
+      {
+        path: "/ReportesAdmin",
+        element: <ReportesAdmin></ReportesAdmin>
+      },
+      {
+        path: "/GraficasAdmin",
+        element: <GraficasAdmin></GraficasAdmin>
+      },
+
+
 
       //////////////RUTAS GUARDA DE SEGURIDAD////////
       {
