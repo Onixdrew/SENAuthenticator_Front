@@ -4,25 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 
 import Logo from "../../public/img/Logo Reconocimiento Facial - Blanco.png";
+import { useAuth } from "../auth/authProvider";
 
-const Navbar = ({
-  item1,
-  item2,
-  item3,
-  ruta1,
-  ruta2,
-  ruta3,
-  color,
-  color2,
-  color3,
-}) => {
-
-
-  const navigate = useNavigate();
-
+const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
   // Estado para controlar la visibilidad del menú móvil
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+
+   // los hooks solo pueden ser llamados dentro de un componente funcional
+   const Autenticador = useAuth();
 
   // Función para alternar el estado del menú móvil
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -45,7 +35,7 @@ const Navbar = ({
   return (
     <>
       <div className="flex   w-full z-50 flex-col ">
-        <nav className="flex  items-center justify-between border-b  bg-green-500 p-4">
+        <nav className="flex  items-center justify-between border-b  bg-[rgb(39,169,0)] p-4">
           <div className="flex items-center xl:ml-16">
             <img src={Logo} alt="Logo" className="w-12 text-black" />
             <h1 className="text-xl ml-2 font-medium text-white">SENAuthenticator</h1>
@@ -122,14 +112,7 @@ const Navbar = ({
                   <Link>Configuraciòn</Link>
                 </li>
                 <li>
-                  <Link
-                    to="#"
-                    className=""
-                  
-                  >
-                    Salir
-                  </Link>
-
+                <button onClick={Autenticador.cerrarSesion}>Salir</button>
                 </li>
               </ul>
             </div>
@@ -139,8 +122,9 @@ const Navbar = ({
         {/* Mobile Menu */}
         <div
           ref={menuRef}
-          className={`md:hidden ${isMenuOpen ? "block" : "hidden"
-            } bg-green-500 `}
+          className={`md:hidden ${
+            isMenuOpen ? "block" : "hidden"
+          } bg-green-700 `}
         >
           <Link
             to={ruta1}
@@ -176,7 +160,7 @@ const Navbar = ({
             to="#"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
           >
-            Salir
+            <button onClick={Autenticador.cerrarSesion}>Salir</button>
           </Link>
         </div>
       </div>
