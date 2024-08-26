@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../public/img/Logo Reconocimiento Facial - Blanco.png";
-import { useAuth } from "../auth/authProvider";
+import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
+
 
 const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2, color3 }) => {
     // Estado para controlar la visibilidad del menú móvil
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
-
-    // los hooks solo pueden ser llamados dentro de un componente funcional
-    const Autenticador = useAuth();
 
     // Función para alternar el estado del menú móvil
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

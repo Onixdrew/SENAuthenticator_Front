@@ -114,7 +114,7 @@ const Login = () => {
             navegar("/InicioGuardia");
             break;
           default:
-            alert("Rol no reconocido");
+            alert(`${data.user.rol_usuario} no es un rol reconocido`);
             break;
         }
       } else {
@@ -143,7 +143,7 @@ const Login = () => {
         <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
           <Register
             cerrarModal2={cerrarModal}
-            datosRegister2={datosRegister}
+            // datosRegister2={datosRegister}
           />
         </div>
       </div>

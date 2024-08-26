@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import foto from "../Guarda/emmanuel.jpg";
-import "./guardia.css";
+import foto from "../../../../public/img/emmanuel.jpg";
+import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
 import { useAuth } from "../../../auth/authProvider";
 
@@ -38,7 +38,7 @@ const Admin = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Guardia de seguridad" ? (
+      {Autenticador.isAuthenticated && rol3 === "Guardia de seguridad" ? (
         <div className="flex flex-col min-h-screen">
           <Navbar
             item1="Registro Facial"
