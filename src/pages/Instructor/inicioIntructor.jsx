@@ -5,13 +5,14 @@ import { useAuth } from "../../auth/authProvider";
 
 const InicioIntructor = () => {
 
- 
+
 
   // traer el rol de la base de datos
   const rol2 = "Instructor";
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const Autenticador = useAuth();
+  const nombre = "Daniel"
 
 
   return (
@@ -25,9 +26,11 @@ const InicioIntructor = () => {
             color="activo"
           ></Navbar>
 
-          <h1 className="text-2xl font-bold text-center mt-10">
-            Inicio Instructor{" "}
-          </h1>
+          <div className="p-4">
+            <h1 className="text-2xl font-bold text-left mb-4 inline-block">
+              Bienvenido {nombre}
+            </h1>
+          </div>
         </div>
       ) : (
         <p className="text-red-500 ">

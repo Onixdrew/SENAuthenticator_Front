@@ -20,15 +20,20 @@ import InicioAdmin from "./pages/Administrador/inicioAdmin.jsx";
 import ReportesAdmin from "./pages/Administrador/reportesAdmin.jsx";
 import GraficasAdmin from "./pages/Administrador/Graficas/graficas.jsx";
 import GraficasInstructor from "./pages/Instructor/Graficas/graficas.jsx";
+import Home from "../../SENAuthenticator_Front/src/pages/Inicio/home.jsx";
 
 const router = createBrowserRouter([
   // Ruta Principal
-  { path: "/", element: <Login /> },
+  { path: "/Login", element: <Login /> },
+  { path: "/", element: <Home /> },
+  
+  
 
   // se llama al archivo rutasProtegidas donde se verifa que exista el
   // usuario para ceder el permiso a las rutas del children
   {
     path: "/",
+    
     element: <RutasProtegidas />,
     children: [
       //////////////RUTAS Instructor////////
@@ -78,22 +83,7 @@ const router = createBrowserRouter([
       {
         path: "/Mas",
         element: <Sobrenosotros></Sobrenosotros>,
-      },
-
-
-      //////////////RUTAS DE ADMINISTRADOR////////
-      {
-        path: "/InicioGuardia",
-        element: <GuardiaHome></GuardiaHome>,
-      },
-
-      {
-        path: "/ReconocimientoGuardia",
-        element: <InicioGuardia></InicioGuardia>,
-      },
-
-
-   
+      },   
     ],
   },
 ]);
