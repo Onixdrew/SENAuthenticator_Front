@@ -20,6 +20,8 @@ import InicioAdmin from "./pages/interfaces/Administrador/inicioAdmin.jsx";
 import ReportesAdmin from "./pages/interfaces/Administrador/reportesAdmin.jsx";
 import GraficasAdmin from "./pages/interfaces/Administrador/Graficas/graficas.jsx";
 import GraficasInstructor from "./pages/interfaces/Instructor/Graficas/graficas.jsx";
+import Home from "./pages/Inicio/home.jsx"
+
 
 const router = createBrowserRouter([
   // Ruta Principal
@@ -42,6 +44,7 @@ const router = createBrowserRouter([
         path: "/inicioInstructor",
         element: <InicioIntructor />,
       },
+      
 
       {
         path: "/ReportesInstructor",
