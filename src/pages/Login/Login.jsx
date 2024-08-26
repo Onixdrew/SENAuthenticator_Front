@@ -265,6 +265,7 @@ const Login = () => {
               </button>
               <h2 className="text-center my-3">
                 No tienes cuenta?
+                <div>
                 <button
                   type="button"
                   onClick={() => setAbrirRegister(true)}
@@ -272,6 +273,9 @@ const Login = () => {
                 >
                   Registrate.
                 </button>
+
+                </div>
+                
               </h2>
               <div className="flex justify-around mt-6 text-black text-2xl">
                 <a href="#">

@@ -23,21 +23,24 @@ import GraficasInstructor from "./pages/interfaces/Instructor/Graficas/graficas.
 
 const router = createBrowserRouter([
   // Ruta Principal
-  { path: "/", element: <Login /> },
+  { path: "/Login", element: <Login /> },
+  { path: "/", element: <Home /> },
+  
+  
 
   // se llama al archivo rutasProtegidas donde se verifa que exista el
   // usuario para ceder el permiso a las rutas del children
   {
     path: "/",
+    
     element: <RutasProtegidas />,
-
     children: [
       
       //////////////RUTAS Instructor////////
 
       {
         path: "/inicioInstructor",
-        element: <InicioIntructor></InicioIntructor>,
+        element: <InicioIntructor />,
       },
 
       {
@@ -77,15 +80,15 @@ const router = createBrowserRouter([
         path: "/ReconocimientoGuardia",
         element: <InicioGuardia></InicioGuardia>,
       },
-
       {
         path: "/Mas",
         element: <Sobrenosotros></Sobrenosotros>,
-      },
+      },   
     ],
   },
 ]);
 
+// Renderiza la aplicación
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
