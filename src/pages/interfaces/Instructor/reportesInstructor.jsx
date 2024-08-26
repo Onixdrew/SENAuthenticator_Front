@@ -11,7 +11,7 @@ const ReportesInstructor = () => {
 
   const Autenticador = useAuth();
 
-  // const [datos, setDatos] = useState([]);
+  const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [documentoFiltro, setDocumentoFiltro] = useState("");
@@ -30,9 +30,11 @@ const ReportesInstructor = () => {
 
         // Se obtine solo los aprendices
         if (result) {
+          setDatos(result.filter((registro) => registro.rol_usuario === "Aprendiz"))
           setDatosFiltrados(
             result.filter((registro) => registro.rol_usuario === "Aprendiz")
           );
+
         }
       } catch (error) {
         console.error("Error al cargar los datos:", error.message);
@@ -154,7 +156,7 @@ const ReportesInstructor = () => {
               <div className="mt-6 flex  bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto  ">
                 <div className="flex flex-col mx-auto">
                   <p className="text-center text-2xl font-semibold">
-                    0/{datosFiltrados.length}
+                    0/{datos.length}
                   </p>
                   <h1 className="text-center text-lg">Ingresos</h1>
                 </div>

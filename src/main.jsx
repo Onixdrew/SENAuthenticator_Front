@@ -20,11 +20,12 @@ import InicioAdmin from "./pages/interfaces/Administrador/inicioAdmin.jsx";
 import ReportesAdmin from "./pages/interfaces/Administrador/reportesAdmin.jsx";
 import GraficasAdmin from "./pages/interfaces/Administrador/Graficas/graficas.jsx";
 import GraficasInstructor from "./pages/interfaces/Instructor/Graficas/graficas.jsx";
+import Home from "./pages/Lobby/home.jsx"
 
 const router = createBrowserRouter([
   // Ruta Principal
-  { path: "/Login", element: <Login /> },
   { path: "/", element: <Home /> },
+  { path: "/Login", element: <Login /> },
   
   
 
@@ -32,8 +33,8 @@ const router = createBrowserRouter([
   // usuario para ceder el permiso a las rutas del children
   {
     path: "/",
-    
     element: <RutasProtegidas />,
+
     children: [
       
       //////////////RUTAS Instructor////////
