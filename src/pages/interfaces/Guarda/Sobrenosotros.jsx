@@ -10,7 +10,7 @@ const Sobrenosotros = () => {
   
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Guardia de seguridad" ? (
+      {Autenticador.isAuthenticated && rol3 === "Guardia de seguridad" ? (
         <div className="min-h-screen bg-gray-100">
           <Navbar
             item1="Registro Facial"

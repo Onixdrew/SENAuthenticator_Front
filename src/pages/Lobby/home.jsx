@@ -1,5 +1,5 @@
 import React from 'react';
-import NavbarInicio from "../../components/NavbarInicio"
+import NavbarInicio from "../../components/NavbarLobby/NavbarInicio"
 import foto from "../../../public/img/Reconocimiento Facial.webp"
 import Footer from '../../components/Footer/Footer';
 
