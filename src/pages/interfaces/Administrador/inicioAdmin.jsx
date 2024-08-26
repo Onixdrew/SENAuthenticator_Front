@@ -1,25 +1,23 @@
 import React from "react";
-import Navbar from "../../components/Navbar";
-import { useAuth } from "../../auth/authProvider";
+import Navbar from "../../../components/Navbar/Navbar";
+import Footer from "../../../components/Footer/Footer";
+import { useAuth } from "../../../auth/authProvider";
 
 
 const InicioAdmin = () => {
 
-
+ 
 
   // traer el rol de la base de datos
-  const rol2 = "Administrador"
-  const nombre = "Miguel A"
-
-
-
+  const rol2="Administrador"
+  
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const Autenticador = useAuth();
 
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Administrador" ? (
+      {Autenticador.isAuthenticated && rol2 === "Administrador"  ? (
         <div>
           <Navbar
             item1="inicio"
@@ -28,11 +26,9 @@ const InicioAdmin = () => {
             color="activo"
           ></Navbar>
 
-          <div className="p-4">
-            <h1 className="text-2xl font-bold text-left mb-4 inline-block">
-              Bienvenido {nombre}
-            </h1>
-          </div>
+          <h1 className="text-2xl font-bold text-center mt-10">
+            Inicio Administrador{" "}
+          </h1>
         </div>
       ) : (
         <p className="text-red-500 ">

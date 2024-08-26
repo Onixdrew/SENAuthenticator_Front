@@ -1,6 +1,8 @@
 import React from "react";
-import Navbar from "../../components/Navbar";
-import { useAuth } from "../../auth/authProvider";
+import Navbar from "../../../components/Navbar/Navbar";
+import { useAuth } from "../../../auth/authProvider";
+// import Footer from "../../../components/Footer/Footer";
+
 
 
 const InicioIntructor = () => {
