@@ -268,8 +268,7 @@ const GraficasAdmin = () => {
 
         //  se redirecciona al login si no esta autenticado
         // <Navigate to="/" />
-      )}
-      ;
+      )};
     </>
   );
 };
