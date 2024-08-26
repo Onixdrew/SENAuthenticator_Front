@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import { useAuth } from "../../auth/authProvider";
-import { getAllUsers } from "../../api/userController";
+import Navbar from "../../../components/Navbar/Navbar";
+import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
+import { MdOutlineRefresh } from "react-icons/md";
+import { useAuth } from "../../../auth/authProvider";
+import { getAllUsers } from "../../../api/userController";
 
-const ReportesInstructor = () => {
-  const rol2 = "Instructor";
+
+const ReportesAdmin= () => {
+  const rol2 = "Administrador";
 
   const Autenticador = useAuth();
 
-  const [datos, setDatos] = useState([]);
+  // const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [documentoFiltro, setDocumentoFiltro] = useState("");
   const [datosFiltrados, setDatosFiltrados] = useState([]);
+  const [refrescar, setRefrescar] = useState(false);
+
+  // Estados para la paginación
+  const [paginaActual, setPaginaActual] = useState(1);
+  const registrosPorPagina = 5;
 
   useEffect(() => {
     const recibirDatos = async () => {
       try {
         const result = await getAllUsers();
 
-        // Esta es la variable de contexto
-        // const result = await Autenticador.getAllUsers();
 
-        setDatos(result);
-        setDatosFiltrados(result);
+        // Se obtine solo los aprendices
+        if (result) {
+          setDatosFiltrados(
+            result.filter((registro) => registro.rol_usuario === "Aprendiz")
+          );
+        }
       } catch (error) {
         console.error("Error al cargar los datos:", error.message);
         setError(error.message);
@@ -35,56 +44,74 @@ const ReportesInstructor = () => {
     };
 
     recibirDatos();
-  }, []);
+  }, [refrescar]);
 
+
+  // se filtra por numero de documento
   useEffect(() => {
     if (documentoFiltro) {
       setDatosFiltrados(
-        datos.filter((registro) =>
+        datosFiltrados.filter((registro) =>
           registro.numero_documento_usuario.toString().includes(documentoFiltro)
         )
       );
     } else {
-      setDatosFiltrados(datos);
+      setDatosFiltrados(datosFiltrados);
     }
-  }, [documentoFiltro, datos]);
+  }, [documentoFiltro, datosFiltrados]);
+
+  const actualizarUsers = () => {
+    setLoading(true);
+    setRefrescar((prevRefresh) => !prevRefresh); // Alterna el valor de `refrescar`
+  };
+
+  // Calcular el número total de páginas
+  const totalPaginas = Math.ceil(datosFiltrados.length / registrosPorPagina);
+
+  // Obtener los registros correspondientes a la página actual
+  const indiceUltimoRegistro = paginaActual * registrosPorPagina;
+  const indicePrimerRegistro = indiceUltimoRegistro - registrosPorPagina;
+  const registrosActuales = datosFiltrados.slice(
+    indicePrimerRegistro,
+    indiceUltimoRegistro
+  );
+
+  // Funciones para cambiar de página
+  const irAPaginaSiguiente = () => {
+    if (paginaActual < totalPaginas) {
+      setPaginaActual(paginaActual + 1);
+    }
+  };
+
+  const irAPaginaAnterior = () => {
+    if (paginaActual > 1) {
+      setPaginaActual(paginaActual - 1);
+    }
+  };
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
+      {Autenticador.isAuthenticated && rol2 === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
                 item1="inicio"
                 item2="Reportes"
-                ruta1="/inicioInstructor"
+                ruta1="/inicioAdmin"
                 color2="activo"
               />
             </div>
 
             <div className="max-w-full mx-auto px-4 md:px-6">
-              <form className="flex flex-col md:flex-row gap-4 md:gap-10 justify-center mt-10">
+              <form
+                action=""
+                className="flex flex-col gap-4 justify-center mt-12 md:flex-row md:gap-6 lg:gap-10"
+              >
                 <select
                   name=""
                   id=""
-                  className="bg-white p-3 border rounded-lg flex-1"
-                >
-                  <option value="">2669742</option>
-                  <option value="">2669756</option>
-                  <option value="">2669723</option>
-                </select>
-                <input
-                  type="text"
-                  className="border rounded-lg pl-4 bg-white text-black flex-1"
-                  placeholder="# Documento"
-                  value={documentoFiltro}
-                  onChange={(e) => setDocumentoFiltro(e.target.value)}
-                />
-                <select
-                  name=""
-                  id=""
-                  className="bg-white p-3 border rounded-lg flex-1"
+                  className="bg-white p-3 border rounded-lg w-full md:w-auto"
                 >
                   <option value="">Mañana</option>
                   <option value="">Tarde</option>
@@ -93,24 +120,49 @@ const ReportesInstructor = () => {
                 <select
                   name=""
                   id=""
-                  className="bg-white p-3 border rounded-lg flex-1"
+                  className="bg-white p-3 border rounded-lg w-full md:w-auto"
+                >
+                  <option value="">2669742</option>
+                  <option value="">2669756</option>
+                  <option value="">2669723</option>
+                </select>
+
+                <input
+                  type="text"
+                  className="border rounded-lg pl-4 bg-white text-black w-full md:w-auto"
+                  placeholder="# Documento"
+                  value={documentoFiltro}
+                  onChange={(e) => setDocumentoFiltro(e.target.value)}
+                />
+
+                <select
+                  name=""
+                  id=""
+                  className="bg-white p-3 border rounded-lg w-full md:w-auto"
                 >
                   <option value="">Hoy</option>
                   <option value="">Semanal</option>
                   <option value="">Mensual</option>
                 </select>
-                <Link to="/ReportesGraficas">
+
+                <Link to="/GraficasAdmin">
                   <button className="btn bg-white flex-1 md:flex-none">
                     Graficas
                   </button>
                 </Link>
               </form>
 
-              <div className="mt-6 bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto md:max-w-sm lg:max-w-md">
-                <p className="text-center text-2xl font-semibold">
-                  10/{datos.length}
-                </p>
-                <p className="text-center text-lg">Ingresos</p>
+              <div className="mt-6 flex  bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto  ">
+                <div className="flex flex-col mx-auto">
+                  <p className="text-center text-2xl font-semibold">
+                    0/{datosFiltrados.length}
+                  </p>
+                  <h1 className="text-center text-lg">Ingresos</h1>
+                </div>
+
+                <button title="Refrescar">
+                  <MdOutlineRefresh className="text-3xl ml-10"  onClick={actualizarUsers}  />
+                </button>
               </div>
 
               {loading && (
@@ -149,6 +201,7 @@ const ReportesInstructor = () => {
                     </thead>
                     <tbody className="bg-gray-100 text-center">
                       {datosFiltrados.map((registro, index) => (
+
                         <tr key={index} className="border-b border-gray-300">
                           <td className="px-4 py-2">{index}</td>
                           <td className="px-4 py-2 font-semibold">
@@ -181,12 +234,37 @@ const ReportesInstructor = () => {
                       ))}
                     </tbody>
                   </table>
+                  <nav className="flex items-center justify-between pt-4">
+                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                      Mostrando {indicePrimerRegistro + 1}-
+                      {indiceUltimoRegistro > datosFiltrados.length
+                        ? datosFiltrados.length
+                        : indiceUltimoRegistro}{" "}
+                      de {datosFiltrados.length}
+                    </span>
+                    <div className="inline-flex">
+                      <button
+                        onClick={irAPaginaAnterior}
+                        disabled={paginaActual === 1}
+                        className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-blue-200   "
+                      >
+                        Anterior
+                      </button>
+                      <button
+                        onClick={irAPaginaSiguiente}
+                        disabled={paginaActual === totalPaginas}
+                        className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-blue-200"
+                      >
+                        Siguiente
+                      </button>
+                    </div>
+                  </nav>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : "mt-60"} `}>
+          <div className={`${loading ? "mt-52 " : "mt-72"} `}>
             <Footer />
           </div>
         </div>
@@ -199,4 +277,4 @@ const ReportesInstructor = () => {
   );
 };
 
-export default ReportesInstructor;
+export default ReportesAdmin;

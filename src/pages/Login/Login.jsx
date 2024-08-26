@@ -5,7 +5,7 @@ import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { useAuth } from "../../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
-import Register from "../../components/Register";
+import Register from "../../components/Register/Register";
 
 const Login = () => {
   const [numId, setNumId] = useState("");
@@ -14,7 +14,7 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [recibirDatos, setRecibirDatos] = useState();
+  // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
   const Autenticador = useAuth();
@@ -40,6 +40,9 @@ const Login = () => {
 
       case "Administrador":
         return <Navigate to="/inicioAdministrador" />;
+
+      case "Guardia de seguridad":
+        return <Navigate to="/InicioGuardia" />;
 
       default:
         break;
@@ -78,10 +81,10 @@ const Login = () => {
   };
 
   // recibir datos del registro una vez creado el user
-  const datosRegister = (e) => {
-    console.log(e.usuario);
-    setRecibirDatos(e.usuario);
-  };
+  // const datosRegister = (e) => {
+  //   console.log(e.usuario);
+  //   setRecibirDatos(e.usuario);
+  // };
 
   // enviar datos del login para ingresar
   const enviarForm = async (e) => {
@@ -211,11 +214,11 @@ const Login = () => {
                     id="username"
                     type="number"
                     placeholder="Identificación"
-                    value={
-                      recibirDatos
-                        ? recibirDatos.numero_documento_usuario
-                        : numId
-                    }
+                    // value={
+                    //   recibirDatos
+                    //     ? recibirDatos.numero_documento_usuario
+                    //     : numId
+                    // }
                     onChange={validarNumId}
                   />
                   {errors.numId && (
@@ -241,7 +244,7 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="Contraseña"
-                    value={recibirDatos ? recibirDatos.password : contraseña}
+                    // value={recibirDatos ? recibirDatos.password : contraseña}
                     onChange={validarContraseña}
                   />
                   {errors.contraseña && (
@@ -249,7 +252,7 @@ const Login = () => {
                   )}
 
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <i className="fas fa-lock text-black"></i>
+                    <i className="fas f .&&a-lock text-black"></i>
                   </div>
                 </div>
               </div>

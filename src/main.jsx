@@ -1,22 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
 
 import RutasProtegidas from "./auth/authRoutes.jsx";
 import AuthProvider from "./auth/authProvider.jsx";
-import Register from "./components/Register.jsx";
 
-import "./index.css";
-import InicioIntructor from "./pages/Instructor/inicioIntructor.jsx";
-import ReportesInstructor from "./pages/Instructor/reportesInstructor.jsx";
+
+import InicioIntructor from "./pages/interfaces/Instructor/inicioIntructor.jsx";
+import ReportesInstructor from "./pages/interfaces/Instructor/reportesInstructor.jsx";
 
 ///////////////////////////
 
-import GuardiaHome from "./pages/Guarda/GuardaHome.jsx";
-import Sobrenosotros from "./pages/Guarda/Sobrenosotros.jsx";
-import InicioGuardia from "./pages/Guarda/RegistroPersona.jsx";
+import GuardiaHome from "./pages/interfaces/Guarda/GuardaHome.jsx";
+import Sobrenosotros from "./pages/interfaces/Guarda/Sobrenosotros.jsx";
+import InicioGuardia from "./pages/interfaces/Guarda/RegistroPersona.jsx";
 import Login from "./pages/Login/Login.jsx";
-import Graficas from "./pages/Instructor/Graficas/graficas.jsx";
+import InicioAdmin from "./pages/interfaces/Administrador/inicioAdmin.jsx";
+import ReportesAdmin from "./pages/interfaces/Administrador/reportesAdmin.jsx";
+import GraficasAdmin from "./pages/interfaces/Administrador/Graficas/graficas.jsx";
+import GraficasInstructor from "./pages/interfaces/Instructor/Graficas/graficas.jsx";
 
 const router = createBrowserRouter([
   // Ruta Principal
@@ -29,6 +32,7 @@ const router = createBrowserRouter([
     element: <RutasProtegidas />,
 
     children: [
+      
       //////////////RUTAS Instructor////////
 
       {
@@ -41,9 +45,27 @@ const router = createBrowserRouter([
         element: <ReportesInstructor></ReportesInstructor>,
       },
       {
-        path: "/ReportesGraficas",
-        element: <Graficas></Graficas>
+        path: "/GraficasInstructor",
+        element: <GraficasInstructor></GraficasInstructor>
       },
+
+      //////////////RUTAS Administrador///////////
+
+      {
+        path: "/inicioAdmin",
+        element: <InicioAdmin></InicioAdmin>
+      },
+
+      {
+        path: "/ReportesAdmin",
+        element: <ReportesAdmin></ReportesAdmin>
+      },
+      {
+        path: "/GraficasAdmin",
+        element: <GraficasAdmin></GraficasAdmin>
+      },
+
+
 
       //////////////RUTAS GUARDA DE SEGURIDAD////////
       {
