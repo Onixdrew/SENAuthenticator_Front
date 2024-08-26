@@ -34,10 +34,10 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
   return (
     <>
       <div className="flex   w-full z-50 flex-col ">
-        <nav className="flex  items-center justify-between border-b  bg-[rgb(39,169,0)] p-4">
+        <nav className="flex font-serif items-center justify-between border-b  bg-[rgb(39,169,0)] p-4">
           <div className="flex items-center xl:ml-16">
             <img src={Logo} alt="Logo" className="w-12 text-black" />
-            <h1 className="text-xl ml-2 font-medium text-white">SENAuthenticator</h1>
+            <h1 className="text-xl ml-2 font-medium text-white ">SENAuthenticator</h1>
           </div>
 
           {/* Menu Items for larger screens */}
@@ -45,24 +45,21 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
             <Link
               to={ruta1}
               className={`text-xl font-medium ${
-                color == "activo" ? "text-red-700" : "text-white"
-              } hover:text-green-800`}
+                color == "activo" ? "text-green-950 " : "text-white hover:text-green-200"} `}
             >
               {item1}
             </Link>
             <Link
               to={ruta2}
               className={`text-xl font-medium ${
-                color2 == "activo" ? "text-red-700" : "text-white"
-              } hover:text-green-800`}
+                color2 == "activo" ? "text-green-950 " : "text-white hover:text-green-200"}`}
             >
               {item2}
             </Link>
             <Link
               to={ruta3}
               className={`text-xl font-medium ${
-                color3 == "activo" ? "text-red-700" : "text-white"
-              } hover:text-green-800`}
+                color3 == "activo" ? "text-green-950 " : "text-white hover:text-green-200"} `}
             >
               {item3}
             </Link>

@@ -11,8 +11,6 @@ const InicioAdmin = () => {
   // traer el rol de la base de datos
   const rol2="Administrador"
   
-  
-
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const Autenticador = useAuth();
 

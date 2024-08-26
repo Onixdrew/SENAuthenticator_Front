@@ -1,13 +1,20 @@
 import axios from "axios";
+// import { useState } from "react";
 
 
 // /////////////////////////////////////////// inicioSesion
-const API_URL =
-  "https://backprojecto.onrender.com/api/inicioSesion/";
+// SQLite
+// const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
+
+// Postgrest 
+const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
 
 export const inicioSesion = async (numId, contraseña, Autenticador) => {
+
+  // const [Datos, setDatos]=useState();
   try {
+
     // creo la peticcion http
     const response = await axios.post(
       API_URL,
@@ -48,8 +55,13 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
 
 
 
-// /////////////////////////////////////////// Register
+// SQLite
+// const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
 
+// Postgrest 
+const API_URL2 = "https://senauthenticator.onrender.com/api/usuario/";
+
+// /////////////////////////////////////////// Register
 export const registerUser = async (nombre, tipoId, numId, correo, contraseña, enviarDatosLogin) => {
   try {
     console.log(nombre, tipoId, numId, correo, contraseña, enviarDatosLogin);
@@ -57,8 +69,7 @@ export const registerUser = async (nombre, tipoId, numId, correo, contraseña, e
     // Toma el primer nombre para ponerlo de username
     const userName = nombre.split(" ")[0];
 
-    const response = await axios.post(
-      "https://backprojecto.onrender.com/api/usuario/",
+    const response = await axios.post(API_URL2,
       {
         username: userName,
         first_name: nombre,
@@ -92,8 +103,6 @@ export const registerUser = async (nombre, tipoId, numId, correo, contraseña, e
 
 
 // /////////////////////////////////////////// obtener todos los user
-const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
-
 export const getAllUsers = async () => {
   try {
     const response = await axios.get(API_URL2, {
@@ -104,7 +113,7 @@ export const getAllUsers = async () => {
 
     // Axios automáticamente convierte la respuesta a JSON
     const data = response.data; // Asegúrate de devolver los datos
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     if (error.response) {

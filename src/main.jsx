@@ -32,6 +32,7 @@ const router = createBrowserRouter([
     element: <RutasProtegidas />,
 
     children: [
+      
       //////////////RUTAS Instructor////////
 
       {
