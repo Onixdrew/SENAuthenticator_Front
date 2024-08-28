@@ -1,5 +1,6 @@
 import axios from "axios";
-// import { useState } from "react";
+import { useAuth } from "../auth/authProvider";
+import { useEffect } from "react";
 
 
 // /////////////////////////////////////////// inicioSesion
@@ -99,6 +100,50 @@ export const registerUser = async (nombre, tipoId, numId, correo, contraseña, e
 };
 
 
+
+
+  // ////////////////////////////////////////////////////////// Autenticar......
+  // //////////////////////////////////////////////////////////
+  // Se verifica la existencia de tokens cada vez que se inicie la aplicacion.
+ 
+
+  export const validarToken = async () => {
+    const Autenticador = useAuth();
+    const tokenDelLocalStorage = Autenticador.getRefreshToken();
+    const accessToken = Autenticador.getAccessToken();
+    
+    if (!accessToken && tokenDelLocalStorage) {
+      try {
+        const response = await fetch(
+          // falta implementar el endpoint en el back
+          "https://senauthenticator.onrender.com/api/perfil/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${tokenDelLocalStorage}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+
+          if (data.error) {
+            throw new Error(data.error);
+          }
+          const data2 = JSON.stringify(data);
+          console.log(`Hola desde autorization token: ${data2}`);
+
+          return data;
+        } else {
+          throw new Error(response.statusText);
+        }
+      } catch (error) {
+        console.log("Error al validar el refreshToken en el back:", error);
+        return null;
+      }
+    }
+  };
 
 
 

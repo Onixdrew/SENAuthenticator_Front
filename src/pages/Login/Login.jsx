@@ -14,6 +14,7 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
+  const [data, setdata] = useState({});
   // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
@@ -33,7 +34,6 @@ const Login = () => {
   const rol2 = "Instructor";
 
   if (Autenticador.isAuthenticated) {
-    
     switch (rol2) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
@@ -97,8 +97,21 @@ const Login = () => {
     }
 
     try {
-      const data = await inicioSesion(numId, contraseña, Autenticador);
-      console.log(data);
+      // const tokenLocal = Autenticador.getRefreshToken();
+
+      const getDatosTokenLocal = Autenticador.validarToken;
+      console.log(`Desde el login datos: ${getDatosTokenLocal}`);
+
+      // actualiza las variables
+      setNumId(getDatosTokenLocal.numero_documento_usuario);
+      setContraseña(getDatosTokenLocal.getDatosTokenLocal);
+      console.log(`Hola desde autorization login: ${numId} y ${contraseña}`);
+
+
+      const datos = await inicioSesion(numId, contraseña, Autenticador);
+      setdata(datos);
+
+      console.log(datos);
 
       if (data) {
         // setRol(data.user.rol_usuario);
@@ -140,13 +153,13 @@ const Login = () => {
     <>
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-        <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-          <Register
-            cerrarModal2={cerrarModal}
-            // datosRegister2={datosRegister}
-          />
+          <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
+            <Register
+              cerrarModal2={cerrarModal}
+              // datosRegister2={datosRegister}
+            />
+          </div>
         </div>
-      </div>
       )}
 
       <div
@@ -266,16 +279,14 @@ const Login = () => {
               <h2 className="text-center my-3">
                 No tienes cuenta?
                 <div>
-                <button
-                  type="button"
-                  onClick={() => setAbrirRegister(true)}
-                  className="hover:text-green-600"
-                >
-                  Registrate.
-                </button>
-
+                  <button
+                    type="button"
+                    onClick={() => setAbrirRegister(true)}
+                    className="hover:text-green-600"
+                  >
+                    Registrate.
+                  </button>
                 </div>
-                
               </h2>
               <div className="flex justify-around mt-6 text-black text-2xl">
                 <a href="#">
