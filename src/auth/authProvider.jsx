@@ -4,7 +4,7 @@ import { json } from "react-router-dom";
 import axios from "axios";
 import { inicioSesion } from "../api/userController";
 // import jwt_decode from 'jwt-decode';
-
+import { AuthContext2 } from "../Context/AuthContext";
 const AuthContext = createContext({
   isAuthenticated: false,
   getAccessToken: () => {},
@@ -13,14 +13,18 @@ const AuthContext = createContext({
   getRefreshToken: () => {},
   guardarToken: (userData) => {},
   cerrarSesion: () => {},
-  // validarToken: () => {},
+  getTokenStorage: () => {},
+  getUser: () => {},
 
   // getAllUsers:() => {},
 });
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState();
+
+
+  const {user2,setUser2}=useContext(AuthContext2)
 
   // Manejo de tokens
   const [accessToken, setAccessToken] = useState("");
@@ -57,9 +61,6 @@ const AuthProvider = ({ children }) => {
   //     return null;
   //   }
   // }
-
-
-
 
   // ////////////////////////////////////////////////////////// Traer user......
   // const API_URL2 = "https://backendsenauthenticator.onrender.com/api/usuario/";
@@ -160,10 +161,66 @@ const AuthProvider = ({ children }) => {
   //   }
   // }
 
+  useEffect(() => {
+    getTokenStorage();
+  }, []);
+
+
+  // /////////////////////////////////////////////////////////////////////
+  async function getTokenStorage() {
+    try {
+      const tokenLocal = getRefreshToken();
+      // console.log(tokenLocal);
+
+      if (tokenLocal) {
+        const response = await fetch(
+          "https://senauthenticator.onrender.com/api/perfil/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${tokenLocal}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const dataString = JSON.stringify(data);
+
+          if (data.error) {
+            throw new Error(data);
+          }
+          getUser(dataString);
+          setUser(dataString);
+          setUser2(data);
+          setIsAuthenticated(true);
+
+          // console.log(`hooooooooola desde getTokenStorage ${dataString}`);
+
+          return dataString;
+        } else {
+          throw new Error(response.statusText);
+        }
+      }
+    } catch (error) {
+      console.log("Error al validar el refreshToken en el back:", error);
+      return null;
+    }
+  }
+
+
+
   // //////////////////////////////////////////////////////////
   // retornar token para que este accesible en cualquier parte de la aplicacion.
   function getAccessToken() {
     return accessToken;
+  }
+
+
+  function getUser() {
+    // console.log(user);
+    
+    return user;
   }
 
   // //////////////////////////////////////////////////////////
@@ -177,6 +234,9 @@ const AuthProvider = ({ children }) => {
     if (tokenData) {
       // se convierte el token que esta en string a un objeto
       const token = JSON.parse(tokenData);
+
+      setAccessToken(token);
+
       return token;
     }
 
@@ -202,12 +262,14 @@ const AuthProvider = ({ children }) => {
     localStorage.setItem("token", JSON.stringify(accessToken));
 
     setIsAuthenticated(true);
-    setUser(userInfo);
+    setUser(JSON.stringify(userInfo));
   }
 
   // //////////////////////////////////////////////////////////
   // extrae los tokens de la solicitud http del usuario logueado, que vienen del backend. Tambien se guarda el usuario
   function guardarToken(userData) {
+    console.log(userData);
+
     guardarSesionInfo(userData.user, userData.token, userData.refreshToken);
   }
 
@@ -228,6 +290,8 @@ const AuthProvider = ({ children }) => {
         guardarToken,
         getRefreshToken,
         cerrarSesion,
+        getTokenStorage,
+        getUser,
         // getAllUsers,
         // validarToken,
       }}

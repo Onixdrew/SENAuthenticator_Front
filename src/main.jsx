@@ -6,7 +6,6 @@ import "./index.css";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 import AuthProvider from "./auth/authProvider.jsx";
 
-
 import InicioIntructor from "./pages/interfaces/Instructor/inicioIntructor.jsx";
 import ReportesInstructor from "./pages/interfaces/Instructor/reportesInstructor.jsx";
 
@@ -20,14 +19,13 @@ import InicioAdmin from "./pages/interfaces/Administrador/inicioAdmin.jsx";
 import ReportesAdmin from "./pages/interfaces/Administrador/reportesAdmin.jsx";
 import GraficasAdmin from "./pages/interfaces/Administrador/Graficas/graficas.jsx";
 import GraficasInstructor from "./pages/interfaces/Instructor/Graficas/graficas.jsx";
-import Home from "./pages/Lobby/home.jsx"
+import Home from "./pages/Lobby/home.jsx";
+import AuthContextProvider from "./Context/AuthContext.jsx";
 
 const router = createBrowserRouter([
   // Ruta Principal
   { path: "/", element: <Home /> },
   { path: "/Login", element: <Login /> },
-  
-  
 
   // se llama al archivo rutasProtegidas donde se verifa que exista el
   // usuario para ceder el permiso a las rutas del children
@@ -36,7 +34,6 @@ const router = createBrowserRouter([
     element: <RutasProtegidas />,
 
     children: [
-      
       //////////////RUTAS Instructor////////
 
       {
@@ -50,26 +47,24 @@ const router = createBrowserRouter([
       },
       {
         path: "/GraficasInstructor",
-        element: <GraficasInstructor></GraficasInstructor>
+        element: <GraficasInstructor></GraficasInstructor>,
       },
 
       //////////////RUTAS Administrador///////////
 
       {
         path: "/inicioAdmin",
-        element: <InicioAdmin></InicioAdmin>
+        element: <InicioAdmin></InicioAdmin>,
       },
 
       {
         path: "/ReportesAdmin",
-        element: <ReportesAdmin></ReportesAdmin>
+        element: <ReportesAdmin></ReportesAdmin>,
       },
       {
         path: "/GraficasAdmin",
-        element: <GraficasAdmin></GraficasAdmin>
+        element: <GraficasAdmin></GraficasAdmin>,
       },
-
-
 
       //////////////RUTAS GUARDA DE SEGURIDAD////////
       {
@@ -84,7 +79,7 @@ const router = createBrowserRouter([
       {
         path: "/Mas",
         element: <Sobrenosotros></Sobrenosotros>,
-      },   
+      },
     ],
   },
 ]);
@@ -92,8 +87,10 @@ const router = createBrowserRouter([
 // Renderiza la aplicación
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <AuthContextProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );

@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { useAuth } from "../../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
-import { inicioSesion } from "../../api/userController";
+import { enviarUser, inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
+import { AuthContext2 } from "../../Context/AuthContext";
+
+
 
 const Login = () => {
   const [numId, setNumId] = useState("");
@@ -14,12 +17,25 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [data, setdata] = useState({});
+  const [user, setUser] = useState();
   // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
   const Autenticador = useAuth();
   const navegar = useNavigate();
+
+  const {user2,setUser2}=useContext(AuthContext2)
+  console.log(user2)
+
+
+
+  // useEffect(()=>{
+  //   const user = Autenticador.getUser()
+  //   console.log(user);
+    
+  //   setUser(user)
+  
+  // },[])
 
   // NOOOOOOOOOOOOOOOOOOOOOO quitar
 
@@ -31,15 +47,20 @@ const Login = () => {
   //   return <Navigate to="/inicioInstructor" />
   // }
 
-  const rol2 = "Instructor";
+
+  // const rol2 = "Instructor";
+  // const user = Autenticador.getUser(true);
+
 
   if (Autenticador.isAuthenticated) {
-    switch (rol2) {
+
+    
+    switch (user2.user.rol_usuario) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
 
       case "Administrador":
-        return <Navigate to="/inicioAdministrador" />;
+        return <Navigate to="/inicioAdmin" />;
 
       case "Guardia de seguridad":
         return <Navigate to="/InicioGuardia" />;
@@ -49,6 +70,7 @@ const Login = () => {
     }
   }
 
+
   // mensajes de errores si los campos estan vacios
   const validateForm = () => {
     const newErrors = {};
@@ -56,6 +78,7 @@ const Login = () => {
     if (!contraseña) newErrors.contraseña = "La contraseña es obligatoria.";
     return newErrors;
   };
+
 
   // validar que no este vacio el campo del numero de ID
   const validarNumId = (e) => {
@@ -66,6 +89,7 @@ const Login = () => {
     }
   };
 
+
   //validar que no este vacio el campo de la contraseña
   const validarContraseña = (e) => {
     setContraseña(e.target.value);
@@ -75,16 +99,20 @@ const Login = () => {
     }
   };
 
+
   // cerrar modal
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
+
+
 
   // recibir datos del registro una vez creado el user
   // const datosRegister = (e) => {
   //   console.log(e.usuario);
   //   setRecibirDatos(e.usuario);
   // };
+
 
   // enviar datos del login para ingresar
   const enviarForm = async (e) => {
@@ -95,33 +123,20 @@ const Login = () => {
       setErrors(validationErrors);
       return;
     }
+  
 
     try {
-      // const tokenLocal = Autenticador.getRefreshToken();
-
-      const getDatosTokenLocal = Autenticador.validarToken;
-      console.log(`Desde el login datos: ${getDatosTokenLocal}`);
-
-      // actualiza las variables
-      setNumId(getDatosTokenLocal.numero_documento_usuario);
-      setContraseña(getDatosTokenLocal.getDatosTokenLocal);
-      console.log(`Hola desde autorization login: ${numId} y ${contraseña}`);
-
-
-      const datos = await inicioSesion(numId, contraseña, Autenticador);
-      setdata(datos);
-
-      console.log(datos);
-
-      if (data) {
+      const data = await inicioSesion(numId, contraseña, Autenticador);
+      
+      if (data || user2) {
         // setRol(data.user.rol_usuario);
 
-        switch (data.user.rol_usuario) {
+        switch (data.user.rol_usuario || user2.user.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;
           case "Administrador":
-            navegar("/inicioAdministrador");
+            navegar("/inicioAdmin");
             break;
           case "Guardia de seguridad":
             navegar("/InicioGuardia");

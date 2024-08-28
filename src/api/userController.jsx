@@ -1,21 +1,17 @@
 import axios from "axios";
 import { useAuth } from "../auth/authProvider";
-import { useEffect } from "react";
-
+// import { useState } from "react";
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
 // const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
 
-// Postgrest 
+// Postgrest
 const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
-
 export const inicioSesion = async (numId, contraseña, Autenticador) => {
-
   // const [Datos, setDatos]=useState();
   try {
-
     // creo la peticcion http
     const response = await axios.post(
       API_URL,
@@ -54,23 +50,29 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
   }
 };
 
-
-
 // SQLite
 // const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
 
-// Postgrest 
+// Postgrest
 const API_URL2 = "https://senauthenticator.onrender.com/api/usuario/";
 
 // /////////////////////////////////////////// Register
-export const registerUser = async (nombre, tipoId, numId, correo, contraseña, enviarDatosLogin) => {
+export const registerUser = async (
+  nombre,
+  tipoId,
+  numId,
+  correo,
+  contraseña,
+  enviarDatosLogin
+) => {
   try {
     console.log(nombre, tipoId, numId, correo, contraseña, enviarDatosLogin);
-    
+
     // Toma el primer nombre para ponerlo de username
     const userName = nombre.split(" ")[0];
 
-    const response = await axios.post(API_URL2,
+    const response = await axios.post(
+      API_URL2,
       {
         username: userName,
         first_name: nombre,
@@ -82,68 +84,25 @@ export const registerUser = async (nombre, tipoId, numId, correo, contraseña, e
       {
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       }
-
     );
 
     if (response.status === 201 || response.status === 200) {
       alert("Usuario creado correctamente");
       enviarDatosLogin(response.data);
-      return response
+      return response;
     } else {
       alert(response.data.error || "Ocurrió un error desconocido");
     }
   } catch (error) {
-    alert("Error en la solicitud: " + (error.response?.data?.error || error.message));
+    alert(
+      "Error en la solicitud: " + (error.response?.data?.error || error.message)
+    );
   }
 };
 
 
-
-
-  // ////////////////////////////////////////////////////////// Autenticar......
-  // //////////////////////////////////////////////////////////
-  // Se verifica la existencia de tokens cada vez que se inicie la aplicacion.
- 
-
-  export const validarToken = async () => {
-    const Autenticador = useAuth();
-    const tokenDelLocalStorage = Autenticador.getRefreshToken();
-    const accessToken = Autenticador.getAccessToken();
-    
-    if (!accessToken && tokenDelLocalStorage) {
-      try {
-        const response = await fetch(
-          // falta implementar el endpoint en el back
-          "https://senauthenticator.onrender.com/api/perfil/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${tokenDelLocalStorage}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
-          if (data.error) {
-            throw new Error(data.error);
-          }
-          const data2 = JSON.stringify(data);
-          console.log(`Hola desde autorization token: ${data2}`);
-
-          return data;
-        } else {
-          throw new Error(response.statusText);
-        }
-      } catch (error) {
-        console.log("Error al validar el refreshToken en el back:", error);
-        return null;
-      }
-    }
-  };
 
 
 
