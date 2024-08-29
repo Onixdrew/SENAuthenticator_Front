@@ -1,14 +1,12 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { useAuth } from "../../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
-import { enviarUser, inicioSesion } from "../../api/userController";
+import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
-import { AuthContext2 } from "../../Context/AuthContext";
-
-
+import { useAuth } from "../../Context/AuthContext";
+import { register } from "react-hook-form";
 
 const Login = () => {
   const [numId, setNumId] = useState("");
@@ -17,44 +15,18 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [user, setUser] = useState();
+
   // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
-  const Autenticador = useAuth();
+  const { isAuthenticated, user2 } = useAuth();
   const navegar = useNavigate();
 
-  const {user2,setUser2}=useContext(AuthContext2)
-  console.log(user2)
+  console.log(user2);
 
+  if (isAuthenticated) {
+    console.log(isAuthenticated);
 
-
-  // useEffect(()=>{
-  //   const user = Autenticador.getUser()
-  //   console.log(user);
-    
-  //   setUser(user)
-  
-  // },[])
-
-  // NOOOOOOOOOOOOOOOOOOOOOO quitar
-
-  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login hasta que se cierre la sesión
-
-  // if (Autenticador.isAuthenticated) {
-  //   console.log(Rol);
-
-  //   return <Navigate to="/inicioInstructor" />
-  // }
-
-
-  // const rol2 = "Instructor";
-  // const user = Autenticador.getUser(true);
-
-
-  if (Autenticador.isAuthenticated) {
-
-    
     switch (user2.user.rol_usuario) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
@@ -70,7 +42,6 @@ const Login = () => {
     }
   }
 
-
   // mensajes de errores si los campos estan vacios
   const validateForm = () => {
     const newErrors = {};
@@ -78,7 +49,6 @@ const Login = () => {
     if (!contraseña) newErrors.contraseña = "La contraseña es obligatoria.";
     return newErrors;
   };
-
 
   // validar que no este vacio el campo del numero de ID
   const validarNumId = (e) => {
@@ -89,7 +59,6 @@ const Login = () => {
     }
   };
 
-
   //validar que no este vacio el campo de la contraseña
   const validarContraseña = (e) => {
     setContraseña(e.target.value);
@@ -99,20 +68,16 @@ const Login = () => {
     }
   };
 
-
   // cerrar modal
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
-
-
 
   // recibir datos del registro una vez creado el user
   // const datosRegister = (e) => {
   //   console.log(e.usuario);
   //   setRecibirDatos(e.usuario);
   // };
-
 
   // enviar datos del login para ingresar
   const enviarForm = async (e) => {
@@ -123,11 +88,10 @@ const Login = () => {
       setErrors(validationErrors);
       return;
     }
-  
 
     try {
-      const data = await inicioSesion(numId, contraseña, Autenticador);
-      
+      const data = await inicioSesion(numId, contraseña);
+
       if (data || user2) {
         // setRol(data.user.rol_usuario);
 
@@ -239,6 +203,7 @@ const Login = () => {
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
                       errors.numId ? "border-red-500" : ""
                     }`}
+                    {...register("numID", {required:true} )}
                     id="username"
                     type="number"
                     placeholder="Identificación"

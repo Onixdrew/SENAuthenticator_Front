@@ -14,7 +14,7 @@ import {
 } from "recharts";
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
-import { useAuth } from "../../../../auth/authProvider";
+import { useAuth } from "../../../../Context/AuthContext";
 
 const GraficasInstructor = () => {
   const [fechaInicio, setfechaInicio] = useState("");
@@ -26,7 +26,7 @@ const GraficasInstructor = () => {
     const rol2 = "Instructor";
 
     // los hooks solo pueden ser llamados dentro de un componente funcional
-    const Autenticador = useAuth();
+    const {isAuthenticated} = useAuth();
 
   // Datos de ejemplo, en un caso real estos datos se obtendrían de una API o base de datos
   const data = [
@@ -74,7 +74,7 @@ const GraficasInstructor = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
+      {isAuthenticated && rol2 === "Instructor" ? (
         <div>
           <Navbar
             item1="Inicio"

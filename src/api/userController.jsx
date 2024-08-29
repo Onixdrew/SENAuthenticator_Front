@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useAuth } from "../auth/authProvider";
-// import { useState } from "react";
+import { useAuth } from "../Context/AuthContext";
+
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
@@ -9,7 +9,9 @@ import { useAuth } from "../auth/authProvider";
 // Postgrest
 const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
-export const inicioSesion = async (numId, contraseña, Autenticador) => {
+export const inicioSesion = async (numId, contraseña) => {
+  const {guardarToken} = useAuth();
+
   // const [Datos, setDatos]=useState();
   try {
     // creo la peticcion http
@@ -30,7 +32,7 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
       console.log("Usuario Logueado correctamente");
 
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
-      Autenticador.guardarToken(response.data);
+      guardarToken(response.data);
       return await response.data;
     } else {
       console.log("El usuario no fue encontrado");
@@ -90,7 +92,7 @@ export const registerUser = async (
 
     if (response.status === 201 || response.status === 200) {
       alert("Usuario creado correctamente");
-      enviarDatosLogin(response.data);
+      // enviarDatosLogin(response.data);
       return response;
     } else {
       alert(response.data.error || "Ocurrió un error desconocido");
@@ -102,13 +104,13 @@ export const registerUser = async (
   }
 };
 
-export const enviarUser = () => {
-  const Autenticador = useAuth();
-  const datos = Autenticador.getTokenStorage();
-  console.log(datos);
+// export const enviarUser = () => {
+//   const {getTokenStorage} = useAuth();
+//   const datos = getTokenStorage();
+//   console.log(datos);
 
-  return datos;
-};
+//   return datos;
+// };
 
 
 

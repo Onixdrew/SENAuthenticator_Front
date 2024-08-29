@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 
 import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
-import { useAuth } from "../../auth/authProvider";
+import { useAuth } from "../../Context/AuthContext";
+
 
 const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
   // Estado para controlar la visibilidad del menú móvil
@@ -11,7 +12,7 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
   const menuRef = useRef(null);
 
    // los hooks solo pueden ser llamados dentro de un componente funcional
-   const Autenticador = useAuth();
+   const {cerrarSesion} = useAuth();
 
   // Función para alternar el estado del menú móvil
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -111,7 +112,7 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
                   <Link>Configuraciòn</Link>
                 </li>
                 <li>
-                <button onClick={Autenticador.cerrarSesion}>Salir</button>
+                <button onClick={cerrarSesion}>Salir</button>
                 </li>
               </ul>
             </div>
@@ -159,7 +160,7 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
             to="#"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
           >
-            <button onClick={Autenticador.cerrarSesion}>Salir</button>
+            <button onClick={cerrarSesion}>Salir</button>
           </Link>
         </div>
       </div>
