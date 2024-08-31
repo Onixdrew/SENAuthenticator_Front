@@ -9,15 +9,16 @@ import { useAuth } from "../auth/authProvider";
 // Postgrest
 const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
-export const inicioSesion = async (numId, contraseña, Autenticador) => {
-  // const [Datos, setDatos]=useState();
+export const inicioSesion = async (values, Autenticador) => {
+  console.log(values);
+  
   try {
     // creo la peticcion http
     const response = await axios.post(
       API_URL,
       {
-        numero_documento_usuario: numId,
-        password: contraseña,
+        numero_documento_usuario: values.numID,
+        password: values.password,
       },
       {
         headers: {

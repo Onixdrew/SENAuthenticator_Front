@@ -4,7 +4,7 @@ import { useAuth } from "./authProvider";
 const RutasProtegidas = () => {
     const Autenticador= useAuth()
         // si esxiste cede el permiso a las rutas,de lo contrario se redirege login
-    return Autenticador.isAuthenticated ? <Outlet/>: <Navigate to='/'/>;
+    return Autenticador.isAuthenticated ? <Outlet/>: <Navigate to='/Login'/>;
 }
 
 export default RutasProtegidas

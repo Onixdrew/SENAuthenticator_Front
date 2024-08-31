@@ -192,7 +192,7 @@ const AuthProvider = ({ children }) => {
           }
           getUser(dataString);
           setUser(dataString);
-          setUser2(data);
+          setUser2(dataString);
           setIsAuthenticated(true);
 
           // console.log(`hooooooooola desde getTokenStorage ${dataString}`);

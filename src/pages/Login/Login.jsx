@@ -1,16 +1,17 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { useAuth } from "../../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
-import { enviarUser, inicioSesion } from "../../api/userController";
+import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
 import { AuthContext2 } from "../../Context/AuthContext";
-
-
+import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const { register, handleSubmit } = useForm();
+
   const [numId, setNumId] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [errors, setErrors] = useState({});
@@ -24,17 +25,15 @@ const Login = () => {
   const Autenticador = useAuth();
   const navegar = useNavigate();
 
-  const {user2,setUser2}=useContext(AuthContext2)
-  console.log(user2)
-
-
+  const { user2, setUser2 } = useContext(AuthContext2);
+  console.log(user2);
 
   // useEffect(()=>{
   //   const user = Autenticador.getUser()
   //   console.log(user);
-    
+
   //   setUser(user)
-  
+
   // },[])
 
   // NOOOOOOOOOOOOOOOOOOOOOO quitar
@@ -47,15 +46,11 @@ const Login = () => {
   //   return <Navigate to="/inicioInstructor" />
   // }
 
-
   // const rol2 = "Instructor";
   // const user = Autenticador.getUser(true);
 
-
   if (Autenticador.isAuthenticated) {
-
-    
-    switch (user2.user.rol_usuario) {
+    switch (user2.rol_usuario) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
 
@@ -70,7 +65,6 @@ const Login = () => {
     }
   }
 
-
   // mensajes de errores si los campos estan vacios
   const validateForm = () => {
     const newErrors = {};
@@ -78,7 +72,6 @@ const Login = () => {
     if (!contraseña) newErrors.contraseña = "La contraseña es obligatoria.";
     return newErrors;
   };
-
 
   // validar que no este vacio el campo del numero de ID
   const validarNumId = (e) => {
@@ -89,7 +82,6 @@ const Login = () => {
     }
   };
 
-
   //validar que no este vacio el campo de la contraseña
   const validarContraseña = (e) => {
     setContraseña(e.target.value);
@@ -99,13 +91,10 @@ const Login = () => {
     }
   };
 
-
   // cerrar modal
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
-
-
 
   // recibir datos del registro una vez creado el user
   // const datosRegister = (e) => {
@@ -113,25 +102,23 @@ const Login = () => {
   //   setRecibirDatos(e.usuario);
   // };
 
-
   // enviar datos del login para ingresar
-  const enviarForm = async (e) => {
-    e.preventDefault();
+  const enviarForm = handleSubmit(async (values) => {
+  
     const validationErrors = validateForm();
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-  
 
     try {
-      const data = await inicioSesion(numId, contraseña, Autenticador);
-      
+      const data = await inicioSesion(values, Autenticador);
+
       if (data || user2) {
         // setRol(data.user.rol_usuario);
 
-        switch (data.user.rol_usuario || user2.user.rol_usuario) {
+        switch (user2.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;
@@ -152,7 +139,7 @@ const Login = () => {
       setErrorsBack(error.message);
       console.log(error.message);
     }
-  };
+  });
 
   // limpia el mensaje de error de Usuario no encontrado. Registrate! y los valores ingresados
   // cada vez que la variable cambie se volvera a ejecutar lo que este dentro del useEffect.
@@ -230,7 +217,7 @@ const Login = () => {
               <div className="mb-6">
                 <label
                   className="block text-black-300 mb-2 text-lg"
-                  htmlFor="username"
+                  htmlFor="numID"
                 >
                   Número identificación
                 </label>
@@ -239,7 +226,8 @@ const Login = () => {
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
                       errors.numId ? "border-red-500" : ""
                     }`}
-                    id="username"
+                    {...register("numID", { required: true })}
+                    id="numID"
                     type="number"
                     placeholder="Identificación"
                     // value={
@@ -269,6 +257,7 @@ const Login = () => {
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
                       errors.contraseña ? "border-red-500" : ""
                     }`}
+                    {...register("password", { required: true })}
                     id="password"
                     type="password"
                     placeholder="Contraseña"
