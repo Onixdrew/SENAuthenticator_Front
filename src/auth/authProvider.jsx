@@ -1,308 +1,306 @@
-import { useDeferredValue } from "react";
-import { useContext, createContext, useState, useEffect } from "react";
-import { json } from "react-router-dom";
-import axios from "axios";
-import { inicioSesion } from "../api/userController";
-// import jwt_decode from 'jwt-decode';
-import { AuthContext2 } from "../Context/AuthContext";
-const AuthContext = createContext({
-  isAuthenticated: false,
-  getAccessToken: () => {},
+// import { useDeferredValue } from "react";
+// import { useContext, createContext, useState, useEffect } from "react";
+// import { json } from "react-router-dom";
+// import axios from "axios";
+// // import jwt_decode from 'jwt-decode';
+// import { AuthContext2 } from "../Context/AuthContext";
+// const AuthContext = createContext({
+//   isAuthenticated: false,
+//   getAccessToken: () => {},
 
-  //// getRefreshToken falta por implementar en el back
-  getRefreshToken: () => {},
-  guardarToken: (userData) => {},
-  cerrarSesion: () => {},
-  getTokenStorage: () => {},
-  getUser: () => {},
+//   //// getRefreshToken falta por implementar en el back
+//   getRefreshToken: () => {},
+//   guardarToken: (userData) => {},
+//   cerrarSesion: () => {},
+//   getTokenStorage: () => {},
+//   getUser: () => {},
 
-  // getAllUsers:() => {},
-});
+//   // getAllUsers:() => {},
+// });
 
-const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState();
-
-
-  const {user2,setUser2}=useContext(AuthContext2)
-
-  // Manejo de tokens
-  const [accessToken, setAccessToken] = useState("");
-
-  // //////////////////////////////////////////////////////////-------FALTA IMPLEMENTAR EN EL BACK
-  // se solicita un nuevo accessToken al back
-  // async function solicitarNewAccessToken(refreshToken) {
-  //   try {
-  //     const response = await fetch(
-  //       // falta implementar el endpoint en el back
-  //       "https://backendsenauthenticator.onrender.com/api/usuario/",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${refreshToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-
-  //       if (data.error) {
-  //         throw new Error(data.error);
-  //       }
-
-  //       return data.token;
-  //     } else {
-  //       throw new Error(response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error al validar el refreshToken en el back:", error);
-  //     return null;
-  //   }
-  // }
-
-  // ////////////////////////////////////////////////////////// Traer user......
-  // const API_URL2 = "https://backendsenauthenticator.onrender.com/api/usuario/";
-
-  // const getAllUsers = async () => {
-  //   try {
-  //     const response = await axios.get(API_URL2, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     // Axios automáticamente convierte la respuesta a JSON
-  //     const data = response.data; // Asegúrate de devolver los datos
-  //     // console.log(data);
-  //     return data;
-  //   } catch (error) {
-  //     if (error.response) {
-  //       throw new Error(error.response.data.error);
-  //     } else if (error.request) {
-  //       throw new Error("No se recibió respuesta del servidor.");
-  //     } else {
-  //       throw new Error(error.message);
-  //     }
-  //   }
-  // };
-
-  // //////////////////////////////////////////////////////////-------FALTA IMPLEMENTAR EN EL BACK
-  // se solicita datos del user por medio del accessToken
-  // async function ObtenerUserInfo(accessToken) {
-  //   try {
-  //     const response = await fetch(
-  //       // falta implementar el endpoint en el back
-  //       "https://backendsenauthenticator.onrender.com/api/usuario/",
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-
-  //       if (data.error) {
-  //         throw new Error(data.error);
-  //       }
-
-  //       return data;
-  //     } else {
-  //       throw new Error(response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error al validar el refreshToken en el back:", error);
-  //     return null;
-  //   }
-  // }
-
-  // //////////////////////////////////////////////////////////
-  // Se verifica la existencia de tokens cada vez que se inicie la aplicacion.
-  // useEffect(() => {
-  //   verificarAccessToken();
-  // }, []);
-
-  // async function verificarAccessToken() {
-  //   // verifica si sea iniciado sesion con el primer token, el temporal
-  //   if (accessToken) {
-  //     // si el usuario esta auhenticado
-  //     const userInfo = await ObtenerUserInfo(accessToken);
-
-  //     if (userInfo) {
-  //       //  se pasan como argumento los resultados de la consultas,pero conservo el refreshToken, ya que este solo cambia cuando el usuario cierra la sesion y se borra el.
-  //       // refresToken de mongo
-  //       guardarSesionInfo(userInfo, accessToken, getRefreshToken());
-  //       return;
-  //     }
-  //   } else {
-  //     // si el usuario no esta autenticado con el accessToken, se verifica el refreshToken de la anterior sesion
-  //     // en el localStorage para realizar el login automaticamente, cada vez que se entre a la aplicacion.
-  //     const token = getRefreshToken();
-  //     if (token) {
-  //       // se envia el refreshToken que se encuentra en el gardado en el localStorage del inicion de sesion anterior
-  //       //  al back para consultar si existe en mongo, y si existe me crea un nuevo accessToken.
-  //       const newAccessToken = await solicitarNewAccessToken(token);
-  //       if (newAccessToken) {
-  //         // se envia el token resultante al back para obtener los datos del usuario al que le pertenece el token
-  //         const userInfo = await ObtenerUserInfo(newAccessToken);
-  //         if (userInfo) {
-  //           //  se pasan como argumento los resultados de la consultas,pero conservo el refreshToken, ya que este solo cambia cuando el usuario cierra la sesion y se borra el.
-  //           // refresToken de mongo
-  //           guardarSesionInfo(userInfo, newAccessToken, token);
-  //           return;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  useEffect(() => {
-    getTokenStorage();
-  }, []);
+// const AuthProvider = ({ children }) => {
+//   const [isAuthenticated, setIsAuthenticated] = useState(false);
+//   const [user, setUser] = useState();
 
 
-  // /////////////////////////////////////////////////////////////////////
-  async function getTokenStorage() {
-    try {
-      const tokenLocal = getRefreshToken();
-      // console.log(tokenLocal);
+//   const {user2,setUser2}=useContext(AuthContext2)
 
-      if (tokenLocal) {
-        const response = await fetch(
-          "https://senauthenticator.onrender.com/api/perfil/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${tokenLocal}`,
-            },
-          }
-        );
+//   // Manejo de tokens
+//   const [accessToken, setAccessToken] = useState("");
 
-        if (response.ok) {
-          const data = await response.json();
-          const dataString = JSON.stringify(data);
+//   // //////////////////////////////////////////////////////////-------FALTA IMPLEMENTAR EN EL BACK
+//   // se solicita un nuevo accessToken al back
+//   // async function solicitarNewAccessToken(refreshToken) {
+//   //   try {
+//   //     const response = await fetch(
+//   //       // falta implementar el endpoint en el back
+//   //       "https://backendsenauthenticator.onrender.com/api/usuario/",
+//   //       {
+//   //         method: "POST",
+//   //         headers: {
+//   //           "Content-Type": "application/json",
+//   //           Authorization: `Bearer ${refreshToken}`,
+//   //         },
+//   //       }
+//   //     );
 
-          if (data.error) {
-            throw new Error(data);
-          }
-          getUser(dataString);
-          setUser(dataString);
-          setUser2(dataString);
-          setIsAuthenticated(true);
+//   //     if (response.ok) {
+//   //       const data = await response.json();
 
-          // console.log(`hooooooooola desde getTokenStorage ${dataString}`);
+//   //       if (data.error) {
+//   //         throw new Error(data.error);
+//   //       }
 
-          return dataString;
-        } else {
-          throw new Error(response.statusText);
-        }
-      }
-    } catch (error) {
-      console.log("Error al validar el refreshToken en el back:", error);
-      return null;
-    }
-  }
+//   //       return data.token;
+//   //     } else {
+//   //       throw new Error(response.statusText);
+//   //     }
+//   //   } catch (error) {
+//   //     console.log("Error al validar el refreshToken en el back:", error);
+//   //     return null;
+//   //   }
+//   // }
+
+//   // ////////////////////////////////////////////////////////// Traer user......
+//   // const API_URL2 = "https://backendsenauthenticator.onrender.com/api/usuario/";
+
+//   // const getAllUsers = async () => {
+//   //   try {
+//   //     const response = await axios.get(API_URL2, {
+//   //       headers: {
+//   //         "Content-Type": "application/json",
+//   //       },
+//   //     });
+
+//   //     // Axios automáticamente convierte la respuesta a JSON
+//   //     const data = response.data; // Asegúrate de devolver los datos
+//   //     // console.log(data);
+//   //     return data;
+//   //   } catch (error) {
+//   //     if (error.response) {
+//   //       throw new Error(error.response.data.error);
+//   //     } else if (error.request) {
+//   //       throw new Error("No se recibió respuesta del servidor.");
+//   //     } else {
+//   //       throw new Error(error.message);
+//   //     }
+//   //   }
+//   // };
+
+//   // //////////////////////////////////////////////////////////-------FALTA IMPLEMENTAR EN EL BACK
+//   // se solicita datos del user por medio del accessToken
+//   // async function ObtenerUserInfo(accessToken) {
+//   //   try {
+//   //     const response = await fetch(
+//   //       // falta implementar el endpoint en el back
+//   //       "https://backendsenauthenticator.onrender.com/api/usuario/",
+//   //       {
+//   //         method: "GET",
+//   //         headers: {
+//   //           "Content-Type": "application/json",
+//   //           Authorization: `Bearer ${accessToken}`,
+//   //         },
+//   //       }
+//   //     );
+
+//   //     if (response.ok) {
+//   //       const data = await response.json();
+
+//   //       if (data.error) {
+//   //         throw new Error(data.error);
+//   //       }
+
+//   //       return data;
+//   //     } else {
+//   //       throw new Error(response.statusText);
+//   //     }
+//   //   } catch (error) {
+//   //     console.log("Error al validar el refreshToken en el back:", error);
+//   //     return null;
+//   //   }
+//   // }
+
+//   // //////////////////////////////////////////////////////////
+//   // Se verifica la existencia de tokens cada vez que se inicie la aplicacion.
+//   // useEffect(() => {
+//   //   verificarAccessToken();
+//   // }, []);
+
+//   // async function verificarAccessToken() {
+//   //   // verifica si sea iniciado sesion con el primer token, el temporal
+//   //   if (accessToken) {
+//   //     // si el usuario esta auhenticado
+//   //     const userInfo = await ObtenerUserInfo(accessToken);
+
+//   //     if (userInfo) {
+//   //       //  se pasan como argumento los resultados de la consultas,pero conservo el refreshToken, ya que este solo cambia cuando el usuario cierra la sesion y se borra el.
+//   //       // refresToken de mongo
+//   //       guardarSesionInfo(userInfo, accessToken, getRefreshToken());
+//   //       return;
+//   //     }
+//   //   } else {
+//   //     // si el usuario no esta autenticado con el accessToken, se verifica el refreshToken de la anterior sesion
+//   //     // en el localStorage para realizar el login automaticamente, cada vez que se entre a la aplicacion.
+//   //     const token = getRefreshToken();
+//   //     if (token) {
+//   //       // se envia el refreshToken que se encuentra en el gardado en el localStorage del inicion de sesion anterior
+//   //       //  al back para consultar si existe en mongo, y si existe me crea un nuevo accessToken.
+//   //       const newAccessToken = await solicitarNewAccessToken(token);
+//   //       if (newAccessToken) {
+//   //         // se envia el token resultante al back para obtener los datos del usuario al que le pertenece el token
+//   //         const userInfo = await ObtenerUserInfo(newAccessToken);
+//   //         if (userInfo) {
+//   //           //  se pasan como argumento los resultados de la consultas,pero conservo el refreshToken, ya que este solo cambia cuando el usuario cierra la sesion y se borra el.
+//   //           // refresToken de mongo
+//   //           guardarSesionInfo(userInfo, newAccessToken, token);
+//   //           return;
+//   //         }
+//   //       }
+//   //     }
+//   //   }
+//   // }
+
+//   useEffect(() => {
+//     getTokenStorage();
+//   }, []);
+
+
+//   // /////////////////////////////////////////////////////////////////////
+//   async function getTokenStorage() {
+//     try {
+//       const tokenLocal = getRefreshToken();
+//       // console.log(tokenLocal);
+
+//       if (tokenLocal) {
+//         const response = await fetch(
+//           "https://senauthenticator.onrender.com/api/perfil/",
+//           {
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `Token ${tokenLocal}`,
+//             },
+//           }
+//         );
+
+//         if (response.ok) {
+//           const data = await response.json();
+//           const dataString = JSON.stringify(data);
+
+//           if (data.error) {
+//             throw new Error(data);
+//           }
+//           getUser(dataString);
+//           setUser(dataString);
+//           setUser2(data);
+ 
+
+//           // console.log(`hooooooooola desde getTokenStorage ${dataString}`);
+
+//           return dataString;
+//         } else {
+//           throw new Error(response.statusText);
+//         }
+//       }
+//     } catch (error) {
+//       console.log("Error al validar el refreshToken en el back:", error);
+//       return null;
+//     }
+//   }
 
 
 
-  // //////////////////////////////////////////////////////////
-  // retornar token para que este accesible en cualquier parte de la aplicacion.
-  function getAccessToken() {
-    return accessToken;
-  }
+//   // //////////////////////////////////////////////////////////
+//   // retornar token para que este accesible en cualquier parte de la aplicacion.
+//   function getAccessToken() {
+//     return accessToken;
+//   }
 
 
-  function getUser() {
-    // console.log(user);
+//   function getUser() {
+//     // console.log(user);
     
-    return user;
-  }
+//     return user;
+//   }
 
-  // //////////////////////////////////////////////////////////
-  // este a un falta por implementar
+//   // //////////////////////////////////////////////////////////
+//   // este a un falta por implementar
 
-  // Se verifica si hay un refreshToken almacenado en el localStorage y
-  // si lo hay se retorna para usarlo en otra parte el codigo
-  function getRefreshToken() {
-    // se extrae refreshToken con el nombre que tal cual se le dio a la key cuando se almacenó en el localstorage.
-    const tokenData = localStorage.getItem("token");
-    if (tokenData) {
-      // se convierte el token que esta en string a un objeto
-      const token = JSON.parse(tokenData);
+//   // Se verifica si hay un refreshToken almacenado en el localStorage y
+//   // si lo hay se retorna para usarlo en otra parte el codigo
+//   function getRefreshToken() {
+//     // se extrae refreshToken con el nombre que tal cual se le dio a la key cuando se almacenó en el localstorage.
+//     const tokenData = localStorage.getItem("token");
+//     if (tokenData) {
+//       // se convierte el token que esta en string a un objeto
+//       const token = JSON.parse(tokenData);
 
-      setAccessToken(token);
+//       setAccessToken(token);
 
-      return token;
-    }
+//       return token;
+//     }
 
-    return null;
-  }
+//     return null;
+//   }
 
-  // //////////////////////////////////////////////////////////
-  // guarda el refreshToken en el loclastorage y modifica la varible de authenticacion
-  function guardarSesionInfo(userInfo, accessToken, refreshToken) {
-    // Decodificar el token
-    // const decoded = jwt_decode(accessToken);
+//   // //////////////////////////////////////////////////////////
+//   // guarda el refreshToken en el loclastorage y modifica la varible de authenticacion
+//   function guardarSesionInfo(userInfo, accessToken, refreshToken) {
+//     // Decodificar el token
+//     // const decoded = jwt_decode(accessToken);
 
-    // console.log("Decoded Payload:", decoded);
+//     // console.log("Decoded Payload:", decoded);
 
-    console.log(
-      `Hola dese el guardarSesionInfo este es el token: ${accessToken}`
-    );
+//     console.log(
+//       `Hola dese el guardarSesionInfo este es el token: ${accessToken}`
+//     );
 
-    // actualiza la variable con el accessToken
-    setAccessToken(accessToken);
+//     // actualiza la variable con el accessToken
+//     setAccessToken(accessToken);
 
-    // guardar el refreshToken en memoria del navegador
-    localStorage.setItem("token", JSON.stringify(accessToken));
+//     // guardar el refreshToken en memoria del navegador
+//     localStorage.setItem("token", JSON.stringify(accessToken));
 
-    setIsAuthenticated(true);
-    setUser(JSON.stringify(userInfo));
-  }
+//     setIsAuthenticated(true);
+//     setUser(JSON.stringify(userInfo));
+//   }
 
-  // //////////////////////////////////////////////////////////
-  // extrae los tokens de la solicitud http del usuario logueado, que vienen del backend. Tambien se guarda el usuario
-  function guardarToken(userData) {
-    console.log(userData);
+//   // //////////////////////////////////////////////////////////
+//   // extrae los tokens de la solicitud http del usuario logueado, que vienen del backend. Tambien se guarda el usuario
+//   function guardarToken(userData) {
+//     console.log(userData);
 
-    guardarSesionInfo(userData.user, userData.token, userData.refreshToken);
-  }
+//     guardarSesionInfo(userData.user, userData.token, userData.refreshToken);
+//   }
 
-  // //////////////////////////////////////////////////////////
-  // se vacian todas las variables incluyendo el localStorage
-  function cerrarSesion() {
-    setIsAuthenticated(false);
-    setAccessToken("");
-    setUser(undefined);
-    localStorage.removeItem("token");
-  }
+//   // //////////////////////////////////////////////////////////
+//   // se vacian todas las variables incluyendo el localStorage
+//   function cerrarSesion() {
+//     setIsAuthenticated(false);
+//     setAccessToken("");
+//     setUser(undefined);
+//     localStorage.removeItem("token");
+//   }
 
-  return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        getAccessToken,
-        guardarToken,
-        getRefreshToken,
-        cerrarSesion,
-        getTokenStorage,
-        getUser,
-        // getAllUsers,
-        // validarToken,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
+//   return (
+//     <AuthContext.Provider
+//       value={{
+//         isAuthenticated,
+//         getAccessToken,
+//         guardarToken,
+//         getRefreshToken,
+//         cerrarSesion,
+//         getTokenStorage,
+//         getUser,
+//         // getAllUsers,
+//       }}
+//     >
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
 
-export default AuthProvider;
+// export default AuthProvider;
 
-// Hook que permite acceder a funciones de useContext en cualquier componente, solo hay que llamarlo
+// // Hook que permite acceder a funciones de useContext en cualquier componente, solo hay que llamarlo
 
-export const useAuth = () => useContext(AuthContext);
+// export const useAuth = () => useContext(AuthContext);

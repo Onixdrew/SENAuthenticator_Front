@@ -2,12 +2,11 @@ import { useEffect, useState, useContext } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { useAuth } from "../../auth/authProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
-import { AuthContext2 } from "../../Context/AuthContext";
-import { useForm } from "react-hook-form";
+import { useAuth } from "../../Context/AuthContext";
+import { register } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -18,39 +17,19 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [user, setUser] = useState();
+
   // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
-  const Autenticador = useAuth();
+  const { isAuthenticated, user2 } = useAuth();
   const navegar = useNavigate();
 
-  const { user2, setUser2 } = useContext(AuthContext2);
   console.log(user2);
 
-  // useEffect(()=>{
-  //   const user = Autenticador.getUser()
-  //   console.log(user);
+  if (isAuthenticated) {
+    console.log(isAuthenticated);
 
-  //   setUser(user)
-
-  // },[])
-
-  // NOOOOOOOOOOOOOOOOOOOOOO quitar
-
-  // Verifica si el usuario ya está autenticado y según el rol no se permite regresar al login hasta que se cierre la sesión
-
-  // if (Autenticador.isAuthenticated) {
-  //   console.log(Rol);
-
-  //   return <Navigate to="/inicioInstructor" />
-  // }
-
-  // const rol2 = "Instructor";
-  // const user = Autenticador.getUser(true);
-
-  if (Autenticador.isAuthenticated) {
-    switch (user2.rol_usuario) {
+    switch (user2.user.rol_usuario) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
 
@@ -113,7 +92,7 @@ const Login = () => {
     }
 
     try {
-      const data = await inicioSesion(values, Autenticador);
+      const data = await inicioSesion(numId, contraseña);
 
       if (data || user2) {
         // setRol(data.user.rol_usuario);
@@ -226,8 +205,8 @@ const Login = () => {
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
                       errors.numId ? "border-red-500" : ""
                     }`}
-                    {...register("numID", { required: true })}
-                    id="numID"
+                    {...register("numID", {required:true} )}
+                    id="username"
                     type="number"
                     placeholder="Identificación"
                     // value={

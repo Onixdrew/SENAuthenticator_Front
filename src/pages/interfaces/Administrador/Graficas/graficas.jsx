@@ -15,7 +15,7 @@ import {
 
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
-import { useAuth } from "../../../../auth/authProvider";
+import { useAuth } from "../../../../Context/AuthContext";
 
 const GraficasAdmin = () => {
   const [fechaInicio, setfechaInicio] = useState("");
@@ -27,7 +27,7 @@ const GraficasAdmin = () => {
   const rol2 = "Administrador";
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const Autenticador = useAuth();
+  const {isAuthenticated} = useAuth();
 
   const data = [
     {
@@ -74,7 +74,7 @@ const GraficasAdmin = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Administrador" ? (
+      {isAuthenticated && rol2 === "Administrador" ? (
         <div>
           <Navbar
             item1="Inicio"

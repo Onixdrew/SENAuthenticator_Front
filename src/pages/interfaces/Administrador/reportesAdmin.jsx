@@ -3,14 +3,14 @@ import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
-import { useAuth } from "../../../auth/authProvider";
 import { getAllUsers } from "../../../api/userController";
+import { useAuth } from "../../../Context/AuthContext";
 
 
 const ReportesAdmin= () => {
   const rol2 = "Administrador";
 
-  const Autenticador = useAuth();
+  const {isAuthenticated} = useAuth();
 
   // const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -91,7 +91,7 @@ const ReportesAdmin= () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Administrador" ? (
+      {isAuthenticated && rol2 === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
