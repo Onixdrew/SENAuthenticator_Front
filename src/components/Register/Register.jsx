@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { registerUser } from "../../api/userController"
+// import { registerUser } from "../../api/userController";
+import { useAuth } from "../../Context/AuthContext";
 
-const Register = ({ cerrarModal2, datosRegister2 }) => {
+const Register = ({ cerrarModal2 }) => {
   const [passwordError, setPasswordError] = useState("");
   const [nombre, setNombre] = useState("");
   const [tipoId, setTipoId] = useState("");
@@ -10,6 +11,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
 
+  const { register } = useAuth();
 
   const validarContraseña = (e) => {
     if (e.target.value !== contraseña) {
@@ -22,22 +24,22 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
   const enviarForm = async (e) => {
     e.preventDefault();
 
-    
+    const data = {
+      nombre: nombre,
+      tipoId: tipoId,
+      numId: numId,
+      correo: correo,
+      contraseña: contraseña,
+    };
 
-  
-  
+    const response = await register(data);
 
-    const response = await registerUser(
-      nombre,
-      tipoId,
-      numId,
-      correo,
-      contraseña,
-      enviarDatosLogin
-    );
+    // const response = await registerUser(data,
+    //   enviarDatosLogin
+    // );
     console.log(`Hola desde el  register:  ${response}`);
-    
-    if (response || response.status === 201) {
+
+    if (response.status === 201) {
       // se cierra el modal
       cerrarModalProp(false);
     }
@@ -47,9 +49,9 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
     cerrarModal2(cerrarModal);
   };
 
-  const enviarDatosLogin = (datos) => {
-    datosRegister2(datos);
-  };
+  // const enviarDatosLogin = (datos) => {
+  //   datosRegister2(datos);
+  // };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">

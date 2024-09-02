@@ -15,7 +15,8 @@ import {
 
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
-import { useAuth } from "../../../../Context/AuthContext";
+import  useAuth  from "../../../../Context/AuthContext";
+
 
 const GraficasAdmin = () => {
   const [fechaInicio, setfechaInicio] = useState("");

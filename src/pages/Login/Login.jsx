@@ -5,8 +5,8 @@ import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
-import { useAuth } from "../../Context/AuthContext";
-import { register } from "react-hook-form";
+import  {useAuth}  from "../../Context/AuthContext";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -24,7 +24,9 @@ const Login = () => {
   const { isAuthenticated, user2 } = useAuth();
   const navegar = useNavigate();
 
-  console.log(user2);
+  // console.log(user2);
+  console.log(`desde loooogin ${isAuthenticated}`);
+  
 
   if (isAuthenticated) {
     console.log(isAuthenticated);
@@ -83,7 +85,7 @@ const Login = () => {
 
   // enviar datos del login para ingresar
   const enviarForm = handleSubmit(async (values) => {
-  
+    
     const validationErrors = validateForm();
 
     if (Object.keys(validationErrors).length > 0) {
@@ -92,12 +94,13 @@ const Login = () => {
     }
 
     try {
-      const data = await inicioSesion(numId, contraseña);
-
-      if (data || user2) {
+      const data = await inicioSesion(values);
+      console.log(data);
+      
+      if (data) {
         // setRol(data.user.rol_usuario);
 
-        switch (user2.rol_usuario) {
+        switch (data.user.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;

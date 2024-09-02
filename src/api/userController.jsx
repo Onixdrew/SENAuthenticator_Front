@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useAuth } from "../Context/AuthContext";
-
+import useAuth from "../Context/AuthContext";
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
@@ -9,8 +8,8 @@ import { useAuth } from "../Context/AuthContext";
 // Postgrest
 const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
-export const inicioSesion = async (numId, contraseña) => {
-  const {guardarToken} = useAuth();
+export const inicioSesion = async (values) => {
+  const { guardarToken } = useAuth();
 
   // const [Datos, setDatos]=useState();
   try {
@@ -59,29 +58,22 @@ export const inicioSesion = async (numId, contraseña) => {
 const API_URL2 = "https://senauthenticator.onrender.com/api/usuario/";
 
 // /////////////////////////////////////////// Register
-export const registerUser = async (
-  nombre,
-  tipoId,
-  numId,
-  correo,
-  contraseña,
-  enviarDatosLogin
-) => {
+export const registerUser = async (data) => {
   try {
-    console.log(nombre, tipoId, numId, correo, contraseña, enviarDatosLogin);
+    console.log(data);
 
     // Toma el primer nombre para ponerlo de username
-    const userName = nombre.split(" ")[0];
+    const userName = data.nombre.split(" ")[0];
 
     const response = await axios.post(
       API_URL2,
       {
         username: userName,
-        first_name: nombre,
-        tipo_documento_usuario: tipoId,
-        numero_documento_usuario: numId,
-        email: correo,
-        password: contraseña,
+        first_name: data.nombre,
+        tipo_documento_usuario: data.tipoId,
+        numero_documento_usuario: data.numId,
+        email: data.correo,
+        password: data.contraseña,
       },
       {
         headers: {
@@ -111,8 +103,6 @@ export const registerUser = async (
 
 //   return datos;
 // };
-
-
 
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {
