@@ -7,9 +7,6 @@ import { registerUser } from "../api/userController";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  
-
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");

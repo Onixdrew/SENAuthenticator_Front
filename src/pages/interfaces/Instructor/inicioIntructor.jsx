@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 
 import { inicioSesion } from "../../../api/userController";
-import  useAuth  from "../../../Context/AuthContext";
+import  {useAuth}  from "../../../Context/AuthContext";
 // import Footer from "../../../components/Footer/Footer";
 
 

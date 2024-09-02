@@ -3,7 +3,7 @@ import Navbar from "../../../components/Navbar/Navbar";
 import foto from "../../../../public/img/emmanuel.jpg";
 import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
-import useAuth  from "../../../Context/AuthContext";
+import {useAuth}  from "../../../Context/AuthContext";
 
 const Admin = () => {
   // Traer rol de la base de datos del usuario para comprobar
