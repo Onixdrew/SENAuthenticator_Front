@@ -1,5 +1,5 @@
 import axios from "axios";
-import useAuth from "../Context/AuthContext";
+
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
@@ -8,8 +8,10 @@ import useAuth from "../Context/AuthContext";
 // Postgrest
 const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
-export const inicioSesion = async (values) => {
-  const { guardarToken } = useAuth();
+export const inicioSesion = async (values, guardarToken) => {
+  const valores= JSON.stringify(values)
+  console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${valores}`);
+  
 
   // const [Datos, setDatos]=useState();
   try {
@@ -29,10 +31,13 @@ export const inicioSesion = async (values) => {
 
     if (response) {
       console.log("Usuario Logueado correctamente");
-
+      // const datos = JSON.stringify(response.data)
+      // console.log(`como Accecerrrrrrrrr ${datos.user}`);
+      
+  
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarToken(response.data);
-      return await response.data;
+      return response.data;
     } else {
       console.log("El usuario no fue encontrado");
     }
