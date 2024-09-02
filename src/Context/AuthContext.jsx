@@ -1,5 +1,5 @@
 // AuthContext.jsx
-import React, { createContext, useState, useContext, useEffect,  } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { registerUser } from "../api/userController";
 
@@ -10,19 +10,28 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");
-  const [user2, setUser2] = useState(null);
+
+  // Verificar el accessToken
+  useEffect(() => {
+    getTokenStorage();
+  }, []);
+
+  // Guardar el token
+  function guardarToken(userData) {
+    const daata= JSON.stringify(userData)
+
+    console.log(`userrrrrrrrrrrr ${daata}`);
+
+    guardarSesionInfo(userData.user, userData.token, userData.refreshToken);
+  }
 
   // Guardar la información de sesión
   function guardarSesionInfo(userInfo, accessToken, refreshToken) {
     setAccessToken(accessToken);
     localStorage.setItem("token", JSON.stringify(accessToken));
     setIsAuthenticated(true);
+    
     setUser(JSON.stringify(userInfo));
-  }
-
-  // Guardar el token
-  function guardarToken(userData) {
-    guardarSesionInfo(userData.user, userData.token, userData.refreshToken);
   }
 
   // Obtener el refreshToken del localStorage
@@ -45,14 +54,14 @@ const AuthProvider = ({ children }) => {
   };
 
   // Obtener el acceso del token
-  function getAccessToken() {
-    return accessToken;
-  }
+  // function getAccessToken() {
+  //   return accessToken;
+  // }
 
   // Obtener el usuario
-  function getUser() {
-    return user;
-  }
+  // function getUser() {
+  //   return user;
+  // }
 
   // Cerrar sesión
   function cerrarSesion() {
@@ -62,7 +71,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
   }
 
-  // Obtener token del almacenamiento
+  // Enviar el token al back
   async function getTokenStorage() {
     try {
       const tokenLocal = getRefreshToken();
@@ -79,9 +88,12 @@ const AuthProvider = ({ children }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setUser(data);
-          setUser2(data);
-          return data;
+          const data2= JSON.stringify(data)
+
+          console.log(`desde el authhhhhhhhhhh ${data2}`);
+          
+          setUser(data2);
+          return data2;
         } else {
           throw new Error(response.statusText);
         }
@@ -91,11 +103,6 @@ const AuthProvider = ({ children }) => {
       return null;
     }
   }
-
-  // Verificar el accessToken
-  useEffect(() => {
-    getTokenStorage();
-  }, []);
 
   // //////////////////////////////////////////////////////////-------FALTA IMPLEMENTAR EN EL BACK
   // se solicita un nuevo accessToken al back
@@ -233,14 +240,12 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        getAccessToken,
+        user,
+        accessToken,
         guardarToken,
         getRefreshToken,
         cerrarSesion,
         getTokenStorage,
-        getUser,
-        user2,
-        setUser2,
         register,
       }}
     >
@@ -250,6 +255,8 @@ const AuthProvider = ({ children }) => {
 };
 
 // Hook personalizado para usar el contexto
+// export const useAuth = () => useContext(AuthContext);
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
 

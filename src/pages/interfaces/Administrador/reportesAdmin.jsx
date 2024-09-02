@@ -4,7 +4,7 @@ import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 import { getAllUsers } from "../../../api/userController";
-import  {useAuth}  from "../../../Context/AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 
 
 const ReportesAdmin= () => {

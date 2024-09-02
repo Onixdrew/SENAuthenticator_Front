@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { json, Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
 import  {useAuth}  from "../../Context/AuthContext";
@@ -15,23 +15,22 @@ const Login = () => {
   const [contraseña, setContraseña] = useState("");
   const [errors, setErrors] = useState({});
   const [errorsBack, setErrorsBack] = useState();
-  const [Rol, setRol] = useState("");
+  // const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
 
   // const [recibirDatos, setRecibirDatos] = useState();
 
+  
   // hooks
-  const { isAuthenticated, user2 } = useAuth();
+  const { isAuthenticated, user, guardarToken } = useAuth();
   const navegar = useNavigate();
 
-  // console.log(user2);
+  console.log(`holaaaaa desde login ${user}`);
   console.log(`desde loooogin ${isAuthenticated}`);
   
 
   if (isAuthenticated) {
-    console.log(isAuthenticated);
-
-    switch (user2.user.rol_usuario) {
+    switch (user.user.rol_usuario) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
 
@@ -45,6 +44,7 @@ const Login = () => {
         break;
     }
   }
+
 
   // mensajes de errores si los campos estan vacios
   const validateForm = () => {
@@ -94,7 +94,7 @@ const Login = () => {
     }
 
     try {
-      const data = await inicioSesion(values);
+      const data = await inicioSesion(values, guardarToken);
       console.log(data);
       
       if (data) {
@@ -294,3 +294,4 @@ const Login = () => {
 };
 
 export default Login;
+// 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 
 import { inicioSesion } from "../../../api/userController";
-import  {useAuth}  from "../../../Context/AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 // import Footer from "../../../components/Footer/Footer";
 
 
@@ -15,9 +15,9 @@ const InicioIntructor = () => {
   const rol2 = "Instructor";
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const {isAuthenticated, user2} = useAuth();
+  const {isAuthenticated, user} = useAuth();
   const nombre = "Daniel"
-  const nombre2 = inicioSesion()
+  // const nombre2 = inicioSesion()
 
   useEffect(()=>{
     

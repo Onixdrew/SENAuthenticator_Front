@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import  {useAuth}  from "../../../Context/AuthContext";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Sobrenosotros = () => {
 

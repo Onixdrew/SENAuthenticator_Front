@@ -2,7 +2,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RutasProtegidas from "./auth/authRoutes.jsx";
-import AuthProvider from "./Context/AuthContext.jsx";
+
 
 import InicioIntructor from "./pages/interfaces/Instructor/inicioIntructor.jsx";
 import ReportesInstructor from "./pages/interfaces/Instructor/reportesInstructor.jsx";
@@ -16,6 +16,7 @@ import InicioAdmin from "./pages/interfaces/Administrador/inicioAdmin.jsx";
 import ReportesAdmin from "./pages/interfaces/Administrador/reportesAdmin.jsx";
 import GraficasAdmin from "./pages/interfaces/Administrador/Graficas/graficas.jsx";
 import Home from "./pages/Lobby/home.jsx";
+import AuthProvider from "./Context/AuthContext.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
