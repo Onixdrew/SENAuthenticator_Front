@@ -9,15 +9,9 @@ import { useAuth } from "../../../Context/AuthContext";
 
 const InicioIntructor = () => {
 
-
-
-  // traer el rol de la base de datos
-  const rol2 = "Instructor";
-
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const {isAuthenticated, user} = useAuth();
-  const nombre = "Daniel"
-  // const nombre2 = inicioSesion()
+
 
   useEffect(()=>{
     
@@ -26,7 +20,7 @@ const InicioIntructor = () => {
 
   return (
     <>
-      {isAuthenticated && rol2 === "Instructor" ? (
+      {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div>
           <Navbar
             item1="inicio"
@@ -37,7 +31,7 @@ const InicioIntructor = () => {
 
           <div className="p-4">
             <h1 className="text-2xl font-bold text-left mb-4 inline-block">
-              Bienvenido {nombre}
+              Bienvenid@ {user.username}
             </h1>
           </div>
         </div>

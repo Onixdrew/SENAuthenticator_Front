@@ -8,9 +8,9 @@ import { useAuth } from "../../../Context/AuthContext";
 
 
 const ReportesAdmin= () => {
-  const rol2 = "Administrador";
 
-  const {isAuthenticated} = useAuth();
+
+  const {isAuthenticated, user} = useAuth();
 
   // const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -91,7 +91,7 @@ const ReportesAdmin= () => {
 
   return (
     <>
-      {isAuthenticated && rol2 === "Administrador" ? (
+      {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">

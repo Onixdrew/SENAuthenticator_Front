@@ -9,8 +9,7 @@ import axios from "axios";
 const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
 
 export const inicioSesion = async (values, guardarToken) => {
-  const valores= JSON.stringify(values)
-  console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${valores}`);
+  // console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${values.numID}`);
   
 
   // const [Datos, setDatos]=useState();
@@ -29,15 +28,15 @@ export const inicioSesion = async (values, guardarToken) => {
       }
     );
 
-    if (response) {
+    if (response.status == 200) {
       console.log("Usuario Logueado correctamente");
-      // const datos = JSON.stringify(response.data)
-      // console.log(`como Accecerrrrrrrrr ${datos.user}`);
-      
+      // console.log(`como Accecerrrrrrrrr ${response.data.user.id}`);
+      // se accede al objeto, pero no se puede visualizar en consola
+      const userAndToken= response.data
   
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
-      guardarToken(response.data);
-      return response.data;
+      guardarToken(userAndToken);
+      return userAndToken;
     } else {
       console.log("El usuario no fue encontrado");
     }

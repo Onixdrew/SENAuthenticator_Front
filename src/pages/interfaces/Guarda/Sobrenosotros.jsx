@@ -4,13 +4,11 @@ import { useAuth } from "../../../Context/AuthContext";
 
 const Sobrenosotros = () => {
 
-  // Traer rol de la base de datos del usuario para comprobar
-  const rol3 = "Guardia de seguridad";
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, user} = useAuth();
   
   return (
     <>
-      {isAuthenticated && rol3 === "Guardia de seguridad" ? (
+      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
         <div className="min-h-screen bg-gray-100">
           <Navbar
             item1="Registro Facial"

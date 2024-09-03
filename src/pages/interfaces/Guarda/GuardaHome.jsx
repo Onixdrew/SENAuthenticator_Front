@@ -6,9 +6,9 @@ import ModalGuarda from "./modalGuarda";
 import { useAuth } from "../../../Context/AuthContext";
 
 const Admin = () => {
-  // Traer rol de la base de datos del usuario para comprobar
-  const rol3 = "Guardia de seguridad";
-  const {isAuthenticated} = useAuth();
+ 
+
+  const {isAuthenticated, user} = useAuth();
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Admin = () => {
 
   return (
     <>
-      {isAuthenticated && rol3 === "Guardia de seguridad" ? (
+      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
         <div className="flex flex-col min-h-screen">
           <Navbar
             item1="Registro Facial"

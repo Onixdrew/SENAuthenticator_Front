@@ -24,11 +24,10 @@ const GraficasAdmin = () => {
   const [selectedFicha, setSelectedFicha] = useState("All");
   const [selectedJornada, setSelectedJornada] = useState("All");
   
-  // traer el rol de la base de datos
-  const rol2 = "Administrador";
+ 
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, user} = useAuth();
 
   const data = [
     {
@@ -75,7 +74,7 @@ const GraficasAdmin = () => {
 
   return (
     <>
-      {isAuthenticated && rol2 === "Administrador" ? (
+      {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div>
           <Navbar
             item1="Inicio"

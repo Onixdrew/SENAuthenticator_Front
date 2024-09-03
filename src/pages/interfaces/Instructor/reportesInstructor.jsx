@@ -8,7 +8,7 @@ import { getAllUsers } from "../../../api/userController";
 import { useAuth } from "../../../Context/AuthContext";
 
 const ReportesInstructor = () => {
-  const rol2 = "Instructor";
+
 
   const {isAuthenticated, user} = useAuth();
 
@@ -94,7 +94,7 @@ const ReportesInstructor = () => {
 
   return (
     <>
-      {isAuthenticated && rol2 === "Instructor" ? (
+      {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">

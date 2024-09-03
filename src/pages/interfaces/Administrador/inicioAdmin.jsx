@@ -7,17 +7,14 @@ import { useAuth } from "../../../Context/AuthContext";
 const InicioAdmin = () => {
 
  
-
-  // traer el rol de la base de datos
-  const rol2="Administrador"
   
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, user} = useAuth();
 
 
   return (
     <>
-      {isAuthenticated && rol2 === "Administrador"  ? (
+      {isAuthenticated && user.rol_usuario === "Administrador"  ? (
         <div>
           <Navbar
             item1="inicio"
@@ -27,7 +24,7 @@ const InicioAdmin = () => {
           ></Navbar>
 
           <h1 className="text-2xl font-bold text-center mt-10">
-            Inicio Administrador{" "}
+            {`Inicio Administrador ${user.username}`}
           </h1>
         </div>
       ) : (

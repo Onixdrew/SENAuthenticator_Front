@@ -22,11 +22,9 @@ const GraficasInstructor = () => {
   const [selectedFicha, setSelectedFicha] = useState("All");
   const [selectedJornada, setSelectedJornada] = useState("All");
 
-    // traer el rol de la base de datos
-    const rol2 = "Instructor";
 
     // los hooks solo pueden ser llamados dentro de un componente funcional
-    const {isAuthenticated} = useAuth();
+    const {isAuthenticated, user} = useAuth();
 
   // Datos de ejemplo, en un caso real estos datos se obtendrían de una API o base de datos
   const data = [
@@ -74,7 +72,7 @@ const GraficasInstructor = () => {
 
   return (
     <>
-      {isAuthenticated && rol2 === "Instructor" ? (
+      {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div>
           <Navbar
             item1="Inicio"

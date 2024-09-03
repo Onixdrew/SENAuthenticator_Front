@@ -11,8 +11,8 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const { register, handleSubmit } = useForm();
 
-  const [numId, setNumId] = useState("");
-  const [contraseña, setContraseña] = useState("");
+  // const [numId, setNumId] = useState("");
+  // const [contraseña, setContraseña] = useState("");
   const [errors, setErrors] = useState({});
   const [errorsBack, setErrorsBack] = useState();
   // const [Rol, setRol] = useState("");
@@ -26,11 +26,11 @@ const Login = () => {
   const navegar = useNavigate();
 
   console.log(`holaaaaa desde login ${user}`);
-  console.log(`desde loooogin ${isAuthenticated}`);
+  // console.log(`desde loooogin ${isAuthenticated}`);
   
 
   if (isAuthenticated) {
-    switch (user.user.rol_usuario) {
+    switch (user.rol_usuario) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
 
@@ -46,31 +46,31 @@ const Login = () => {
   }
 
 
-  // mensajes de errores si los campos estan vacios
-  const validateForm = () => {
-    const newErrors = {};
-    if (!numId) newErrors.numId = "El número de identificación es obligatorio.";
-    if (!contraseña) newErrors.contraseña = "La contraseña es obligatoria.";
-    return newErrors;
-  };
+  // // mensajes de errores si los campos estan vacios
+  // const validateForm = () => {
+  //   const newErrors = {};
+  //   if (!numId) newErrors.numId = "El número de identificación es obligatorio.";
+  //   if (!contraseña) newErrors.contraseña = "La contraseña es obligatoria.";
+  //   return newErrors;
+  // };
 
-  // validar que no este vacio el campo del numero de ID
-  const validarNumId = (e) => {
-    setNumId(e.target.value);
-    if (e.target.value) {
-      setErrors((prevErrors) => ({ ...prevErrors, numId: "" }));
-      // setErrorsBack("")
-    }
-  };
+  // // validar que no este vacio el campo del numero de ID
+  // const validarNumId = (e) => {
+  //   setNumId(e.target.value);
+  //   if (e.target.value) {
+  //     setErrors((prevErrors) => ({ ...prevErrors, numId: "" }));
+  //     // setErrorsBack("")
+  //   }
+  // };
 
-  //validar que no este vacio el campo de la contraseña
-  const validarContraseña = (e) => {
-    setContraseña(e.target.value);
-    if (e.target.value) {
-      setErrors((prevErrors) => ({ ...prevErrors, contraseña: "" }));
-      // setErrorsBack("")
-    }
-  };
+  // //validar que no este vacio el campo de la contraseña
+  // const validarContraseña = (e) => {
+  //   setContraseña(e.target.value);
+  //   if (e.target.value) {
+  //     setErrors((prevErrors) => ({ ...prevErrors, contraseña: "" }));
+  //     // setErrorsBack("")
+  //   }
+  // };
 
   // cerrar modal
   const cerrarModal = (e) => {
@@ -86,12 +86,12 @@ const Login = () => {
   // enviar datos del login para ingresar
   const enviarForm = handleSubmit(async (values) => {
     
-    const validationErrors = validateForm();
+    // const validationErrors = validateForm();
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    //   return;
+    // }
 
     try {
       const data = await inicioSesion(values, guardarToken);
@@ -100,7 +100,7 @@ const Login = () => {
       if (data) {
         // setRol(data.user.rol_usuario);
 
-        switch (data.user.rol_usuario) {
+        switch (data.user.rol_usuario || user.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;
@@ -217,7 +217,7 @@ const Login = () => {
                     //     ? recibirDatos.numero_documento_usuario
                     //     : numId
                     // }
-                    onChange={validarNumId}
+                    // onChange={validarNumId}
                   />
                   {errors.numId && (
                     <p className="text-red-500 text-sm">{errors.numId}</p>
@@ -244,7 +244,7 @@ const Login = () => {
                     type="password"
                     placeholder="Contraseña"
                     // value={recibirDatos ? recibirDatos.password : contraseña}
-                    onChange={validarContraseña}
+                    // onChange={validarContraseña}
                   />
                   {errors.contraseña && (
                     <p className="text-red-500 text-sm">{errors.contraseña}</p>
