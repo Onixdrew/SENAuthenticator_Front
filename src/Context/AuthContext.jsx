@@ -1,5 +1,6 @@
 // AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
+// import axios from "../api/axios";
 import axios from "axios";
 import { registerUser } from "../api/userController";
 
@@ -14,12 +15,25 @@ const AuthProvider = ({ children }) => {
   // Verificar el accessToken
   // Obtener el refreshToken del localStorage y realizar la solicitud al backend
   useEffect(() => {
+    // Obtener el Token del localStorage
+    const getRefreshToken = () => {
+      const tokenData = localStorage.getItem("token");
+      if (tokenData) {
+        const token = JSON.parse(tokenData);
+
+        console.log(`refresssssssssssss activado ${token}`);
+
+        setAccessToken(token);
+        return token;
+      }
+      return null;
+    };
     getRefreshToken();
-    
-    // getTokenStorage();
   }, []);
 
-
+  useEffect(() => {
+    getTokenStorage();
+  });
 
   // Guardar el token
   function guardarToken(userAndToken) {
@@ -34,22 +48,6 @@ const AuthProvider = ({ children }) => {
     setUser(userAndToken.user);
   }
 
-
-
-  // Obtener el refreshToken del localStorage
-  function getRefreshToken() {
-    const tokenData = localStorage.getItem("token");
-    if (tokenData) {
-      const token = JSON.parse(tokenData);
-
-      console.log(`refresssssssssssss activado ${token}`);
-      
-      setAccessToken(token);
-      return token;
-    }
-    return null;
-  }
-
   const register = async (data) => {
     const res = await registerUser(data);
 
@@ -58,45 +56,42 @@ const AuthProvider = ({ children }) => {
     // setUser(res);
   };
 
-
-
   // Enviar el token al back
   async function getTokenStorage() {
     try {
-      // console.log(accessToken);
+      console.log(`tokenLocalllllllll ${accessToken}`);
 
-      const tokenLocal = getRefreshToken();
-
-      if (tokenLocal) {
+      if (accessToken) {
         // Configura la instancia de axios para la solicitud
-        const instance = axios.create({
-          baseURL: "https://senauthenticator.onrender.com/api/",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${tokenLocal}`,
-          },
-        });
-
-        // Realiza la solicitud GET
-        const response = await instance.get("perfil/");
+        const response = await axios.get(
+          "https://senauthenticator.onrender.com/api/perfil/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${accessToken}`,
+            },
+          }
+        );
 
         // Verifica que la respuesta fue exitosa
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
           const data = response.data.user;
 
-          console.log(`desde el authhhhhhhhhhh ${data.rol_usuario}`);
+          console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
 
           setUser(data);
+         
+
+          // error ciclo infinito
           setIsAuthenticated(true);
-      
-          
           return data;
         } else {
           throw new Error(response.statusText);
         }
       }
     } catch (error) {
-      console.log("Error al validar el refreshToken en el back:", error);
+      console.log("Error al validar el Token en el back:", error);
+      setIsAuthenticated(false);
       return null;
     }
   }
@@ -116,7 +111,7 @@ const AuthProvider = ({ children }) => {
         user,
         accessToken,
         guardarToken,
-        getRefreshToken,
+
         cerrarSesion,
         getTokenStorage,
         register,

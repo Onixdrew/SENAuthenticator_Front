@@ -5,7 +5,7 @@ import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { json, Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
-import  {useAuth}  from "../../Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
@@ -20,14 +20,12 @@ const Login = () => {
 
   // const [recibirDatos, setRecibirDatos] = useState();
 
-  
   // hooks
   const { isAuthenticated, user, guardarToken } = useAuth();
   const navegar = useNavigate();
 
-  console.log(`holaaaaa desde login ${user}`);
+  console.log(`holaaaaa desde login ${JSON.stringify(user)}`);
   // console.log(`desde loooogin ${isAuthenticated}`);
-  
 
   if (isAuthenticated) {
     switch (user.rol_usuario) {
@@ -44,7 +42,6 @@ const Login = () => {
         break;
     }
   }
-
 
   // // mensajes de errores si los campos estan vacios
   // const validateForm = () => {
@@ -85,7 +82,6 @@ const Login = () => {
 
   // enviar datos del login para ingresar
   const enviarForm = handleSubmit(async (values) => {
-    
     // const validationErrors = validateForm();
 
     // if (Object.keys(validationErrors).length > 0) {
@@ -96,10 +92,8 @@ const Login = () => {
     try {
       const data = await inicioSesion(values, guardarToken);
       console.log(data);
-      
-      if (data) {
-        // setRol(data.user.rol_usuario);
 
+      if (data) {
         switch (data.user.rol_usuario || user.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
@@ -128,8 +122,8 @@ const Login = () => {
   useEffect(() => {
     if (abrirRegister) {
       setErrorsBack("");
-      setNumId("");
-      setContraseña("");
+      //   setNumId("");
+      //   setContraseña("");
     }
   }, [abrirRegister]);
 
@@ -208,7 +202,7 @@ const Login = () => {
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
                       errors.numId ? "border-red-500" : ""
                     }`}
-                    {...register("numID", {required:true} )}
+                    {...register("numID", { required: true })}
                     id="username"
                     type="number"
                     placeholder="Identificación"
@@ -294,4 +288,4 @@ const Login = () => {
 };
 
 export default Login;
-// 
+//

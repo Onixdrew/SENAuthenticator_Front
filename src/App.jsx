@@ -1,8 +1,6 @@
 // App.jsx
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import RutasProtegidas from "./auth/authRoutes.jsx";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import InicioIntructor from "./pages/interfaces/Instructor/inicioIntructor.jsx";
 import ReportesInstructor from "./pages/interfaces/Instructor/reportesInstructor.jsx";
@@ -17,37 +15,35 @@ import ReportesAdmin from "./pages/interfaces/Administrador/reportesAdmin.jsx";
 import GraficasAdmin from "./pages/interfaces/Administrador/Graficas/graficas.jsx";
 import Home from "./pages/Lobby/home.jsx";
 import AuthProvider from "./Context/AuthContext.jsx";
-
-const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/Login", element: <Login /> },
-
-  {
-    path: "/",
-    element: <RutasProtegidas />,
-
-    children: [
-      // Rutas Instructor
-      { path: "/inicioInstructor", element: <InicioIntructor /> },
-      { path: "/ReportesInstructor", element: <ReportesInstructor /> },
-      { path: "/GraficasInstructor", element: <GraficasInstructor /> },
-
-      // Rutas Administrador
-      { path: "/inicioAdmin", element: <InicioAdmin /> },
-      { path: "/ReportesAdmin", element: <ReportesAdmin /> },
-      { path: "/GraficasAdmin", element: <GraficasAdmin /> },
-
-      // Rutas Guardia de Seguridad
-      { path: "/InicioGuardia", element: <GuardiaHome /> },
-      { path: "/ReconocimientoGuardia", element: <InicioGuardia /> },
-      { path: "/Mas", element: <Sobrenosotros /> },
-    ],
-  },
-]);
+import RutasProtegidas from "./auth/authRoutes.jsx";
 
 const App = () => (
   <AuthProvider>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Routes>
+        {/* Publicas */}
+        <Route path="/" element={<Home />} />
+        <Route path="/Login" element={<Login />} />
+
+        {/* privadas */}
+        <Route element={<RutasProtegidas/>}>
+          {/* Guardia */}
+          <Route path="/InicioGuardia" element={<GuardiaHome />} />
+          <Route path="/ReconocimientoGuardia" element={<InicioGuardia />} />
+          <Route path="/Mas" element={<Sobrenosotros />} />
+
+          {/* Instructor */}
+          <Route path="/inicioInstructor" element={<InicioIntructor />} />
+          <Route path="/ReportesInstructor" element={<ReportesInstructor />} />
+          <Route path="/GraficasInstructor" element={<GraficasInstructor />} />
+
+          {/* Administrador */}
+          <Route path="/inicioAdmin" element={<InicioAdmin />} />
+          <Route path="/ReportesAdmin" element={<ReportesAdmin />} />
+          <Route path="/GraficasAdmin" element={<GraficasAdmin />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </AuthProvider>
 );
 

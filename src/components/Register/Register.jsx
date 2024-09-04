@@ -39,7 +39,7 @@ const Register = ({ cerrarModal2 }) => {
     // );
     console.log(`Hola desde el  register:  ${response}`);
 
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       // se cierra el modal
       cerrarModalProp(false);
     }

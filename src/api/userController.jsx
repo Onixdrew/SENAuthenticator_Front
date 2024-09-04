@@ -1,22 +1,16 @@
-import axios from "axios";
-
+import axios from "./axios";
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
 // const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
 
-// Postgrest
-const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
-
 export const inicioSesion = async (values, guardarToken) => {
   // console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${values.numID}`);
-  
 
   // const [Datos, setDatos]=useState();
   try {
     // creo la peticcion http
-    const response = await axios.post(
-      API_URL,
+    const response = await axios.post("inicioSesion/",
       {
         numero_documento_usuario: values.numID,
         password: values.password,
@@ -32,8 +26,8 @@ export const inicioSesion = async (values, guardarToken) => {
       console.log("Usuario Logueado correctamente");
       // console.log(`como Accecerrrrrrrrr ${response.data.user.id}`);
       // se accede al objeto, pero no se puede visualizar en consola
-      const userAndToken= response.data
-  
+      const userAndToken = response.data;
+
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarToken(userAndToken);
       return userAndToken;
@@ -55,12 +49,6 @@ export const inicioSesion = async (values, guardarToken) => {
   }
 };
 
-// SQLite
-// const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
-
-// Postgrest
-const API_URL2 = "https://senauthenticator.onrender.com/api/usuario/";
-
 // /////////////////////////////////////////// Register
 export const registerUser = async (data) => {
   try {
@@ -70,7 +58,7 @@ export const registerUser = async (data) => {
     const userName = data.nombre.split(" ")[0];
 
     const response = await axios.post(
-      API_URL2,
+      "usuario/",
       {
         username: userName,
         first_name: data.nombre,
@@ -111,7 +99,7 @@ export const registerUser = async (data) => {
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get(API_URL2, {
+    const response = await axios.get("usuario/", {
       headers: {
         "Content-Type": "application/json",
       },
