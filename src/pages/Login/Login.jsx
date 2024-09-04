@@ -21,14 +21,16 @@ const Login = () => {
   // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
-  const { isAuthenticated, user, guardarToken } = useAuth();
+  const { accessToken, isAuthenticated, user, guardarToken, getTokenStorage } = useAuth();
   const navegar = useNavigate();
 
   console.log(`holaaaaa desde login ${JSON.stringify(user)}`);
   // console.log(`desde loooogin ${isAuthenticated}`);
+  console.log(accessToken);
+  
 
   if (isAuthenticated) {
-    switch (user.rol_usuario) {
+    switch (user.rol_usuario ) {
       case "Instructor":
         return <Navigate to="/inicioInstructor" />;
 
@@ -74,6 +76,16 @@ const Login = () => {
     setAbrirRegister(e);
   };
 
+
+  useEffect(()=>{
+    const checar= async()=>{
+      const mydata = await getTokenStorage(accessToken)
+      console.log(mydata);
+    }
+    checar()
+
+  },[accessToken])
+
   // recibir datos del registro una vez creado el user
   // const datosRegister = (e) => {
   //   console.log(e.usuario);
@@ -92,9 +104,11 @@ const Login = () => {
     try {
       const data = await inicioSesion(values, guardarToken);
       console.log(data);
+    
+      
 
       if (data) {
-        switch (data.user.rol_usuario || user.rol_usuario) {
+        switch (data.user.rol_usuario || JSON.stringify(user) ) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;

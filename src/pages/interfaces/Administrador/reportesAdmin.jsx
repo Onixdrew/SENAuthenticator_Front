@@ -6,18 +6,16 @@ import { MdOutlineRefresh } from "react-icons/md";
 import { getAllUsers } from "../../../api/userController";
 import { useAuth } from "../../../Context/AuthContext";
 
+const ReportesAdmin = () => {
+  const { isAuthenticated, user } = useAuth();
 
-const ReportesAdmin= () => {
-
-
-  const {isAuthenticated, user} = useAuth();
-
-  // const [datos, setDatos] = useState([]);
+  const [datos, setDatos] = useState([]);
+  const [datosFiltrados, setDatosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [documentoFiltro, setDocumentoFiltro] = useState("");
-  const [datosFiltrados, setDatosFiltrados] = useState([]);
   const [refrescar, setRefrescar] = useState(false);
+  const [tipoPersona, setTipoPersona] = useState("Aprendiz");
 
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -28,12 +26,13 @@ const ReportesAdmin= () => {
       try {
         const result = await getAllUsers();
 
-
-        // Se obtine solo los aprendices
+        // Se obtiene solo los aprendices
         if (result) {
-          setDatosFiltrados(
-            result.filter((registro) => registro.rol_usuario === "Aprendiz")
+          const aprendices = result.filter(
+            (registro) => registro.rol_usuario === "Aprendiz"
           );
+          setDatos(aprendices);
+          setDatosFiltrados(aprendices);
         }
       } catch (error) {
         console.error("Error al cargar los datos:", error.message);
@@ -46,19 +45,17 @@ const ReportesAdmin= () => {
     recibirDatos();
   }, [refrescar]);
 
-
   // se filtra por numero de documento
   useEffect(() => {
     if (documentoFiltro) {
-      setDatosFiltrados(
-        datosFiltrados.filter((registro) =>
-          registro.numero_documento_usuario.toString().includes(documentoFiltro)
-        )
+      const datosFiltrados = datos.filter((registro) =>
+        registro.numero_documento_usuario.toString().includes(documentoFiltro)
       );
-    } else {
       setDatosFiltrados(datosFiltrados);
+    } else {
+      setDatosFiltrados(datos);
     }
-  }, [documentoFiltro, datosFiltrados]);
+  }, [documentoFiltro, datos]);
 
   const actualizarUsers = () => {
     setLoading(true);
@@ -120,12 +117,26 @@ const ReportesAdmin= () => {
                 <select
                   name=""
                   id=""
+                  value={tipoPersona}
+                  onChange={(e) => setTipoPersona(e.target.value)}
                   className="bg-white p-3 border rounded-lg w-full md:w-auto"
                 >
-                  <option value="">2669742</option>
-                  <option value="">2669756</option>
-                  <option value="">2669723</option>
+                  <option value="Aprendiz">Aprendiz</option>
+                  <option value="Instructor">Instructor</option>
+                  <option value="Personal Aseo">Personal Aseo</option>
                 </select>
+                
+                {tipoPersona =="Aprendiz" &&(
+                  <select
+                    name=""
+                    id=""
+                    className="bg-white p-3 border rounded-lg w-full md:w-auto"
+                  >
+                    <option value="">2669742</option>
+                    <option value="">2669756</option>
+                    <option value="">2669723</option>
+                  </select>
+                )}
 
                 <input
                   type="text"
@@ -134,7 +145,6 @@ const ReportesAdmin= () => {
                   value={documentoFiltro}
                   onChange={(e) => setDocumentoFiltro(e.target.value)}
                 />
-
                 <select
                   name=""
                   id=""
@@ -161,7 +171,10 @@ const ReportesAdmin= () => {
                 </div>
 
                 <button title="Refrescar">
-                  <MdOutlineRefresh className="text-3xl ml-10"  onClick={actualizarUsers}  />
+                  <MdOutlineRefresh
+                    className="text-3xl ml-10"
+                    onClick={actualizarUsers}
+                  />
                 </button>
               </div>
 
@@ -201,7 +214,6 @@ const ReportesAdmin= () => {
                     </thead>
                     <tbody className="bg-gray-100 text-center">
                       {datosFiltrados.map((registro, index) => (
-
                         <tr key={index} className="border-b border-gray-300">
                           <td className="px-4 py-2">{index}</td>
                           <td className="px-4 py-2 font-semibold">

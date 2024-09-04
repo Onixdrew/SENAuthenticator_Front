@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instancia = axios.create({
     baseURL: "https://senauthenticator.onrender.com/api/",
-    withCredentials: true
+    // withCredentials: true
 })
 
 export default instancia;

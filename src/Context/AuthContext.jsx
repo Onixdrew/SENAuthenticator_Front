@@ -24,6 +24,7 @@ const AuthProvider = ({ children }) => {
         console.log(`refresssssssssssss activado ${token}`);
 
         setAccessToken(token);
+        // setIsAuthenticated(true);
         return token;
       }
       return null;
@@ -31,21 +32,23 @@ const AuthProvider = ({ children }) => {
     getRefreshToken();
   }, []);
 
-  useEffect(() => {
-    getTokenStorage();
-  });
+  // useEffect(() => {
+  //   getTokenStorage();
+  // });
 
   // Guardar el token
   function guardarToken(userAndToken) {
     // console.log(`userrrrrrrrrrrr ${userAndToken.token}`);
 
-    localStorage.setItem("token", JSON.stringify(userAndToken.token));
+    if (userAndToken) {
+      localStorage.setItem("token", JSON.stringify(userAndToken.token));
 
-    setAccessToken(userAndToken.token);
-    setIsAuthenticated(true);
+      setAccessToken(userAndToken.token);
+      setIsAuthenticated(true);
 
-    // se pasa el objeto pero no se puede visualizar en consola, pero si acceder a los datos.
-    setUser(userAndToken.user);
+      // se pasa el objeto pero no se puede visualizar en consola, pero si acceder a los datos.
+      setUser(userAndToken.user);
+    }
   }
 
   const register = async (data) => {
@@ -57,42 +60,45 @@ const AuthProvider = ({ children }) => {
   };
 
   // Enviar el token al back
-  async function getTokenStorage() {
-    try {
-      console.log(`tokenLocalllllllll ${accessToken}`);
+  async function getTokenStorage(accessToken) {
+    if (accessToken) {
+      try {
+        console.log(`tokenLocalllllllll ${accessToken}`);
+        console.log(`primero ${isAuthenticated}`);
 
-      if (accessToken) {
-        // Configura la instancia de axios para la solicitud
-        const response = await axios.get(
-          "https://senauthenticator.onrender.com/api/perfil/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${accessToken}`,
-            },
+        if (accessToken) {
+          // Configura la instancia de axios para la solicitud
+          const response = await axios.get(
+            "https://senauthenticator.onrender.com/api/perfil/",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${accessToken}`,
+              },
+            }
+          );
+
+          // Verifica que la respuesta fue exitosa
+          if (response.status === 200 || response.status === 201) {
+            const data = response.data.user.rol_usuario;
+
+            console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
+
+            setIsAuthenticated(true);
+            setUser(data);
+            console.log(`segundo ${isAuthenticated}`);
+
+            // error ciclo infinito
+            return data;
+          } else {
+            throw new Error(response.statusText);
           }
-        );
-
-        // Verifica que la respuesta fue exitosa
-        if (response.status === 200 || response.status === 201) {
-          const data = response.data.user;
-
-          console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
-
-          setUser(data);
-         
-
-          // error ciclo infinito
-          setIsAuthenticated(true);
-          return data;
-        } else {
-          throw new Error(response.statusText);
         }
+      } catch (error) {
+        console.log("Error al validar el Token en el back:", error);
+        setIsAuthenticated(false);
+        return null;
       }
-    } catch (error) {
-      console.log("Error al validar el Token en el back:", error);
-      setIsAuthenticated(false);
-      return null;
     }
   }
 
