@@ -72,7 +72,7 @@ const GraficasInstructor = () => {
 
   return (
     <>
-      {isAuthenticated && user.rol_usuario === "Instructor" ? (
+      {isAuthenticated && (user.rol_usuario === "Instructor" || user) ? (
         <div>
           <Navbar
             item1="Inicio"

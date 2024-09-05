@@ -17,31 +17,48 @@ const Login = () => {
   const [errorsBack, setErrorsBack] = useState();
   // const [Rol, setRol] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
+  const [dataRol, setDataRol] = useState(null);
 
   // const [recibirDatos, setRecibirDatos] = useState();
 
   // hooks
-  const { accessToken, isAuthenticated, user, guardarToken, getTokenStorage } = useAuth();
+  const { accessToken, isAuthenticated, user, guardarToken, getTokenStorage } =
+    useAuth();
   const navegar = useNavigate();
 
-  console.log(`holaaaaa desde login ${JSON.stringify(user)}`);
+  // console.log(`holaaaaa desde login ${JSON.stringify(user)}`);
   // console.log(`desde loooogin ${isAuthenticated}`);
-  console.log(accessToken);
-  
+  // console.log(accessToken);
 
   if (isAuthenticated) {
-    switch (user.rol_usuario ) {
-      case "Instructor":
-        return <Navigate to="/inicioInstructor" />;
+    if (user.rol_usuario) {
+      switch (user.rol_usuario) {
+        case "Instructor":
+          return <Navigate to="/inicioInstructor" />;
 
-      case "Administrador":
-        return <Navigate to="/inicioAdmin" />;
+        case "Administrador":
+          return <Navigate to="/inicioAdmin" />;
 
-      case "Guardia de seguridad":
-        return <Navigate to="/InicioGuardia" />;
+        case "Guardia de seguridad":
+          return <Navigate to="/InicioGuardia" />;
 
-      default:
-        break;
+        default:
+          break;
+      }
+    } else if (dataRol) {
+      switch (user.rol_usuario) {
+        case "Instructor":
+          return <Navigate to="/inicioInstructor" />;
+
+        case "Administrador":
+          return <Navigate to="/inicioAdmin" />;
+
+        case "Guardia de seguridad":
+          return <Navigate to="/InicioGuardia" />;
+
+        default:
+          break;
+      }
     }
   }
 
@@ -76,15 +93,40 @@ const Login = () => {
     setAbrirRegister(e);
   };
 
+  useEffect(() => {
+    const checar = async () => {
+      const mydata = await getTokenStorage(accessToken);
+      // console.log(mydata);
+      setDataRol(mydata);
+    };
+    checar();
+  }, [accessToken]);
 
-  useEffect(()=>{
-    const checar= async()=>{
-      const mydata = await getTokenStorage(accessToken)
-      console.log(mydata);
-    }
-    checar()
+  useEffect(() => {
+    const checarRol = async () => {
+      // console.log(`sssssssssssssiiiii ${dataRol}`);
 
-  },[accessToken])
+      if (dataRol) {
+        switch (dataRol) {
+          case "Instructor":
+            navegar("/inicioInstructor");
+            break;
+          case "Administrador":
+            navegar("/inicioAdmin");
+            break;
+          case "Guardia de seguridad":
+            navegar("/InicioGuardia");
+            break;
+          default:
+            alert(`${data.user.rol_usuario} no es un rol reconocido`);
+            break;
+        }
+      } else {
+        console.log("No se obtuvieron datos del inicio de sesión");
+      }
+    };
+    checarRol();
+  }, [isAuthenticated]);
 
   // recibir datos del registro una vez creado el user
   // const datosRegister = (e) => {
@@ -104,11 +146,9 @@ const Login = () => {
     try {
       const data = await inicioSesion(values, guardarToken);
       console.log(data);
-    
-      
 
       if (data) {
-        switch (data.user.rol_usuario || JSON.stringify(user) ) {
+        switch (data.user.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;

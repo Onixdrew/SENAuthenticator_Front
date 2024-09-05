@@ -1,8 +1,10 @@
 // AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
 // import axios from "../api/axios";
-import axios from "axios";
+import axios from "../api/axios";
 import { registerUser } from "../api/userController";
+import { json, Navigate, useNavigate } from "react-router-dom";
+
 
 // Crear el contexto
 const AuthContext = createContext();
@@ -11,6 +13,7 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");
+ 
 
   // Verificar el accessToken
   // Obtener el refreshToken del localStorage y realizar la solicitud al backend
@@ -18,10 +21,14 @@ const AuthProvider = ({ children }) => {
     // Obtener el Token del localStorage
     const getRefreshToken = () => {
       const tokenData = localStorage.getItem("token");
+      if (tokenData == "undefined") {
+        cerrarSesion();
+      }
+
       if (tokenData) {
         const token = JSON.parse(tokenData);
 
-        console.log(`refresssssssssssss activado ${token}`);
+        // console.log(`refresssssssssssss activado ${token}`);
 
         setAccessToken(token);
         // setIsAuthenticated(true);
@@ -30,7 +37,7 @@ const AuthProvider = ({ children }) => {
       return null;
     };
     getRefreshToken();
-  }, []);
+  }, [accessToken]);
 
   // useEffect(() => {
   //   getTokenStorage();
@@ -51,25 +58,20 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  const register = async (data) => {
-    const res = await registerUser(data);
 
-    console.log(res);
-
-    // setUser(res);
-  };
 
   // Enviar el token al back
   async function getTokenStorage(accessToken) {
     if (accessToken) {
       try {
-        console.log(`tokenLocalllllllll ${accessToken}`);
-        console.log(`primero ${isAuthenticated}`);
+      //   console.log(`tokenLocalllllllll ${accessToken}`);
+      //   console.log(`primero ${isAuthenticated}`);
 
         if (accessToken) {
           // Configura la instancia de axios para la solicitud
           const response = await axios.get(
-            "https://senauthenticator.onrender.com/api/perfil/",
+            // "https://senauthenticator.onrender.com/api/perfil/",
+            "perfil/",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -79,10 +81,10 @@ const AuthProvider = ({ children }) => {
           );
 
           // Verifica que la respuesta fue exitosa
-          if (response.status === 200 || response.status === 201) {
+          if (response.status == 200 || response.status == 201) {
             const data = response.data.user.rol_usuario;
 
-            console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
+            // console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
 
             setIsAuthenticated(true);
             setUser(data);
@@ -102,12 +104,27 @@ const AuthProvider = ({ children }) => {
     }
   }
 
+
+
+  const register = async (data) => {
+    const res = await registerUser(data);
+
+    console.log(res);
+
+    // setUser(res);
+  };
+
+
+
   // Cerrar sesión
   function cerrarSesion() {
     setIsAuthenticated(false);
     setAccessToken("");
     setUser(null);
     localStorage.removeItem("token");
+   
+    return <Navigate to="/Login"/>
+
   }
 
   return (

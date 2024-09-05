@@ -88,7 +88,7 @@ const ReportesAdmin = () => {
 
   return (
     <>
-      {isAuthenticated && user.rol_usuario === "Administrador" ? (
+      {isAuthenticated && (user.rol_usuario === "Administrador" || user) ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">

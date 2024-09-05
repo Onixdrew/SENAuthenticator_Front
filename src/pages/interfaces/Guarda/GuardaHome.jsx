@@ -38,7 +38,7 @@ const Admin = () => {
 
   return (
     <>
-      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
+      {isAuthenticated && (user.rol_usuario === "Guardia de seguridad" || user) ? (
         <div className="flex flex-col min-h-screen">
           <Navbar
             item1="Registro Facial"

@@ -94,7 +94,7 @@ const ReportesInstructor = () => {
 
   return (
     <>
-      {isAuthenticated && user.rol_usuario === "Instructor" ? (
+      {isAuthenticated && (user.rol_usuario === "Instructor" || user) ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">

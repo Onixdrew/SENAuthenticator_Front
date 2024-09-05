@@ -72,7 +72,7 @@ const GraficasAdmin = () => {
 
   return (
     <>
-      {isAuthenticated && user.rol_usuario === "Administrador" ? (
+      {isAuthenticated && (user.rol_usuario === "Administrador" || user) ? (
         <div>
           <Navbar
             item1="Inicio"

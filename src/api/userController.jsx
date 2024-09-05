@@ -27,6 +27,8 @@ export const inicioSesion = async (values, guardarToken) => {
       // console.log(`como Accecerrrrrrrrr ${response.data.user.id}`);
       // se accede al objeto, pero no se puede visualizar en consola
       const userAndToken = response.data;
+      console.log(userAndToken);
+      
 
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarToken(userAndToken);

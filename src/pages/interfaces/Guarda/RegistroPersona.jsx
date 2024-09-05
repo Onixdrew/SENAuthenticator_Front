@@ -8,7 +8,7 @@ const Inicio = () => {
 
   return (
     <>
-      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
+      {isAuthenticated && (user.rol_usuario === "Guardia de seguridad" || user) ? (
         <div className="bg-gray-100 h-screen flex flex-col">
           <Navbar
             item1="Registro Facial"
