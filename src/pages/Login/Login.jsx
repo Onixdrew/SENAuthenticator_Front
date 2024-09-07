@@ -1,111 +1,73 @@
-import { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import Swal from 'sweetalert2';
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { json, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
 import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  // const [numId, setNumId] = useState("");
-  // const [contraseña, setContraseña] = useState("");
-  const [errors, setErrors] = useState({});
-  const [errorsBack, setErrorsBack] = useState();
-  // const [Rol, setRol] = useState("");
+  const [errorsLocal, setErrors] = useState({});
+  const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
   const [dataRol, setDataRol] = useState(null);
 
-  // const [recibirDatos, setRecibirDatos] = useState();
-
-  // hooks
-  const { accessToken, isAuthenticated, user, guardarToken, getTokenStorage } =
-    useAuth();
+  const { accessToken, isAuthenticated, user, guardarToken, getTokenStorage } = useAuth();
   const navegar = useNavigate();
 
-  // console.log(`holaaaaa desde login ${JSON.stringify(user)}`);
-  // console.log(`desde loooogin ${isAuthenticated}`);
-  // console.log(accessToken);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     if (user.rol_usuario) {
+  //       switch (user.rol_usuario) {
+  //         case "Instructor":
+  //           return <Navigate to="/inicioInstructor" />;
 
-  if (isAuthenticated) {
-    if (user.rol_usuario) {
-      switch (user.rol_usuario) {
-        case "Instructor":
-          return <Navigate to="/inicioInstructor" />;
+  //         case "Administrador":
+  //           return <Navigate to="/inicioAdmin" />;
 
-        case "Administrador":
-          return <Navigate to="/inicioAdmin" />;
+  //         case "Guardia de seguridad":
+  //           return <Navigate to="/InicioGuardia" />;
 
-        case "Guardia de seguridad":
-          return <Navigate to="/InicioGuardia" />;
+  //         default:
+  //           break;
+  //       }
+  //     } else if (dataRol) {
+  //       switch (user.rol_usuario) {
+  //         case "Instructor":
+  //           return <Navigate to="/inicioInstructor" />;
 
-        default:
-          break;
-      }
-    } else if (dataRol) {
-      switch (user.rol_usuario) {
-        case "Instructor":
-          return <Navigate to="/inicioInstructor" />;
+  //         case "Administrador":
+  //           return <Navigate to="/inicioAdmin" />;
 
-        case "Administrador":
-          return <Navigate to="/inicioAdmin" />;
+  //         case "Guardia de seguridad":
+  //           return <Navigate to="/InicioGuardia" />;
 
-        case "Guardia de seguridad":
-          return <Navigate to="/InicioGuardia" />;
-
-        default:
-          break;
-      }
-    }
-  }
-
-  // // mensajes de errores si los campos estan vacios
-  // const validateForm = () => {
-  //   const newErrors = {};
-  //   if (!numId) newErrors.numId = "El número de identificación es obligatorio.";
-  //   if (!contraseña) newErrors.contraseña = "La contraseña es obligatoria.";
-  //   return newErrors;
-  // };
-
-  // // validar que no este vacio el campo del numero de ID
-  // const validarNumId = (e) => {
-  //   setNumId(e.target.value);
-  //   if (e.target.value) {
-  //     setErrors((prevErrors) => ({ ...prevErrors, numId: "" }));
-  //     // setErrorsBack("")
+  //         default:
+  //           break;
+  //       }
+  //     }
   //   }
-  // };
-
-  // //validar que no este vacio el campo de la contraseña
-  // const validarContraseña = (e) => {
-  //   setContraseña(e.target.value);
-  //   if (e.target.value) {
-  //     setErrors((prevErrors) => ({ ...prevErrors, contraseña: "" }));
-  //     // setErrorsBack("")
-  //   }
-  // };
-
-  // cerrar modal
-  const cerrarModal = (e) => {
-    setAbrirRegister(e);
-  };
+  // }, [isAuthenticated]);
 
   useEffect(() => {
     const checar = async () => {
       const mydata = await getTokenStorage(accessToken);
-      // console.log(mydata);
       setDataRol(mydata);
     };
     checar();
   }, [accessToken]);
 
   useEffect(() => {
-    const checarRol = async () => {
-      // console.log(`sssssssssssssiiiii ${dataRol}`);
-
+    const checarRol = () => {
       if (dataRol) {
         switch (dataRol) {
           case "Instructor":
@@ -118,37 +80,25 @@ const Login = () => {
             navegar("/InicioGuardia");
             break;
           default:
-            alert(`${data.user.rol_usuario} no es un rol reconocido`);
+            Swal.fire({
+              title: 'Rol no reconocido',
+              text: `${dataRol} no es un rol reconocido`,
+              icon: 'warning',
+              confirmButtonText: 'OK'
+            });
             break;
         }
-      } else {
-        console.log("No se obtuvieron datos del inicio de sesión");
       }
     };
     checarRol();
-  }, [isAuthenticated]);
+  }, [dataRol]);
 
-  // recibir datos del registro una vez creado el user
-  // const datosRegister = (e) => {
-  //   console.log(e.usuario);
-  //   setRecibirDatos(e.usuario);
-  // };
-
-  // enviar datos del login para ingresar
   const enviarForm = handleSubmit(async (values) => {
-    // const validationErrors = validateForm();
-
-    // if (Object.keys(validationErrors).length > 0) {
-    //   setErrors(validationErrors);
-    //   return;
-    // }
-
     try {
       const data = await inicioSesion(values, guardarToken);
-      console.log(data);
 
       if (data) {
-        switch (data.user.rol_usuario) {
+        switch (data.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
             break;
@@ -159,7 +109,12 @@ const Login = () => {
             navegar("/InicioGuardia");
             break;
           default:
-            alert(`${data.user.rol_usuario} no es un rol reconocido`);
+            Swal.fire({
+              title: 'Rol no reconocido',
+              text: `${data.rol_usuario} no es un rol reconocido`,
+              icon: 'warning',
+              confirmButtonText: 'OK'
+            });
             break;
         }
       } else {
@@ -167,19 +122,24 @@ const Login = () => {
       }
     } catch (error) {
       setErrorsBack(error.message);
-      console.log(error.message);
     }
   });
 
-  // limpia el mensaje de error de Usuario no encontrado. Registrate! y los valores ingresados
-  // cada vez que la variable cambie se volvera a ejecutar lo que este dentro del useEffect.
   useEffect(() => {
-    if (abrirRegister) {
-      setErrorsBack("");
-      //   setNumId("");
-      //   setContraseña("");
+    if (errorsBack) {
+      Swal.fire({
+        title: 'Ususario no encontrado',
+        text: errorsBack,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      setErrorsBack(""); // Limpiar el mensaje después de mostrarlo
     }
-  }, [abrirRegister]);
+  }, [errorsBack]);
+
+  const cerrarModal = (e) => {
+    setAbrirRegister(e);
+  };
 
   return (
     <>
@@ -187,8 +147,7 @@ const Login = () => {
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
             <Register
-              cerrarModal2={cerrarModal}
-              // datosRegister2={datosRegister}
+              cerrarModal={cerrarModal}
             />
           </div>
         </div>
@@ -199,9 +158,9 @@ const Login = () => {
           abrirRegister ? "opacity-50" : ""
         }`}
       >
-        <div className="bg-opacity-70  p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
+        <div className="bg-opacity-70 p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
           <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
-            <div className="flex gap-4  mb-6 [@media(max-width:381px)]:justify-center">
+            <div className="flex gap-4 mb-6 [@media(max-width:381px)]:justify-center">
               <img
                 src={logoSena}
                 alt="Escudo"
@@ -230,16 +189,7 @@ const Login = () => {
               Leer más...
             </p>
           </div>
-          <div className="w-full lg:w-1/3  bg-white p-6 lg:p-10 rounded-3xl border">
-            {/* mensaje error */}
-            {/* {errorsBack && (
-              <p className="text-red-500 text-lg text-center ">
-                El usuario no existe. Registrate!
-              </p>
-            )} */}
-
-            <h1 className="text-red-500 text-lg text-center">{errorsBack}</h1>
-
+          <div className="w-full lg:w-1/3 bg-white p-6 lg:p-10 rounded-3xl border">
             <h2 className="text-black text-3xl sm:text-4xl lg:text-3xl font-bold mb-8 text-center">
               Iniciar sesión
             </h2>
@@ -254,21 +204,19 @@ const Login = () => {
                 <div className="relative">
                   <input
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
-                      errors.numId ? "border-red-500" : ""
+                      errors.numID ? "border-red-500" : ""
                     }`}
-                    {...register("numID", { required: true })}
+                    {...register("numID", {
+                      required: "El número de identidad es requerido.",
+                    })}
                     id="username"
                     type="number"
                     placeholder="Identificación"
-                    // value={
-                    //   recibirDatos
-                    //     ? recibirDatos.numero_documento_usuario
-                    //     : numId
-                    // }
-                    // onChange={validarNumId}
                   />
-                  {errors.numId && (
-                    <p className="text-red-500 text-sm">{errors.numId}</p>
+                  {errors.numID && (
+                    <p className="text-red-500 text-sm">
+                      {errors.numID.message}
+                    </p>
                   )}
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <i className="fas fa-address-book text-black"></i>
@@ -285,28 +233,28 @@ const Login = () => {
                 <div className="relative">
                   <input
                     className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
-                      errors.contraseña ? "border-red-500" : ""
+                      errors.password ? "border-red-500" : ""
                     }`}
-                    {...register("password", { required: true })}
+                    {...register("password", {
+                      required: "La contraseña es requerida.",
+                    })}
                     id="password"
                     type="password"
                     placeholder="Contraseña"
-                    // value={recibirDatos ? recibirDatos.password : contraseña}
-                    // onChange={validarContraseña}
                   />
-                  {errors.contraseña && (
-                    <p className="text-red-500 text-sm">{errors.contraseña}</p>
+                  {errors.password && (
+                    <p className="text-red-500 text-sm">
+                      {errors.password.message}
+                    </p>
                   )}
-
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <i className="fas f .&&a-lock text-black"></i>
+                    <i className="fas fa-lock text-black"></i>
                   </div>
                 </div>
               </div>
               <button
-                className="w-full hover:bg-green-700  bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
+                className="btn w-full hover:bg-green-700 bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
                 type="submit"
-                // onClick={()=>setErrorsBack("")}
               >
                 Aceptar
               </button>
@@ -318,7 +266,7 @@ const Login = () => {
                     onClick={() => setAbrirRegister(true)}
                     className="hover:text-green-600"
                   >
-                    Registrate.
+                    Regístrate.
                   </button>
                 </div>
               </h2>
@@ -342,4 +290,3 @@ const Login = () => {
 };
 
 export default Login;
-//

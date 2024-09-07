@@ -24,11 +24,10 @@ export const inicioSesion = async (values, guardarToken) => {
 
     if (response.status == 200) {
       console.log("Usuario Logueado correctamente");
-      // console.log(`como Accecerrrrrrrrr ${response.data.user.id}`);
+
       // se accede al objeto, pero no se puede visualizar en consola
       const userAndToken = response.data;
       console.log(userAndToken);
-      
 
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarToken(userAndToken);
@@ -54,7 +53,7 @@ export const inicioSesion = async (values, guardarToken) => {
 // /////////////////////////////////////////// Register
 export const registerUser = async (data) => {
   try {
-    console.log(data);
+    // console.log(data);
 
     // Toma el primer nombre para ponerlo de username
     const userName = data.nombre.split(" ")[0];
@@ -64,10 +63,10 @@ export const registerUser = async (data) => {
       {
         username: userName,
         first_name: data.nombre,
-        tipo_documento_usuario: data.tipoId,
-        numero_documento_usuario: data.numId,
+        tipo_documento_usuario: data.tipoID,
+        numero_documento_usuario: data.numID,
         email: data.correo,
-        password: data.contraseña,
+        password: data.password,
       },
       {
         headers: {
@@ -81,22 +80,16 @@ export const registerUser = async (data) => {
       // enviarDatosLogin(response.data);
       return response;
     } else {
-      alert(response.data.error || "Ocurrió un error desconocido");
+      alert(response.data.error || "Ocurrió un error desconocido en el registro");
     }
   } catch (error) {
     alert(
-      "Error en la solicitud: " + (error.response?.data?.error || error.message)
+      "Error en la solicitud de registro: " + (error.response?.data?.error || error.message)
     );
   }
 };
 
-// export const enviarUser = () => {
-//   const {getTokenStorage} = useAuth();
-//   const datos = getTokenStorage();
-//   console.log(datos);
 
-//   return datos;
-// };
 
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {

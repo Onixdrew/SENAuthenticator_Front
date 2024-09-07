@@ -43,6 +43,8 @@ const AuthProvider = ({ children }) => {
   //   getTokenStorage();
   // });
 
+
+  
   // Guardar el token
   function guardarToken(userAndToken) {
     // console.log(`userrrrrrrrrrrr ${userAndToken.token}`);
@@ -83,12 +85,13 @@ const AuthProvider = ({ children }) => {
           // Verifica que la respuesta fue exitosa
           if (response.status == 200 || response.status == 201) {
             const data = response.data.user.rol_usuario;
+            
 
             // console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
 
             setIsAuthenticated(true);
             setUser(data);
-            console.log(`segundo ${isAuthenticated}`);
+            // console.log(`segundo ${isAuthenticated}`);
 
             // error ciclo infinito
             return data;
@@ -106,13 +109,13 @@ const AuthProvider = ({ children }) => {
 
 
 
-  const register = async (data) => {
-    const res = await registerUser(data);
+  // const registerForm = async (data) => {
+  //   const res = await registerUser(data);
 
-    console.log(res);
+  //   console.log(res);
 
-    // setUser(res);
-  };
+  //   // setUser(res);
+  // };
 
 
 
@@ -137,7 +140,7 @@ const AuthProvider = ({ children }) => {
 
         cerrarSesion,
         getTokenStorage,
-        register,
+        // registerForm,
       }}
     >
       {children}
