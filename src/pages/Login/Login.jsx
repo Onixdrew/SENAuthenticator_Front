@@ -21,7 +21,7 @@ const Login = () => {
   const [abrirRegister, setAbrirRegister] = useState(false);
   const [dataRol, setDataRol] = useState(null);
 
-  const { accessToken, isAuthenticated, user, guardarToken, getTokenStorage } = useAuth();
+  const { accessToken, isAuthenticated, user, setIsAuthenticated, setUser, guardarUserLocal } = useAuth();
   const navegar = useNavigate();
 
   // useEffect(() => {
@@ -58,46 +58,54 @@ const Login = () => {
   //   }
   // }, [isAuthenticated]);
 
-  useEffect(() => {
-    const checar = async () => {
-      const mydata = await getTokenStorage(accessToken);
-      setDataRol(mydata);
-    };
-    checar();
-  }, [accessToken]);
+  // useEffect(() => {
+  //   const checar = async () => {
+  //     const mydata = await getTokenStorage(accessToken);
+  //     setDataRol(mydata);
+  //   };
+  //   checar();
+  // }, [accessToken]);
 
-  useEffect(() => {
-    const checarRol = () => {
-      if (dataRol) {
-        switch (dataRol) {
-          case "Instructor":
-            navegar("/inicioInstructor");
-            break;
-          case "Administrador":
-            navegar("/inicioAdmin");
-            break;
-          case "Guardia de seguridad":
-            navegar("/InicioGuardia");
-            break;
-          default:
-            Swal.fire({
-              title: 'Rol no reconocido',
-              text: `${dataRol} no es un rol reconocido`,
-              icon: 'warning',
-              confirmButtonText: 'OK'
-            });
-            break;
-        }
-      }
-    };
-    checarRol();
-  }, [dataRol]);
+  // useEffect(() => {
+  //   const checarRol = () => {
+  //     if (dataRol) {
+  //       switch (dataRol) {
+  //         case "Instructor":
+  //           navegar("/inicioInstructor");
+  //           break;
+  //         case "Administrador":
+  //           navegar("/inicioAdmin");
+  //           break;
+  //         case "Guardia de seguridad":
+  //           navegar("/InicioGuardia");
+  //           break;
+  //         default:
+  //           Swal.fire({
+  //             title: 'Rol no reconocido',
+  //             text: `${dataRol} no es un rol reconocido`,
+  //             icon: 'warning',
+  //             confirmButtonText: 'OK'
+  //           });
+  //           break;
+  //       }
+  //     }
+  //   };
+  //   checarRol();
+  // }, [dataRol]);
 
-  const enviarForm = handleSubmit(async (values) => {
+  const enviarForm = handleSubmit(async (values, event) => {
+    event.preventDefault(); // Esto evita que el formulario recargue la página.
     try {
-      const data = await inicioSesion(values, guardarToken);
+      const data = await inicioSesion(values, guardarUserLocal);
+
 
       if (data) {
+        // setIsAuthenticated(true)
+        setUser(data)
+        console.log(`uuuuuuuuuser ${user}`);
+        console.log(`daaaaaaaaaaata ${data.rol_usuario}`);
+        
+
         switch (data.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
@@ -110,8 +118,8 @@ const Login = () => {
             break;
           default:
             Swal.fire({
-              title: 'Rol no reconocido',
-              text: `${data.rol_usuario} no es un rol reconocido`,
+              title: 'Este rol no existe',
+              text: `${data.user.rol_usuario} no es un rol reconocido`,
               icon: 'warning',
               confirmButtonText: 'OK'
             });
@@ -209,7 +217,7 @@ const Login = () => {
                     {...register("numID", {
                       required: "El número de identidad es requerido.",
                     })}
-                    id="username"
+                    id="numID"
                     type="number"
                     placeholder="Identificación"
                   />

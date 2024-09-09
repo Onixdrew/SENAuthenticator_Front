@@ -5,6 +5,33 @@ import Footer from '../../components/Footer/Footer';
 
 
 const Home = () => {
+
+    useEffect(() => {
+        const checarRol = () => {
+          if (dataRol) {
+            switch (dataRol) {
+              case "Instructor":
+                navegar("/inicioInstructor");
+                break;
+              case "Administrador":
+                navegar("/inicioAdmin");
+                break;
+              case "Guardia de seguridad":
+                navegar("/InicioGuardia");
+                break;
+              default:
+                Swal.fire({
+                  title: 'Rol no reconocido',
+                  text: `${dataRol} no es un rol reconocido`,
+                  icon: 'warning',
+                  confirmButtonText: 'OK'
+                });
+                break;
+            }
+          }
+        };
+        checarRol();
+      }, [dataRol]);
     return (
         <div>
             <NavbarInicio

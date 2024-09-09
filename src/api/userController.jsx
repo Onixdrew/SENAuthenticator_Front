@@ -4,7 +4,7 @@ import axios from "./axios";
 // SQLite
 // const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
 
-export const inicioSesion = async (values, guardarToken) => {
+export const inicioSesion = async (values, guardarUserLocal) => {
   // console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${values.numID}`);
 
   // const [Datos, setDatos]=useState();
@@ -26,12 +26,12 @@ export const inicioSesion = async (values, guardarToken) => {
       console.log("Usuario Logueado correctamente");
 
       // se accede al objeto, pero no se puede visualizar en consola
-      const userAndToken = response.data;
-      console.log(userAndToken);
+      const dataUser = response.data.user;
+      // console.log(dataUser);
 
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
-      guardarToken(userAndToken);
-      return userAndToken;
+      guardarUserLocal(dataUser);
+      return dataUser;
     } else {
       console.log("El usuario no fue encontrado");
     }
