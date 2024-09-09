@@ -12,8 +12,6 @@ const RutasProtegidas = () => {
     // si esxiste cede el permiso a las rutas,de lo contrario se redirege login
     return isAuthenticated? <Outlet/>: <Navigate to='/Login' replace/>;
 
-    // Permiso con el token del local.
-    // return  token ? <Outlet/>: <Navigate to='/Login'/>;
 }
 
 export default RutasProtegidas;

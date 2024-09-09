@@ -29,7 +29,7 @@ const InicioAdmin = () => {
         </div>
       ) : (
         <p className="text-red-500 ">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Pagina no encontrada.
         </p>
 
         //  se redirecciona al login si no esta autenticado

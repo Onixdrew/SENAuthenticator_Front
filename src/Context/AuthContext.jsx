@@ -13,88 +13,25 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");
 
-  // Verificar el accessToken
-  // Obtener el refreshToken del localStorage y realizar la solicitud al backend
   // useEffect(() => {
-  //   // Obtener el Token del localStorage
-  //   const getRefreshToken = () => {
-  //     const tokenData = localStorage.getItem("token");
-  //     if (tokenData == "undefined") {
-  //       cerrarSesion();
-  //     }
+    const extraerUserStorege = () => {
+      const useStorge = localStorage.getItem("user");
 
-  //     if (tokenData) {
-  //       const token = JSON.parse(tokenData);
+      if (useStorge) {
+        const user = JSON.parse(useStorge);
+        setUser(user);
 
-  //       // console.log(`refresssssssssssss activado ${token}`);
+        console.log(`refresssssssssssss activado ${useStorge}`);
 
-  //       setAccessToken(token);
-  //       // setIsAuthenticated(true);
-  //       return token;
-  //     }
-  //     return null;
-  //   };
-  //   getRefreshToken();
-  // }, [accessToken]);
+        return user;
+      }
+      setIsAuthenticated(false)
 
-  // useEffect(() => {
-  //   getTokenStorage();
-  // });
-
-
-
-  // Enviar el token al back
-  // async function getTokenStorage(accessToken) {
-  //   if (accessToken) {
-  //     try {
-  //     //   console.log(`tokenLocalllllllll ${accessToken}`);
-  //     //   console.log(`primero ${isAuthenticated}`);
-
-  //       if (accessToken) {
-  //         // Configura la instancia de axios para la solicitud
-  //         const response = await axios.get(
-  //           // "https://senauthenticator.onrender.com/api/perfil/",
-  //           "perfil/",
-  //           {
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //               Authorization: `Token ${accessToken}`,
-  //             },
-  //           }
-  //         );
-
-  //         // Verifica que la respuesta fue exitosa
-  //         if (response.status == 200 || response.status == 201) {
-  //           const data = response.data.user.rol_usuario;
-
-  //           // console.log(`desde el authhhhhhhhhhh ${JSON.stringify(data)}`);
-
-  //           setIsAuthenticated(true);
-  //           setUser(data);
-  //           // console.log(`segundo ${isAuthenticated}`);
-
-  //           // error ciclo infinito
-  //           return data;
-  //         } else {
-  //           throw new Error(response.statusText);
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log("Error al validar el Token en el back:", error);
-  //       setIsAuthenticated(false);
-  //       return null;
-  //     }
-  //   }
-  // }
-
-  // const registerForm = async (data) => {
-  //   const res = await registerUser(data);
-
-  //   console.log(res);
-
-  //   // setUser(res);
-  // };
-
+      // cerrarSesion()
+      return null;
+    };
+  //   extraerUserStorege()
+  // },[]);
 
   // Guardar el usuario en el localStorage
   function guardarUserLocal(user) {
@@ -114,29 +51,28 @@ const AuthProvider = ({ children }) => {
     }
   }
 
+  useEffect(() => {
+    const verificarCookie = async () => {
+      try {
+        const response = await axios.get("validarToken/");
+        if (response.status == 200) {
+          console.log("Authenticated:", response.data);
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.log("User not authenticated", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const verificarCookie = async () => {
-  //     try {
-  //       const response = await axios.get("validarToken/");
-  //       if (response.status == 200) {
-  //         console.log("Authenticated:", response.data);
-  //         setIsAuthenticated(true);
-  //       }
-  //     } catch (error) {
-  //       console.log("User not authenticated", error);
-  //     }
-  //   };
-
-  //   verifyAuth(); // Verifica el token al recargar la página
-  // }, []);
+    verificarCookie(); // Verifica el token al recargar la página
+  }, []);
 
   // Cerrar sesión
   function cerrarSesion() {
     setIsAuthenticated(false);
     setAccessToken("");
     setUser(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
 
     return <Navigate to="/Login" />;
   }
@@ -151,7 +87,7 @@ const AuthProvider = ({ children }) => {
         setUser,
         setIsAuthenticated,
         cerrarSesion,
-        
+        extraerUserStorege
       }}
     >
       {children}

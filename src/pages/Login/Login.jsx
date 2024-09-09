@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -21,90 +21,60 @@ const Login = () => {
   const [abrirRegister, setAbrirRegister] = useState(false);
   const [dataRol, setDataRol] = useState(null);
 
-  const { accessToken, isAuthenticated, user, setIsAuthenticated, setUser, guardarUserLocal } = useAuth();
+  const {
+    accessToken,
+    isAuthenticated,
+    user,
+    setIsAuthenticated,
+    setUser,
+    guardarUserLocal,
+    extraerUserStorege,
+  } = useAuth();
   const navegar = useNavigate();
+  // console.log(user.userName);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     if (user.rol_usuario) {
-  //       switch (user.rol_usuario) {
-  //         case "Instructor":
-  //           return <Navigate to="/inicioInstructor" />;
 
-  //         case "Administrador":
-  //           return <Navigate to="/inicioAdmin" />;
+  useEffect(() => {
+    const checarRolStorage = () => {
+      if (isAuthenticated) {
+        const userStorage = extraerUserStorege();
 
-  //         case "Guardia de seguridad":
-  //           return <Navigate to="/InicioGuardia" />;
-
-  //         default:
-  //           break;
-  //       }
-  //     } else if (dataRol) {
-  //       switch (user.rol_usuario) {
-  //         case "Instructor":
-  //           return <Navigate to="/inicioInstructor" />;
-
-  //         case "Administrador":
-  //           return <Navigate to="/inicioAdmin" />;
-
-  //         case "Guardia de seguridad":
-  //           return <Navigate to="/InicioGuardia" />;
-
-  //         default:
-  //           break;
-  //       }
-  //     }
-  //   }
-  // }, [isAuthenticated]);
-
-  // useEffect(() => {
-  //   const checar = async () => {
-  //     const mydata = await getTokenStorage(accessToken);
-  //     setDataRol(mydata);
-  //   };
-  //   checar();
-  // }, [accessToken]);
-
-  // useEffect(() => {
-  //   const checarRol = () => {
-  //     if (dataRol) {
-  //       switch (dataRol) {
-  //         case "Instructor":
-  //           navegar("/inicioInstructor");
-  //           break;
-  //         case "Administrador":
-  //           navegar("/inicioAdmin");
-  //           break;
-  //         case "Guardia de seguridad":
-  //           navegar("/InicioGuardia");
-  //           break;
-  //         default:
-  //           Swal.fire({
-  //             title: 'Rol no reconocido',
-  //             text: `${dataRol} no es un rol reconocido`,
-  //             icon: 'warning',
-  //             confirmButtonText: 'OK'
-  //           });
-  //           break;
-  //       }
-  //     }
-  //   };
-  //   checarRol();
-  // }, [dataRol]);
+        if (userStorage) {
+          switch (userStorage.rol_usuario) {
+            case "Instructor":
+              navegar("/inicioInstructor");
+              break;
+            case "Administrador":
+              navegar("/inicioAdmin");
+              break;
+            case "Guardia de seguridad":
+              navegar("/InicioGuardia");
+              break;
+            default:
+              Swal.fire({
+                title: "Rol no reconocido",
+                text: `${dataRol} no es un rol reconocido`,
+                icon: "warning",
+                confirmButtonText: "OK",
+              });
+              break;
+          }
+        }
+      }
+    };
+    checarRolStorage();
+  }, [isAuthenticated]);
 
   const enviarForm = handleSubmit(async (values, event) => {
     event.preventDefault(); // Esto evita que el formulario recargue la página.
     try {
       const data = await inicioSesion(values, guardarUserLocal);
 
-
       if (data) {
         // setIsAuthenticated(true)
-        setUser(data)
+        setUser(data);
         console.log(`uuuuuuuuuser ${user}`);
         console.log(`daaaaaaaaaaata ${data.rol_usuario}`);
-        
 
         switch (data.rol_usuario) {
           case "Instructor":
@@ -118,10 +88,10 @@ const Login = () => {
             break;
           default:
             Swal.fire({
-              title: 'Este rol no existe',
+              title: "Este rol no existe",
               text: `${data.user.rol_usuario} no es un rol reconocido`,
-              icon: 'warning',
-              confirmButtonText: 'OK'
+              icon: "warning",
+              confirmButtonText: "OK",
             });
             break;
         }
@@ -136,10 +106,10 @@ const Login = () => {
   useEffect(() => {
     if (errorsBack) {
       Swal.fire({
-        title: 'Ususario no encontrado',
+        title: "Ususario no encontrado",
         text: errorsBack,
-        icon: 'error',
-        confirmButtonText: 'OK'
+        icon: "error",
+        confirmButtonText: "OK",
       });
       setErrorsBack(""); // Limpiar el mensaje después de mostrarlo
     }
@@ -154,9 +124,7 @@ const Login = () => {
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <Register
-              cerrarModal={cerrarModal}
-            />
+            <Register cerrarModal={cerrarModal} />
           </div>
         </div>
       )}
