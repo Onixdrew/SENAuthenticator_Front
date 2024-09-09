@@ -3,13 +3,15 @@ import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
-import { useAuth } from "../../../auth/authProvider";
+
 import { getAllUsers } from "../../../api/userController";
+import { useAuth } from "../../../Context/AuthContext";
 
 const ReportesInstructor = () => {
-  const rol2 = "Instructor";
 
-  const Autenticador = useAuth();
+
+  const {isAuthenticated, user} = useAuth();
+
 
   const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,7 +94,7 @@ const ReportesInstructor = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
+      {isAuthenticated && (user.rol_usuario === "Instructor" || user) ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">

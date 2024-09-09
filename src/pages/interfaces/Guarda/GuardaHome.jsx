@@ -3,12 +3,12 @@ import Navbar from "../../../components/Navbar/Navbar";
 import foto from "../../../../public/img/emmanuel.jpg";
 import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
-import { useAuth } from "../../../auth/authProvider";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Admin = () => {
-  // Traer rol de la base de datos del usuario para comprobar
-  const rol3 = "Guardia de seguridad";
-  const Autenticador = useAuth();
+ 
+
+  const {isAuthenticated, user} = useAuth();
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Admin = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol3 === "Guardia de seguridad" ? (
+      {isAuthenticated && (user.rol_usuario === "Guardia de seguridad" || user) ? (
         <div className="flex flex-col min-h-screen">
           <Navbar
             item1="Registro Facial"

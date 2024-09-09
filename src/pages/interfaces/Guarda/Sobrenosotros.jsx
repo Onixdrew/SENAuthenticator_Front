@@ -1,16 +1,14 @@
 import React from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import { useAuth } from "../../../auth/authProvider";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Sobrenosotros = () => {
 
-  // Traer rol de la base de datos del usuario para comprobar
-  const rol3 = "Guardia de seguridad";
-  const Autenticador = useAuth();
+  const {isAuthenticated, user} = useAuth();
   
   return (
     <>
-      {Autenticador.isAuthenticated && rol3 === "Guardia de seguridad" ? (
+      {isAuthenticated && (user.rol_usuario === "Guardia de seguridad" || user) ? (
         <div className="min-h-screen bg-gray-100">
           <Navbar
             item1="Registro Facial"

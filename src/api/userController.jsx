@@ -1,26 +1,19 @@
-import axios from "axios";
-// import { useState } from "react";
-
+import axios from "./axios";
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
 // const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
 
-// Postgrest 
-const API_URL = "https://senauthenticator.onrender.com/api/inicioSesion/";
-
-
-export const inicioSesion = async (numId, contraseña, Autenticador) => {
+export const inicioSesion = async (values, guardarUserLocal) => {
+  // console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${values.numID}`);
 
   // const [Datos, setDatos]=useState();
   try {
-
     // creo la peticcion http
-    const response = await axios.post(
-      API_URL,
+    const response = await axios.post("inicioSesion/",
       {
-        numero_documento_usuario: numId,
-        password: contraseña,
+        numero_documento_usuario: values.numID,
+        password: values.password,
       },
       {
         headers: {
@@ -29,12 +22,16 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
       }
     );
 
-    if (response) {
+    if (response.status == 200) {
       console.log("Usuario Logueado correctamente");
 
+      // se accede al objeto, pero no se puede visualizar en consola
+      const dataUser = response.data.user;
+      // console.log(dataUser);
+
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
-      Autenticador.guardarToken(response.data);
-      return await response.data;
+      guardarUserLocal(dataUser);
+      return dataUser;
     } else {
       console.log("El usuario no fue encontrado");
     }
@@ -53,59 +50,51 @@ export const inicioSesion = async (numId, contraseña, Autenticador) => {
   }
 };
 
-
-
-// SQLite
-// const API_URL2 = "https://backprojecto.onrender.com/api/usuario/";
-
-// Postgrest 
-const API_URL2 = "https://senauthenticator.onrender.com/api/usuario/";
-
 // /////////////////////////////////////////// Register
-export const registerUser = async (nombre, tipoId, numId, correo, contraseña, enviarDatosLogin) => {
+export const registerUser = async (data) => {
   try {
-    console.log(nombre, tipoId, numId, correo, contraseña, enviarDatosLogin);
-    
-    // Toma el primer nombre para ponerlo de username
-    const userName = nombre.split(" ")[0];
+    // console.log(data);
 
-    const response = await axios.post(API_URL2,
+    // Toma el primer nombre para ponerlo de username
+    const userName = data.nombre.split(" ")[0];
+
+    const response = await axios.post(
+      "usuario/",
       {
         username: userName,
-        first_name: nombre,
-        tipo_documento_usuario: tipoId,
-        numero_documento_usuario: numId,
-        email: correo,
-        password: contraseña,
+        first_name: data.nombre,
+        tipo_documento_usuario: data.tipoID,
+        numero_documento_usuario: data.numID,
+        email: data.correo,
+        password: data.password,
       },
       {
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       }
-
     );
 
     if (response.status === 201 || response.status === 200) {
       alert("Usuario creado correctamente");
-      enviarDatosLogin(response.data);
-      return response
+      // enviarDatosLogin(response.data);
+      return response;
     } else {
-      alert(response.data.error || "Ocurrió un error desconocido");
+      alert(response.data.error || "Ocurrió un error desconocido en el registro");
     }
   } catch (error) {
-    alert("Error en la solicitud: " + (error.response?.data?.error || error.message));
+    alert(
+      "Error en la solicitud de registro: " + (error.response?.data?.error || error.message)
+    );
   }
 };
-
-
 
 
 
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get(API_URL2, {
+    const response = await axios.get("usuario/", {
       headers: {
         "Content-Type": "application/json",
       },

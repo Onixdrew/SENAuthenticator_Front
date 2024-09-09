@@ -1,31 +1,23 @@
 import React, { useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import { useAuth } from "../../../auth/authProvider";
+
 import { inicioSesion } from "../../../api/userController";
+import { useAuth } from "../../../Context/AuthContext";
 // import Footer from "../../../components/Footer/Footer";
 
 
 
 const InicioIntructor = () => {
 
-
-
-  // traer el rol de la base de datos
-  const rol2 = "Instructor";
-
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const Autenticador = useAuth();
-  const nombre = "Daniel"
-  const nombre2 = inicioSesion()
+  const {isAuthenticated, user} = useAuth();
 
-  useEffect(()=>{
-    
-  })
 
+  
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
+      {isAuthenticated && (user.rol_usuario === "Instructor" || user) ? (
         <div>
           <Navbar
             item1="inicio"
@@ -36,7 +28,7 @@ const InicioIntructor = () => {
 
           <div className="p-4">
             <h1 className="text-2xl font-bold text-left mb-4 inline-block">
-              Bienvenido {nombre}
+              Bienvenid@ {user.username}
             </h1>
           </div>
         </div>
