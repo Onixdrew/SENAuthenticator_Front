@@ -24,7 +24,7 @@ const InicioAdmin = () => {
           ></Navbar>
 
           <h1 className="text-2xl font-bold text-center mt-10">
-            {`Inicio Administrador ${user.username}`}
+            {`Bienvenid@ ${user.username}`}
           </h1>
         </div>
       ) : (
