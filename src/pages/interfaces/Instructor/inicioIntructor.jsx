@@ -17,7 +17,7 @@ const InicioIntructor = () => {
 
   return (
     <>
-      {isAuthenticated && (user.rol_usuario === "Instructor" || user) ? (
+      {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div>
           <Navbar
             item1="inicio"
@@ -34,7 +34,7 @@ const InicioIntructor = () => {
         </div>
       ) : (
         <p className="text-red-500 ">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Pagina no encontrada.
         </p>
 
         //  se redirecciona al login si no esta autenticado

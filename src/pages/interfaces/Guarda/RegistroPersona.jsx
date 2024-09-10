@@ -3,12 +3,11 @@ import Navbar from "../../../components/Navbar/Navbar";
 import { useAuth } from "../../../Context/AuthContext";
 
 const Inicio = () => {
-
-  const {isAuthenticated, user} = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <>
-      {isAuthenticated && (user.rol_usuario === "Guardia de seguridad" || user) ? (
+      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
         <div className="bg-gray-100 h-screen flex flex-col">
           <Navbar
             item1="Registro Facial"
@@ -101,7 +100,7 @@ const Inicio = () => {
         </div>
       ) : (
         <p className="text-red-500 text-center mt-4">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Página no encontrada.
         </p>
       )}
     </>

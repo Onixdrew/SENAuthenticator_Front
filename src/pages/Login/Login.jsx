@@ -29,27 +29,29 @@ const Login = () => {
     setUser,
     guardarUserLocal,
     extraerUserStorege,
+    loading,
   } = useAuth();
+
   const navegar = useNavigate();
-  // console.log(user.userName);
 
 
   useEffect(() => {
     const checarRolStorage = () => {
       if (isAuthenticated) {
-        const userStorage = extraerUserStorege();
+        // const userStorage = extraerUserStorege();
 
-        if (userStorage) {
-          switch (userStorage.rol_usuario) {
+        // console.log(user);
+        // console.log(isAuthenticated);
+        if (user) {
+          switch (user.rol_usuario) {
             case "Instructor":
-              navegar("/inicioInstructor");
-              break;
+              return navegar("/inicioInstructor");
             case "Administrador":
-              navegar("/inicioAdmin");
-              break;
+              return navegar("/inicioAdmin");
+
             case "Guardia de seguridad":
-              navegar("/InicioGuardia");
-              break;
+              return navegar("/InicioGuardia");
+
             default:
               Swal.fire({
                 title: "Rol no reconocido",
@@ -71,10 +73,7 @@ const Login = () => {
       const data = await inicioSesion(values, guardarUserLocal);
 
       if (data) {
-        // setIsAuthenticated(true)
         setUser(data);
-        console.log(`uuuuuuuuuser ${user}`);
-        console.log(`daaaaaaaaaaata ${data.rol_usuario}`);
 
         switch (data.rol_usuario) {
           case "Instructor":
@@ -88,7 +87,7 @@ const Login = () => {
             break;
           default:
             Swal.fire({
-              title: "Este rol no existe",
+              title: "Error",
               text: `${data.user.rol_usuario} no es un rol reconocido`,
               icon: "warning",
               confirmButtonText: "OK",
@@ -103,10 +102,11 @@ const Login = () => {
     }
   });
 
+  
   useEffect(() => {
     if (errorsBack) {
       Swal.fire({
-        title: "Ususario no encontrado",
+        title: "Error",
         text: errorsBack,
         icon: "error",
         confirmButtonText: "OK",

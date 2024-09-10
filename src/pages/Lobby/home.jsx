@@ -4,18 +4,18 @@ import foto from "../../../public/img/Reconocimiento Facial.webp";
 import Footer from "../../components/Footer/Footer";
 import Swal from "sweetalert2";
 import { useAuth } from "../../Context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { isAuthenticated, extraerUserStorege } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navegar = useNavigate();
 
   useEffect(() => {
     const checarRol = () => {
       if (isAuthenticated) {
-        const userStorage = extraerUserStorege();
-        if (userStorage) {
-          switch (userStorage.rol_usuario) {
+    
+        if (user) {
+          switch (user.rol_usuario) {
             case "Instructor":
               navegar("/inicioInstructor");
               break;
@@ -28,7 +28,7 @@ const Home = () => {
             default:
               Swal.fire({
                 title: "Rol no reconocido",
-                text: `${dataRol} no es un rol reconocido`,
+                text: `Inicia sesión`,
                 icon: "warning",
                 confirmButtonText: "OK",
               });
@@ -39,6 +39,8 @@ const Home = () => {
     };
     checarRol();
   }, [isAuthenticated]);
+
+
 
   return (
     <div>

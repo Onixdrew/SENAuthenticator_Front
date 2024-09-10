@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import axios from "./axios";
 
 // /////////////////////////////////////////// inicioSesion
@@ -27,7 +28,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
 
       // se accede al objeto, pero no se puede visualizar en consola
       const dataUser = response.data.user;
-      // console.log(dataUser);
+    
 
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarUserLocal(dataUser);
@@ -36,6 +37,14 @@ export const inicioSesion = async (values, guardarUserLocal) => {
       console.log("El usuario no fue encontrado");
     }
   } catch (error) {
+
+    Swal.fire({
+      title: "Eror",
+      text: error ,
+      icon: "warning",
+      confirmButtonText: "OK",
+    });
+
     if (error.response) {
       // La solicitud se realizó y el servidor respondió con un código de estado
       // que cae fuera del rango de 2xx
