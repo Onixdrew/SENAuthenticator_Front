@@ -1,80 +1,65 @@
-// AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from "react";
-// import axios from "../api/axios";
 import axios from "../api/axios";
-import { registerUser } from "../api/userController";
-import { json, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
-// Crear el contexto
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");
-
-  // useEffect(() => {
-    const extraerUserStorege = () => {
-      const useStorge = localStorage.getItem("user");
-
-      if (useStorge) {
-        const user = JSON.parse(useStorge);
-        setUser(user);
-
-        console.log(`refresssssssssssss activado ${useStorge}`);
-
-        return user;
-      }
-      setIsAuthenticated(false)
-
-      // cerrarSesion()
-      return null;
-    };
-  //   extraerUserStorege()
-  // },[]);
-
-  // Guardar el usuario en el localStorage
-  function guardarUserLocal(user) {
-    // console.log(`userrrrrrrrrrrr ${userAndToken.token}`);
-
-    if (user) {
-      const datosUser = {
-        userName: user.username,
-        rol_usuario: user.rol_usuario,
-      };
-
-      localStorage.setItem("user", JSON.stringify(datosUser));
-
-      // setAccessToken(userAndToken.token);
-      setIsAuthenticated(true);
-      setUser(user);
-    }
-  }
+  const [loading, setLoading] = useState(true); // Cambiar estado inicial a `true` porque está validando el token
 
   useEffect(() => {
     const verificarCookie = async () => {
       try {
         const response = await axios.get("validarToken/");
-        if (response.status == 200) {
-          console.log("Authenticated:", response.data);
+        if (response.status === 200) {
+          const storedUser = localStorage.getItem("user");
+
+          if (storedUser) {
+            const user = JSON.parse(storedUser);
+            setUser(user);
+          }
+
           setIsAuthenticated(true);
+        } else {
+          cerrarSesion();
         }
       } catch (error) {
         console.log("User not authenticated", error);
+        cerrarSesion(); // Si hay un error, cerrar sesión
+      } finally {
+        setLoading(false); // Terminar el estado de carga después de intentar validar
       }
     };
 
     verificarCookie(); // Verifica el token al recargar la página
   }, []);
 
-  // Cerrar sesión
-  function cerrarSesion() {
+  const guardarUserLocal = (user) => {
+    if (user) {
+      const datosUser = {
+        username: user.username,
+        rol_usuario: user.rol_usuario,
+      };
+      localStorage.setItem("user", JSON.stringify(datosUser));
+      setIsAuthenticated(true);
+      setUser(user);
+    }
+  };
+
+  const cerrarSesion = () => {
     setIsAuthenticated(false);
     setAccessToken("");
     setUser(null);
     localStorage.removeItem("user");
-
     return <Navigate to="/Login" />;
+  };
+
+  // Muestra un componente de carga mientras `loading` sea true
+  if (loading) {
+    return <div className="text-center mt-10 font-bold">Cargando...</div>;
   }
 
   return (
@@ -82,12 +67,10 @@ const AuthProvider = ({ children }) => {
       value={{
         isAuthenticated,
         user,
-        accessToken,
         guardarUserLocal,
         setUser,
         setIsAuthenticated,
         cerrarSesion,
-        extraerUserStorege
       }}
     >
       {children}
@@ -95,12 +78,8 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook personalizado para usar el contexto
-// export const useAuth = () => useContext(AuthContext);
-
 export const useAuth = () => {
   const context = useContext(AuthContext);
-
   if (!context) {
     throw new Error("useAuth debe usarse dentro de un AuthProvider");
   }

@@ -38,7 +38,7 @@ const Admin = () => {
 
   return (
     <>
-      {isAuthenticated && (user.rol_usuario === "Guardia de seguridad" || user) ? (
+      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
         <div className="flex flex-col min-h-screen">
           <Navbar
             item1="Registro Facial"
@@ -118,7 +118,7 @@ const Admin = () => {
         </div>
       ) : (
         <p className="text-red-500 text-center mt-4">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Página no encontrada.
         </p>
       )}
     </>

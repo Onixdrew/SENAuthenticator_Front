@@ -29,7 +29,7 @@ const ReportesAdmin = () => {
         // Se obtiene solo los aprendices
         if (result) {
           const aprendices = result.filter(
-            (registro) => registro.rol_usuario === "Aprendiz"
+            (registro) => registro.rol_usuario === tipoPersona
           );
           setDatos(aprendices);
           setDatosFiltrados(aprendices);
@@ -43,7 +43,7 @@ const ReportesAdmin = () => {
     };
 
     recibirDatos();
-  }, [refrescar]);
+  }, [refrescar, tipoPersona]);
 
   // se filtra por numero de documento
   useEffect(() => {
@@ -88,7 +88,7 @@ const ReportesAdmin = () => {
 
   return (
     <>
-      {isAuthenticated && (user.rol_usuario === "Administrador" || user) ? (
+      {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
@@ -125,8 +125,8 @@ const ReportesAdmin = () => {
                   <option value="Instructor">Instructor</option>
                   <option value="Personal Aseo">Personal Aseo</option>
                 </select>
-                
-                {tipoPersona =="Aprendiz" &&(
+
+                {tipoPersona == "Aprendiz" && (
                   <select
                     name=""
                     id=""
@@ -139,7 +139,7 @@ const ReportesAdmin = () => {
                 )}
 
                 <input
-                  type="text"
+                  type="number"
                   className="border rounded-lg pl-4 bg-white text-black w-full md:w-auto"
                   placeholder="# Documento"
                   value={documentoFiltro}
@@ -215,7 +215,7 @@ const ReportesAdmin = () => {
                     <tbody className="bg-gray-100 text-center">
                       {datosFiltrados.map((registro, index) => (
                         <tr key={index} className="border-b border-gray-300">
-                          <td className="px-4 py-2">{index}</td>
+                          <td className="px-4 py-2">{index + 1}</td>
                           <td className="px-4 py-2 font-semibold">
                             {registro.first_name}
                           </td>
@@ -282,7 +282,7 @@ const ReportesAdmin = () => {
         </div>
       ) : (
         <p className="text-red-500 text-center mt-4">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Página no encontrada.
         </p>
       )}
     </>

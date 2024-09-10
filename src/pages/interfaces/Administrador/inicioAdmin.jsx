@@ -3,18 +3,13 @@ import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { useAuth } from "../../../Context/AuthContext";
 
-
 const InicioAdmin = () => {
-
- 
-  
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const {isAuthenticated, user} = useAuth();
-
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <>
-      {isAuthenticated && (user.rol_usuario === "Administrador" || user)  ? (
+      {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div>
           <Navbar
             item1="inicio"
@@ -28,12 +23,7 @@ const InicioAdmin = () => {
           </h1>
         </div>
       ) : (
-        <p className="text-red-500 ">
-          Error: Pagina no encontrada.
-        </p>
-
-        //  se redirecciona al login si no esta autenticado
-        // <Navigate to="/" />
+        <p className="text-red-500 ">Error: Pagina no encontrada.</p>
       )}
     </>
   );
