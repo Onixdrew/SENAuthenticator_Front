@@ -9,6 +9,8 @@ import Register from "../../components/Register/Register";
 import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 
+import Loader from "../../components/Loader/Loader";
+
 const Login = () => {
   const {
     register,
@@ -71,6 +73,7 @@ const Login = () => {
     event.preventDefault(); // Esto evita que el formulario recargue la página.
     try {
       const data = await inicioSesion(values, guardarUserLocal);
+      console.log(data);
 
       if (data) {
         setUser(data);
@@ -97,8 +100,10 @@ const Login = () => {
       } else {
         console.log("No se obtuvieron datos del inicio de sesión");
       }
+      setLoading(false)
     } catch (error) {
       setErrorsBack(error.message);
+      console.log(error.message);
     }
   });
 
@@ -121,6 +126,9 @@ const Login = () => {
 
   return (
     <>
+
+    { loading && <Loader/> }
+    
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
