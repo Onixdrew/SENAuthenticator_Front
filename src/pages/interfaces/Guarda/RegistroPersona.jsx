@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import { useAuth } from "../../../auth/authProvider";
 import axios from "axios";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Inicio = () => {
   const [oficinas, setOficinas] = useState([]);
-  const rol3 = "Guardia de seguridad";
-  const Autenticador = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     // Función para obtener datos de la API
@@ -24,7 +23,7 @@ const Inicio = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol3 === "Guardia de seguridad" ? (
+      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
         <div className="bg-gray-100 h-screen flex flex-col">
           <Navbar
             item1="Registro Facial"
@@ -137,7 +136,7 @@ const Inicio = () => {
         </div>
       ) : (
         <p className="text-red-500 text-center mt-4">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Página no encontrada.
         </p>
       )}
     </>

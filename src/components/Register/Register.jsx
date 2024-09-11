@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { registerUser } from "../../api/userController"
+// import { registerUser } from "../../api/userController";
+import { useAuth } from "../../Context/AuthContext";
+import { useForm } from "react-hook-form";
+import { registerUser } from "../../api/userController";
 
-const Register = ({ cerrarModal2, datosRegister2 }) => {
+const Register = ({ cerrarModal }) => {
   const [passwordError, setPasswordError] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [tipoId, setTipoId] = useState("");
-  const [numId, setNumId] = useState("");
-  const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
+  const [datosForm, setDatosForm] = useState();
 
+  // hooks de react-hook-form
+  const { register, handleSubmit } = useForm();
 
   const validarContraseña = (e) => {
     if (e.target.value !== contraseña) {
@@ -19,36 +21,21 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
     }
   };
 
-  const enviarForm = async (e) => {
-    e.preventDefault();
+  const enviarForm = handleSubmit(async (values) => {
+    setDatosForm(values);
+    // values.preventDefault();
 
-    
+    // const response = await registerForm(data);
+    const response = await registerUser(values);
 
-  
-  
-
-    const response = await registerUser(
-      nombre,
-      tipoId,
-      numId,
-      correo,
-      contraseña,
-      enviarDatosLogin
-    );
-    console.log(`Hola desde el  register:  ${response}`);
-    
-    if (response || response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       // se cierra el modal
       cerrarModalProp(false);
     }
-  };
+  });
 
-  const cerrarModalProp = (cerrarModal) => {
-    cerrarModal2(cerrarModal);
-  };
-
-  const enviarDatosLogin = (datos) => {
-    datosRegister2(datos);
+  const cerrarModalProp = (closeModal) => {
+    cerrarModal(closeModal);
   };
 
   return (
@@ -65,8 +52,8 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
             <i className="fas fa-times"></i>
           </button>
         </div>
-        <form className="space-y-6 p-10" onSubmit={enviarForm}>
-          <div className="flex flex-col md:gap-y-7 lg:gap-x-10 md:gap-x-10 lg:gap-y-10">
+        <form className="space-y-6 p-10 " onSubmit={enviarForm}>
+          <div className="flex flex-col  [@media(max-width:767px)]:space-y-6 md:gap-y-7 lg:gap-x-10 md:gap-x-10 lg:gap-y-10">
             <div>
               <label
                 className="block text-sm font-medium text-gray-600"
@@ -79,8 +66,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 id="first-name"
                 type="text"
                 required
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                {...register("nombre", { required: true })}
               />
             </div>
             <div>
@@ -94,8 +80,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 className="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 id="id-type"
                 required
-                value={tipoId}
-                onChange={(e) => setTipoId(e.target.value)}
+                {...register("tipoID", { required: true })}
               >
                 <option value="">Seleccionar...</option>
                 <option value="Tarjeta de Identidad">
@@ -121,8 +106,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 id="id-number"
                 type="number"
                 required
-                value={numId}
-                onChange={(e) => setNumId(e.target.value)}
+                {...register("numID", { required: true })}
               />
             </div>
 
@@ -138,8 +122,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 id="email"
                 type="email"
                 required
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
+                {...register("correo", { required: true })}
               />
             </div>
             <div>
@@ -153,7 +136,7 @@ const Register = ({ cerrarModal2, datosRegister2 }) => {
                 className="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 id="password"
                 type="password"
-                value={contraseña}
+                {...register("password", { required: true })}
                 onChange={(e) => setContraseña(e.target.value)}
                 required
               />

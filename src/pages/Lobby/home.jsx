@@ -1,19 +1,58 @@
 import React from 'react';
-import NavbarInicio from "../../components/NavbarLobby/NavbarInicio";
-import foto from "../../../public/img/Reconocimiento Facial.webp";
+import NavbarInicio from "../../components/NavbarLobby/NavbarInicio"
+import foto from "../../../public/img/Reconocimiento Facial.webp"
 import Footer from '../../components/Footer/Footer';
+import Swal from "sweetalert2";
+import { useAuth } from "../../Context/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Home = () => {
-    return (
-        <div>
-            <NavbarInicio
-                item1="Nuestros Servicios"
-                item2="Sobre la App"
-                item3="Testimonios"
-                ruta1="#nuestros-servicios"
-                ruta2="#sobre-la-app"
-                ruta3="#testimonios"
-                color="" />
+  const { isAuthenticated, user } = useAuth();
+  const navegar = useNavigate();
+
+  useEffect(() => {
+    const checarRol = () => {
+      if (isAuthenticated) {
+    
+        if (user) {
+          switch (user.rol_usuario) {
+            case "Instructor":
+              navegar("/inicioInstructor");
+              break;
+            case "Administrador":
+              navegar("/inicioAdmin");
+              break;
+            case "Guardia de seguridad":
+              navegar("/InicioGuardia");
+              break;
+            default:
+              Swal.fire({
+                title: "Rol no reconocido",
+                text: `Inicia sesión`,
+                icon: "warning",
+                confirmButtonText: "OK",
+              });
+              break;
+          }
+        }
+      }
+    };
+    checarRol();
+  }, [isAuthenticated]);
+
+
+
+  return (
+    <div>
+      <NavbarInicio
+       item1="Nuestros Servicios"
+       item2="Sobre la App"
+       item3="Testimonios"
+       ruta1="#nuestros-servicios"
+       ruta2="#sobre-la-app"
+       ruta3="#testimonios"
+       color="" 
+      />
 
             <main className="">
                 <section className="  mb-12 h-[80vh] flex justify-center items-center w-full ">

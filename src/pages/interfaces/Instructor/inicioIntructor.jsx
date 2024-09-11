@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
-import { useAuth } from "../../../auth/authProvider";
+import { useAuth } from "../../../Context/AuthContext";
 import { Link, Navigate } from "react-router-dom";
 import {
   PieChart,
@@ -12,9 +12,16 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const InicioInstructor = () => {
-  const Autenticador = useAuth();
+const InicioIntructor = () => {
+
+
+
+  // traer el rol de la base de datos
   const rol2 = "Instructor";
+
+  // los hooks solo pueden ser llamados dentro de un componente funcional
+  const {isAuthenticated, user} = useAuth();
+
 
   const data = [
     { name: "Mañana", Aprendices: 45 },
@@ -23,14 +30,13 @@ const InicioInstructor = () => {
   ];
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
 
-  if (!Autenticador.isAuthenticated) {
-    return <Navigate to="/" />;
-  }
+
+
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Instructor" ? (
-        <div className="min-h-screen flex flex-col">
+      {isAuthenticated && user.rol_usuario === "Instructor"  ? (
+        <div>
           <Navbar
             item1="Inicio"
             item2="Reportes"
@@ -101,8 +107,8 @@ const InicioInstructor = () => {
           <Footer />
         </div>
       ) : (
-        <p className="text-red-500 text-center mt-4">
-          Error: No tienes permiso para acceder a esta página.
+        <p className="text-red-500 ">
+          Error: Pagina no encontrada.
         </p>
       )}
     </>

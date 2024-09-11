@@ -15,19 +15,17 @@ import {
 
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
-import { useAuth } from "../../../../auth/authProvider";
+import { useAuth } from "../../../../Context/AuthContext";
 
 const GraficasAdmin = () => {
   const [fechaInicio, setfechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
   const [selectedFicha, setSelectedFicha] = useState("All");
   const [selectedJornada, setSelectedJornada] = useState("All");
-  
-  // traer el rol de la base de datos
-  const rol2 = "Administrador";
+  const [tipoPersona, setTipoPersona] = useState("Aprendiz");
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
-  const Autenticador = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const data = [
     {
@@ -74,7 +72,7 @@ const GraficasAdmin = () => {
 
   return (
     <>
-      {Autenticador.isAuthenticated && rol2 === "Administrador" ? (
+      {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div>
           <Navbar
             item1="Inicio"
@@ -86,7 +84,7 @@ const GraficasAdmin = () => {
           />
 
           {/* Filtros Avanzados */}
-          <form className="flex flex-col md:flex-row sm:px-10 gap-4 justify-center mt-6 mb-10">
+          <form className="flex flex-col [@media(max-width:425px)]:px-12 md:flex-row sm:px-10 gap-4 justify-center mt-6 mb-10">
             <div className="flex flex-col w-full md:w-auto">
               <label
                 htmlFor="jornada"
@@ -107,20 +105,44 @@ const GraficasAdmin = () => {
             </div>
 
             <div className="flex flex-col w-full md:w-auto">
-              <label htmlFor="ficha" className="text-gray-600 mb-1 opacity-50">
-                Ficha
+              <label
+                htmlFor="personas"
+                className="text-gray-600 mb-1 opacity-50"
+              >
+                Personas
               </label>
               <select
-                id="ficha"
+                id="personas"
                 className="bg-white p-3 border border-gray-300 rounded-lg w-full"
-                value={selectedFicha}
-                onChange={(e) => setSelectedFicha(e.target.value)}
+                vvalue={tipoPersona}
+                onChange={(e) => setTipoPersona(e.target.value)}
               >
-                <option value="2669742">2669742</option>
-                <option value="2669756">2669756</option>
-                <option value="2669723">2669723</option>
+                <option value="Aprendiz">Aprendiz</option>
+                <option value="Instructor">Instructor</option>
+                <option value="Personal Aseo">Personal Aseo</option>
               </select>
             </div>
+
+            {tipoPersona == "Aprendiz" && (
+              <div className="flex flex-col w-full md:w-auto">
+                <label
+                  htmlFor="ficha"
+                  className="text-gray-600 mb-1 opacity-50"
+                >
+                  Ficha
+                </label>
+                <select
+                  id="ficha"
+                  className="bg-white p-3 border border-gray-300 rounded-lg w-full"
+                  value={selectedFicha}
+                  onChange={(e) => setSelectedFicha(e.target.value)}
+                >
+                  <option value="2669742">2669742</option>
+                  <option value="2669756">2669756</option>
+                  <option value="2669723">2669723</option>
+                </select>
+              </div>
+            )}
 
             <div className="flex flex-col w-full md:w-auto">
               <label
@@ -231,7 +253,7 @@ const GraficasAdmin = () => {
                 </ResponsiveContainer>
               </div>
 
-              <div className="chart-container p-2 bg-white rounded-lg shadow-md">
+              <div className="chart-container  p-2 bg-white rounded-lg shadow-md">
                 <ResponsiveContainer width="100%" height={400}>
                   <PieChart>
                     <Pie
@@ -257,18 +279,19 @@ const GraficasAdmin = () => {
             </div>
           </main>
 
-          <div className="mt-72">
+          <div className="mt-80  ">
             <Footer />
           </div>
         </div>
       ) : (
         <p className="text-red-500 ">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Pagina no encontrada.
         </p>
 
         //  se redirecciona al login si no esta autenticado
         // <Navigate to="/" />
-      )};
+      )}
+      ;
     </>
   );
 };

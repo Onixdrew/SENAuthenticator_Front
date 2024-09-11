@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
+import { useAuth } from "../../../Context/AuthContext";
 import { useAuth } from "../../../auth/authProvider";
 import { getAllUsers } from "../../../api/userController";
 import Loader from "../../../components/Loader/Loader";
 
 const Sobrenosotros = () => {
-  const rol3 = "Guardia de seguridad";
-  const Autenticador = useAuth();
+  const { isAuthenticated, user } = useAuth();
   
   const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +85,7 @@ const Sobrenosotros = () => {
   
   return (
     <>
-      {Autenticador.isAuthenticated && rol3 === "Guardia de seguridad" ? (
+      {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
         <div className="min-h-screen bg-gray-100">
           <Navbar
             item1="Registro Facial"
@@ -135,8 +135,8 @@ const Sobrenosotros = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-gray-100">
-                    {registrosActuales.map((registro) => (
-                      <tr key={registro.numero_documento_usuario} className="border-b border-gray-300">
+                    {registrosActuales.map((registro,index) => (
+                      <tr key={index} className="border-b border-gray-300">
                         <td className="px-4 py-2 font-semibold">{registro.first_name}</td>
                         <td className="px-4 py-2 text-center">{registro.numero_documento_usuario}</td>
                         <td className="px-4 py-2 text-center">05/06/2020</td>
@@ -178,7 +178,7 @@ const Sobrenosotros = () => {
         </div>
       ) : (
         <p className="text-red-500 text-center mt-4">
-          Error: No tienes permiso para acceder a esta página.
+          Error: Página no encontrada.
         </p>
       )}
     </>
