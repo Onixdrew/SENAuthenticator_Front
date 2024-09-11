@@ -24,7 +24,7 @@ const InicioIntructor = () => {
             item2="Reportes"
             ruta2="/ReportesInstructor"
             color="activo"
-          ></Navbar>
+          ></Navbar> 
 
           <div className="p-4">
             <h1 className="text-2xl font-bold text-left mb-4 inline-block">

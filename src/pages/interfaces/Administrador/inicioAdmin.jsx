@@ -6,6 +6,7 @@ import { useAuth } from "../../../Context/AuthContext";
 const InicioAdmin = () => {
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const { isAuthenticated, user } = useAuth();
+  
 
   return (
     <>
