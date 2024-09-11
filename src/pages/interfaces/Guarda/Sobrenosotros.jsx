@@ -1,10 +1,87 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import { useAuth } from "../../../Context/AuthContext";
+import { getAllUsers } from "../../../api/userController";
+import Loader from "../../../components/Loader/Loader";
 
 const Sobrenosotros = () => {
   const { isAuthenticated, user } = useAuth();
+  
+  const [datos, setDatos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [documentoFiltro, setDocumentoFiltro] = useState("");
+  const [datosFiltrados, setDatosFiltrados] = useState([]);
+  const [refrescar, setRefrescar] = useState(false);
+  
+  // Estados para la paginación
+  const [paginaActual, setPaginaActual] = useState(1);
+  const registrosPorPagina = 5;
+  
+  const printRef = useRef();
 
+  useEffect(() => {
+    const recibirDatos = async () => {
+      try {
+        const result = await getAllUsers();
+        if (result) {
+          const aprendices = result.filter((registro) => registro.rol_usuario === "Aprendiz");
+          setDatos(aprendices);
+          setDatosFiltrados(aprendices);
+        }
+      } catch (error) {
+        console.error("Error al cargar los datos:", error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    recibirDatos();
+  }, [refrescar]);
+  
+  // Filtra por número de documento
+  useEffect(() => {
+    if (documentoFiltro) {
+      setDatosFiltrados(
+        datos.filter((registro) =>
+          registro.numero_documento_usuario.toString().includes(documentoFiltro)
+        )
+      );
+    } else {
+      setDatosFiltrados(datos);
+    }
+  }, [documentoFiltro, datos]);
+  
+  // Actualiza los usuarios
+  const actualizarUsers = () => {
+    setLoading(true);
+    setRefrescar((prevRefresh) => !prevRefresh); // Alterna el valor de `refrescar`
+  };
+  
+  // Calcular el número total de páginas
+  const totalPaginas = Math.ceil(datosFiltrados.length / registrosPorPagina);
+  
+  // Obtener los registros correspondientes a la página actual
+  const indiceUltimoRegistro = paginaActual * registrosPorPagina;
+  const indicePrimerRegistro = indiceUltimoRegistro - registrosPorPagina;
+  const registrosActuales = datosFiltrados.slice(
+    indicePrimerRegistro,
+    indiceUltimoRegistro
+  );
+  
+  // Funciones para cambiar de página
+  const irAPaginaSiguiente = () => {
+    if (paginaActual < totalPaginas) {
+      setPaginaActual(paginaActual + 1);
+    }
+  };
+  
+  const irAPaginaAnterior = () => {
+    if (paginaActual > 1) {
+      setPaginaActual(paginaActual - 1);
+    }
+  };
+  
   return (
     <>
       {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
@@ -12,75 +89,91 @@ const Sobrenosotros = () => {
           <Navbar
             item1="Registro Facial"
             item2="Registro Personas"
-            item3="Mas"
+            item3="Informes"
             ruta1="/InicioGuardia"
             ruta2="/ReconocimientoGuardia"
-            ruta3="/Mas"
+            ruta3="/Informes"
             color=""
           />
+  
+          <div className="max-w-full mx-auto px-4 md:px-6">
+            <form className="flex justify-center mb-4">
+              <input
+                type="text"
+                className="text-center border rounded-lg pl-4 bg-white text-black w-full md:w-1/2 lg:w-1/3 xl:w-1/4 py-2 px-4 shadow-sm focus:outline-none focus:ring-2"
+                placeholder="# Documento"
+                value={documentoFiltro}
+                onChange={(e) => setDocumentoFiltro(e.target.value)}
+              />
+            </form>
 
-          <main className="p-8 max-w-5xl mx-auto">
-            <section className="mb-12 flex flex-col md:flex-row items-center">
-              <div className="w-full md:w-1/2 mb-6 md:mb-0">
-                <img
-                  src="https://apd-images.imgix.net/uploads/sites/2/2021/01/ramas_ia_1.jpg?auto=compress%2Cformat&crop=edges&fit=crop&ixlib=php-1.1.0&w=900&s=0655022506ec76e0f2e64d5735c1465f"
-                  alt="Tecnología Avanzada"
-                  className="object-cover w-full h-64 rounded-lg shadow-lg"
-                />
+            {loading && (
+              <div className="flex justify-center">
+                <Loader />
               </div>
-              <div className="w-full md:w-1/2 md:pl-8">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                  Sobre Nosotros
-                </h1>
-                <p className="text-lg text-gray-700">
-                  Bienvenido a la sección sobre nosotros. Aquí podrás conocer
-                  más sobre nuestra empresa, nuestra misión, visión y valores.
-                  Estamos dedicados a proporcionar un excelente servicio y a
-                  innovar en el campo de la tecnología de reconocimiento facial.
-                </p>
-              </div>
-            </section>
+            )}
 
-            <section className="mb-12">
-              <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-                Nuestra Misión
-              </h2>
-              <div className="flex items-center space-x-4">
-                <img
-                  src="https://www.imprentaonline.net/blog/wp-content/webpc-passthru.php?src=https://www.imprentaonline.net/blog/wp-content/uploads/DALL%C2%B7E-2023-10-16-10.41.49-Illustration-depicting-a-humanoid-robot-with-half-of-its-face-transparent-revealing-intricate-circuits-and-gears-inside.-The-robot-is-holding-a-light-1.png&nocache=1"
-                  alt="Nuestra Misión"
-                  className="w-32 h-32 object-cover rounded-full shadow-md"
-                />
-                <p className="text-base text-gray-600">
-                  Nuestra misión es liderar la industria de la seguridad
-                  mediante el uso de tecnologías avanzadas y ofrecer soluciones
-                  efectivas para nuestros clientes.
-                </p>
-              </div>
-            </section>
+            {error && (
+              <p className="text-red-500 text-center mt-4">Error: {error}</p>
+            )}
 
-            <section className="mb-12">
-              <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-                Nuestra Visión
-              </h2>
-              <div className="flex items-center space-x-4">
-                <img
-                  src="https://hanwhavisionlatam.com/wp-content/uploads/2023/01/aplicaciones-de-camaras-e-inteligencia-artificial-en-retail-1110x555-1@2x.jpg"
-                  alt="Nuestra Visión"
-                  className="w-32 h-32 object-cover rounded-full shadow-md"
-                />
-                <p className="text-base text-gray-600">
-                  Buscamos ser la empresa de referencia en soluciones de
-                  reconocimiento facial a nivel global, destacándonos por
-                  nuestra innovación y compromiso con la excelencia.
-                </p>
+            <div className="relative max-w-full mt-10 mb-20 overflow-x-auto">
+              <div className="max-h-[400px] overflow-y-auto">
+                <table
+                  className="w-full table-auto border-collapse bg-white rounded-lg shadow-md"
+                  ref={printRef}
+                >
+                  <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
+                    <tr>
+                      <th className="px-4 py-2 text-left">Nombre</th>
+                      <th className="px-4 py-2 text-center">Número Identificación</th>
+                      <th className="px-4 py-2 text-center">Fecha Entrada</th>
+                      <th className="px-4 py-2 text-center">Fecha Salida</th>
+                      <th className="px-4 py-2 text-center">Hora Entrada</th>
+                      <th className="px-4 py-2 text-center">Hora Salida</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-gray-100">
+                    {registrosActuales.map((registro,index) => (
+                      <tr key={index} className="border-b border-gray-300">
+                        <td className="px-4 py-2 font-semibold">{registro.first_name}</td>
+                        <td className="px-4 py-2 text-center">{registro.numero_documento_usuario}</td>
+                        <td className="px-4 py-2 text-center">05/06/2020</td>
+                        <td className="px-4 py-2 text-center">05/06/2021</td>
+                        <td className="px-4 py-2 text-center">6:59 am</td>
+                        <td className="px-4 py-2 text-center">1:00 pm</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <nav className="flex items-center justify-between pt-4">
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Mostrando {indicePrimerRegistro + 1}-
+                    {indiceUltimoRegistro > datosFiltrados.length
+                      ? datosFiltrados.length
+                      : indiceUltimoRegistro}{" "}
+                    de {datosFiltrados.length}
+                  </span>
+                  <div className="inline-flex">
+                    <button
+                      onClick={irAPaginaAnterior}
+                      disabled={paginaActual === 1}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-blue-200"
+                    >
+                      Anterior
+                    </button>
+                    <button
+                      onClick={irAPaginaSiguiente}
+                      disabled={paginaActual === totalPaginas}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-blue-200"
+                    >
+                      Siguiente
+                    </button>
+                  </div>
+                </nav>
               </div>
-            </section>
-          </main>
-
-          <footer className="bg-gray-800 text-white text-center py-4">
-            <p>© 2024 Nuestra Empresa. Todos los derechos reservados.</p>
-          </footer>
+            </div>
+          </div>
         </div>
       ) : (
         <p className="text-red-500 text-center mt-4">

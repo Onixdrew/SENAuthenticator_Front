@@ -55,6 +55,11 @@ const Footer = () => {
               </svg>
             </a>
           </div>
+          {/* <section>
+          <h2 className="text-xl font-semibold mb-4">Contacto</h2>
+          <p>Teléfono: <a href="tel:+123456789" className="text-blue-500">+123 456 789</a></p>
+          <p>Email: <a href="mailto:contacto@tuempresa.com" className="text-blue-500">contacto@tuempresa.com</a></p>
+        </section> */}
         </nav>
       </footer>
     </>

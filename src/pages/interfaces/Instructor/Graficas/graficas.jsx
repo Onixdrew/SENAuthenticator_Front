@@ -261,9 +261,6 @@ const GraficasInstructor = () => {
         <p className="text-red-500 ">
           Error: No tienes permiso para acceder a esta página.
         </p>
-
-        //  se redirecciona al login si no esta autenticado
-        // <Navigate to="/" />
       )}
       ;
     </>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
-
+import Register from "../../components/Register/Register"; // Asegúrate de importar el componente Register
 
 const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2, color3 }) => {
     // Estado para controlar la visibilidad del menú móvil
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
+    const [abrirRegister, setAbrirRegister] = useState(false);
 
     // Función para alternar el estado del menú móvil
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -26,8 +27,21 @@ const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2,
         };
     }, []);
 
+    // Función para cerrar el modal de registro
+    const cerrarModal = (e) => {
+        setAbrirRegister(e);
+    };
+
     return (
         <>
+            {abrirRegister && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                    <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
+                        <Register cerrarModal2={cerrarModal} />
+                    </div>
+                </div>
+            )}
+
             <div className="flex w-full z-50 flex-col">
                 <nav className="flex items-center justify-between border-b bg-[rgb(39,169,0)] p-4">
                     <div className="flex items-center xl:ml-16">
@@ -35,17 +49,18 @@ const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2,
                         <h1 className="text-xl ml-2 font-medium text-white">SENAuthenticator</h1>
                     </div>
 
-                    
                     <div className="flex gap-10 justify-center items-center">
                         <div className="hidden md:flex space-x-14">
-                            <a href="#nuestros-servicios"
+                            <a
+                                href="#nuestros-servicios"
                                 to={ruta1}
                                 className={`text-xl font-medium ${color === "activo" ? "text-red-700" : "text-white"
                                     } hover:text-green-800`}
                             >
                                 {item1}
                             </a>
-                            <a href="#sobre-la-app"
+                            <a
+                                href="#sobre-la-app"
                                 to={ruta2}
                                 className={`text-xl font-medium ${color2 === "activo" ? "text-red-700" : "text-white"
                                     } hover:text-green-800`}
@@ -53,6 +68,7 @@ const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2,
                                 {item2}
                             </a>
                             <a
+                                href="#testimonios"
                                 to={ruta3}
                                 className={`text-xl font-medium ${color3 === "activo" ? "text-red-700" : "text-white"
                                     } hover:text-green-800`}
@@ -63,10 +79,22 @@ const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2,
 
                         <div>
                             <Link to="/Login">
-                                <button className="w-full hover:bg-green-700 bg-gradient-to-r bg-[rgb(58,183,44)] text-white font-bold p-3 rounded-full text-lg">
+                                <button className="w-fullhover:text-green-800 rounded-btn hover:bg-white  hover:text-lime-600 bg-gradient-to-r
+                                 bg-green text-[rgb(255,255,255)] font-medium py-3 px-5 rounded-full text-lg">
                                     Iniciar Sesión
                                 </button>
                             </Link>
+                        </div>
+
+                        <div>
+                            <button
+                                className="w-fullhover:text-green-800 rounded-btn hover:bg-white  hover:text-lime-600 bg-gradient-to-r
+                                 bg-green text-[rgb(255,255,255)] font-medium py-3 px-5 rounded-full text-lg"
+                                type="button"
+                                onClick={() => setAbrirRegister(true)}
+                            >
+                                Registrarse
+                            </button>
                         </div>
                     </div>
 
@@ -89,7 +117,6 @@ const NavbarInicio = ({ item1, item2, item3, ruta1, ruta2, ruta3, color, color2,
                         </button>
                     </div>
 
-                    
                     {isMenuOpen && (
                         <div ref={menuRef} className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg">
                             <Link

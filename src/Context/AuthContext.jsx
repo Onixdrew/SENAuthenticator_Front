@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "../api/axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import Loader from "../components/Loader/Loader";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState("");
   const [loading, setLoading] = useState(true); // Cambiar estado inicial a `true` porque está validando el token
 
   useEffect(() => {
@@ -51,7 +51,6 @@ const AuthProvider = ({ children }) => {
 
   const cerrarSesion = () => {
     setIsAuthenticated(false);
-    setAccessToken("");
     setUser(null);
     localStorage.removeItem("user");
     return <Navigate to="/Login" />;
@@ -59,7 +58,7 @@ const AuthProvider = ({ children }) => {
 
   // Muestra un componente de carga mientras `loading` sea true
   if (loading) {
-    return <div className="text-center mt-10 font-bold">Cargando...</div>;
+    return <div className="text-center mt-10 font-bold"><Loader></Loader></div>;
   }
 
   return (

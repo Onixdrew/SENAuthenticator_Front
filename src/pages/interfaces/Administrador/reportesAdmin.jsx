@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 import { getAllUsers } from "../../../api/userController";
+import Loader from "../../../components/Loader/Loader";
+import ReactToPrint from "react-to-print";
+import * as XLSX from 'xlsx';
 import { useAuth } from "../../../Context/AuthContext";
 
 const ReportesAdmin = () => {
+
   const { isAuthenticated, user } = useAuth();
 
+  // const [datos, setDatos] = useState([]);
   const [datos, setDatos] = useState([]);
   const [datosFiltrados, setDatosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,9 +22,13 @@ const ReportesAdmin = () => {
   const [refrescar, setRefrescar] = useState(false);
   const [tipoPersona, setTipoPersona] = useState("Aprendiz");
 
+
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);
   const registrosPorPagina = 5;
+
+  // Referencia para impresión
+  const printRef = useRef();
 
   useEffect(() => {
     const recibirDatos = async () => {
@@ -59,7 +68,7 @@ const ReportesAdmin = () => {
 
   const actualizarUsers = () => {
     setLoading(true);
-    setRefrescar((prevRefresh) => !prevRefresh); // Alterna el valor de `refrescar`
+    setRefrescar((prevRefresh) => !prevRefresh);
   };
 
   // Calcular el número total de páginas
@@ -86,19 +95,30 @@ const ReportesAdmin = () => {
     }
   };
 
+
+
   return (
     <>
       {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
-          <div className="relative">
-            <div className="sticky top-0 z-40 bg-white">
-              <Navbar
-                item1="inicio"
-                item2="Reportes"
-                ruta1="/inicioAdmin"
-                color2="activo"
-              />
-            </div>
+          <Navbar
+            item1="Inicio"
+            item2="Reportes"
+            ruta1="/inicioAdmin"
+            ruta2="/ReportesAdmin"
+            color2="activo"
+          />
+
+          <div className="max-w-full mx-auto px-4 md:px-6">
+
+            {loading && (
+              <div className="flex justify-center">
+                <Loader />
+              </div>
+            )}
+            {error && (
+              <p className="text-red-500 text-center mt-4">Error: {error}</p>
+            )}
 
             <div className="max-w-full mx-auto px-4 md:px-6">
               <form
@@ -179,11 +199,8 @@ const ReportesAdmin = () => {
               </div>
 
               {loading && (
-                <div className="flex justify-center items-center mt-10">
-                  <div className="loader text-center"></div>
-                  <p className="text-gray-400 z-50 text-lg font-serif mt-4">
-                    Cargando...
-                  </p>
+                <div className="flex justify-center">
+                  <Loader />
                 </div>
               )}
 
@@ -191,12 +208,27 @@ const ReportesAdmin = () => {
                 <p className="text-red-500 text-center mt-4">Error: {error}</p>
               )}
 
+              {/* Botones de descarga */}
+              <div className="flex justify-between mt-6">
+                <ReactToPrint
+                  trigger={() => (
+                    <button className="btn bg-red-500 text-white hover:bg-red-600 hover:shadow-lg transition ease-in-out duration-150">
+                      PDF
+                    </button>
+                  )}
+                  content={() => printRef.current}
+                />
+              </div>
+
               {/* Contenedor con desplazamiento vertical */}
               <div className="relative max-w-full mt-10 mb-20 overflow-x-auto">
                 <div className="max-h-[400px] overflow-y-auto">
                   {" "}
                   {/* Ajusta la altura según sea necesario */}
-                  <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md">
+                  <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md" 
+                  ref={printRef}
+                  
+                  >
                     <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
                       <tr>
                         <th className="px-4 py-2 text-center">Puesto</th>
