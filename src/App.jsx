@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
+
 // Importaciones dinámicas
 const InicioIntructor = lazy(() => import("./pages/interfaces/Instructor/inicioIntructor.jsx"));
 const ReportesInstructor = lazy(() => import("./pages/interfaces/Instructor/reportesInstructor.jsx"));
@@ -20,7 +21,7 @@ const Home = lazy(() => import("./pages/Lobby/home.jsx"));
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <Routes>
           {/* Publicas */}
           <Route path="/" element={<Home />} />
