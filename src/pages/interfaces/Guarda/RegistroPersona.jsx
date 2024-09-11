@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import { useAuth } from "../../../auth/authProvider";
+import axios from "axios";
 
 const Inicio = () => {
-  // Traer rol de la base de datos del usuario para comprobar
+  const [oficinas, setOficinas] = useState([]);
   const rol3 = "Guardia de seguridad";
   const Autenticador = useAuth();
+
+  useEffect(() => {
+    // Función para obtener datos de la API
+    const fetchOficinas = async () => {
+      try {
+        const response = await axios.get("https://senauthenticator.onrender.com/api/oficina/");
+        setOficinas(response.data); // Asumiendo que `response.data` es un array
+      } catch (error) {
+        console.error("Error al obtener las oficinas", error);
+      }
+    };
+
+    fetchOficinas();
+  }, []); // Dependencias vacías para que solo se ejecute una vez al montar el componente
 
   return (
     <>
@@ -14,10 +29,10 @@ const Inicio = () => {
           <Navbar
             item1="Registro Facial"
             item2="Registro Personas"
-            item3="Mas"
+            item3="Informes"
             ruta1="/InicioGuardia"
             ruta2="/ReconocimientoGuardia"
-            ruta3="/Mas"
+            ruta3="/Informes"
             color=""
           />
 
@@ -42,24 +57,44 @@ const Inicio = () => {
                       id="nombresC"
                       name="nombresC"
                       required
-                      className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-green-500 sm:text-sm"
                     />
                   </div>
+
+                  <label
+                    htmlFor="documento"
+                    className="block text-sm font-medium text-black"
+                  >
+                    Documento de identificación
+                  </label>
+                  <input
+                    type="text"
+                    id="documento"
+                    name="documento"
+                    required
+                    className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-green-500 sm:text-sm"
+                  />
+
                   <div>
                     <label
-                      htmlFor="documento"
+                      htmlFor="oficina"
                       className="block text-sm font-medium text-black"
                     >
-                      Documento de identificación
+                      Oficina
                     </label>
-                    <input
-                      type="text"
-                      id="documento"
-                      name="documento"
-                      required
-                      className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+                    <select
+                      id="oficina"
+                      className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-green-500 sm:text-sm"
+                    >
+                      <option value="">Seleccione una oficina</option>
+                      {oficinas.map((oficina) => (
+                        <option key={oficina.id} value={oficina.id}>
+                          {oficina.nombre_oficina}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+
                   <div className="mb-4">
                     <label
                       htmlFor="diligencia"
@@ -71,7 +106,7 @@ const Inicio = () => {
                       id="diligencia"
                       name="diligencia"
                       rows="3"
-                      className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-green-500 sm:text-sm"
                     ></textarea>
                   </div>
                   <div>

@@ -8,6 +8,7 @@ import { useAuth } from "../../../auth/authProvider";
 const Admin = () => {
   // Traer rol de la base de datos del usuario para comprobar
   const rol3 = "Guardia de seguridad";
+  const nombre = "Emmanuel"
   const Autenticador = useAuth();
   const videoRef = useRef(null);
 
@@ -43,12 +44,18 @@ const Admin = () => {
           <Navbar
             item1="Registro Facial"
             item2="Registro Personas"
-            item3="Más"
+            item3="Informes"
             ruta1="/InicioGuardia"
             ruta2="/ReconocimientoGuardia"
-            ruta3="/Mas"
+            ruta3="/Informes"
             color=""
           />
+
+          <div className="p-4">
+            <h1 className="text-2xl font-bold text-left mb-4 inline-block">
+              Bienvenido {nombre}
+            </h1>
+          </div>
           <div className="flex p-4 gap-4 justify-between">
             {/* Sección de cámara */}
             <div className="camara p-4 w-2/3">

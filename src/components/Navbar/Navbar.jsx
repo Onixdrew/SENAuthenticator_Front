@@ -93,12 +93,16 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
                 role="button"
                 className="btn btn-ghost btn-circle  avatar"
               >
+                <div className="avatar">
                 <div className="w-16 rounded-full">
                   <img
                     alt="Profile"
                     src="https://www.shutterstock.com/image-photo/young-police-caucasian-man-isolated-260nw-2391831079.jpg"
                   />
                 </div>
+
+                </div>
+    
               </div>
               <ul
                 tabIndex={0}

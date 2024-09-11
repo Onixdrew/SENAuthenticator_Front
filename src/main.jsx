@@ -83,7 +83,7 @@ const router = createBrowserRouter([
         element: <InicioGuardia></InicioGuardia>,
       },
       {
-        path: "/Mas",
+        path: "/Informes",
         element: <Sobrenosotros></Sobrenosotros>,
       },   
     ],
