@@ -3,13 +3,11 @@ import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
-
 import { getAllUsers } from "../../../api/userController";
 import { useAuth } from "../../../Context/AuthContext";
 import Loader from "../../../components/Loader/Loader";
 
 const ReportesInstructor = () => {
-
   const { isAuthenticated, user } = useAuth();
   const printRef = useRef(null);
 
@@ -30,11 +28,11 @@ const ReportesInstructor = () => {
         const result = await getAllUsers();
 
         if (result) {
-          setDatos(result.filter((registro) => registro.rol_usuario === "Aprendiz"))
-          setDatosFiltrados(
-            result.filter((registro) => registro.rol_usuario === "Aprendiz")
+          const filtrados = result.filter(
+            (registro) => registro.rol_usuario === "Aprendiz"
           );
-
+          setDatos(filtrados);
+          setDatosFiltrados(filtrados);
         }
       } catch (error) {
         console.error("Error al cargar los datos:", error.message);
@@ -51,14 +49,14 @@ const ReportesInstructor = () => {
   useEffect(() => {
     if (documentoFiltro) {
       setDatosFiltrados(
-        datosFiltrados.filter((registro) =>
+        datos.filter((registro) =>
           registro.numero_documento_usuario.toString().includes(documentoFiltro)
         )
       );
     } else {
-      setDatosFiltrados(datosFiltrados);
+      setDatosFiltrados(datos);
     }
-  }, [documentoFiltro, datosFiltrados]);
+  }, [documentoFiltro, datos]);
 
   const actualizarUsers = () => {
     setLoading(true);
@@ -128,133 +126,131 @@ const ReportesInstructor = () => {
               </select>
 
               <Link to="/GraficasInstructor">
-                  <button className="btn bg-white flex-1 md:flex-none">
-                    Graficas
-                  </button>
-                </Link>
+                <button className="btn bg-white flex-1 md:flex-none">
+                  Graficas
+                </button>
+              </Link>
             </form>
 
-            <div className="mt-6 flex  bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto  ">
-                <div className="flex flex-col mx-auto">
-                  <p className="text-center text-2xl font-semibold">
-                    0/{datos.length}
-                  </p>
-                  <h1 className="text-center text-lg">Ingresos</h1>
-                </div>
-
-                <button title="Refrescar">
-                  <MdOutlineRefresh className="text-3xl ml-10"  onClick={actualizarUsers}  />
-                </button>
+            <div className="mt-6 flex bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto">
+              <div className="flex flex-col mx-auto">
+                <p className="text-center text-2xl font-semibold">
+                  0/{datos.length}
+                </p>
+                <h1 className="text-center text-lg">Ingresos</h1>
               </div>
 
-              {loading && (
+              <button title="Refrescar" onClick={actualizarUsers}>
+                <MdOutlineRefresh className="text-3xl ml-10" />
+              </button>
+            </div>
+
+            {loading && (
               <div className="flex justify-center">
                 <Loader />
               </div>
             )}
 
+            {error && (
+              <p className="text-red-500 text-center mt-4">
+                Error: {error}
+              </p>
+            )}
 
-              {error && (
-                <p className="text-red-500 text-center mt-4">Error: {error}</p>
-              )}
-
-              {/* Contenedor con desplazamiento vertical */}
-              <div className="relative max-w-full mt-10 mb-20 overflow-x-auto">
-                <div className="max-h-[400px] overflow-y-auto">
-                  {" "}
-                  {/* Ajusta la altura según sea necesario */}
-                  <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md"
-                    ref={printRef}
-                    >
-                    <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
-                      <tr>
-                        <th className="px-4 py-2 text-center">Puesto</th>
-                        <th className="px-4 py-2 text-center">Nombre</th>
-                        <th className="px-4 py-2 text-center">
-                          Tipo Identificación
-                        </th>
-                        <th className="px-4 py-2 text-center">
-                          Número Identificación
-                        </th>
-                        <th className="px-4 py-2 text-center">Ingreso</th>
-                        <th className="px-4 py-2 text-center">Fecha</th>
-                        <th className="px-4 py-2 text-center">Hora</th>
+            {/* Contenedor con desplazamiento vertical */}
+            <div className="relative max-w-full mt-10 mb-20 overflow-x-auto">
+              <div className="max-h-[400px] overflow-y-auto">
+                <table
+                  className="w-full table-auto border-collapse bg-white rounded-lg shadow-md"
+                  ref={printRef}
+                >
+                  <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
+                    <tr>
+                      <th className="px-4 py-2 text-center">Puesto</th>
+                      <th className="px-4 py-2 text-center">Nombre</th>
+                      <th className="px-4 py-2 text-center">
+                        Tipo Identificación
+                      </th>
+                      <th className="px-4 py-2 text-center">
+                        Número Identificación
+                      </th>
+                      <th className="px-4 py-2 text-center">Ingreso</th>
+                      <th className="px-4 py-2 text-center">Fecha</th>
+                      <th className="px-4 py-2 text-center">Hora</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-gray-100 text-center">
+                    {registrosActuales.map((registro, index) => (
+                      <tr key={index} className="border-b border-gray-300">
+                        <td className="px-4 py-2">{index + 1}</td>
+                        <td className="px-4 py-2 font-semibold">
+                          {registro.first_name}
+                        </td>
+                        <td className="px-4 py-2">
+                          {registro.tipo_documento_usuario}
+                        </td>
+                        <td className="px-4 py-2">
+                          {registro.numero_documento_usuario}
+                        </td>
+                        <td className="px-4 py-2 text-green-500 flex items-center justify-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="#7DDF0C"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path stroke="none" d="M0 0h24v24H0z" />
+                            <path d="M5 12l5 5l10 -10" />
+                          </svg>
+                        </td>
+                        <td className="px-4 py-2">05/06/2020</td>
+                        <td className="px-4 py-2">10:00</td>
                       </tr>
-                    </thead>
-                    <tbody className="bg-gray-100 text-center">
-                      {datosFiltrados.map((registro, index) => (
-
-                        <tr key={index} className="border-b border-gray-300">
-                          <td className="px-4 py-2">{index+1}</td>
-                          <td className="px-4 py-2 font-semibold">
-                            {registro.first_name}
-                          </td>
-                          <td className="px-4 py-2">
-                            {registro.tipo_documento_usuario}
-                          </td>
-                          <td className="px-4 py-2">
-                            {registro.numero_documento_usuario}
-                          </td>
-                          <td className="px-4 py-2 text-green-500 flex items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="w-5 h-5"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="#7DDF0C"
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path stroke="none" d="M0 0h24v24H0z" />
-                              <path d="M5 12l5 5l10 -10" />
-                            </svg>
-                          </td>
-                          <td className="px-4 py-2">05/06/2020</td>
-                          <td className="px-4 py-2">10:00</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <nav className="flex items-center justify-between pt-4">
-                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Mostrando {indicePrimerRegistro + 1}-
-                      {indiceUltimoRegistro > datosFiltrados.length
-                        ? datosFiltrados.length
-                        : indiceUltimoRegistro}{" "}
-                      de {datosFiltrados.length}
-                    </span>
-                    <div className="inline-flex">
-                      <button
-                        onClick={irAPaginaAnterior}
-                        disabled={paginaActual === 1}
-                        className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-blue-200   "
-                      >
-                        Anterior
-                      </button>
-                      <button
-                        onClick={irAPaginaSiguiente}
-                        disabled={paginaActual === totalPaginas}
-                        className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-blue-200"
-                      >
-                        Siguiente
-                      </button>
-                    </div>
-                  </nav>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
+                <nav className="flex items-center justify-between pt-4">
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Mostrando {indicePrimerRegistro + 1}-
+                    {indiceUltimoRegistro > datosFiltrados.length
+                      ? datosFiltrados.length
+                      : indiceUltimoRegistro}{" "}
+                    de {datosFiltrados.length}
+                  </span>
+                  <div className="inline-flex">
+                    <button
+                      onClick={irAPaginaAnterior}
+                      disabled={paginaActual === 1}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-blue-200"
+                    >
+                      Anterior
+                    </button>
+                    <button
+                      onClick={irAPaginaSiguiente}
+                      disabled={paginaActual === totalPaginas}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-blue-200"
+                    >
+                      Siguiente
+                    </button>
+                  </div>
+                </nav>
               </div>
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : "mt-72"} `}>
+          <div className={`${loading ? "mt-52" : "mt-72"}`}>
             <Footer />
           </div>
         </div>
       ) : (
-  <p className="text-red-500 text-center mt-4">
-    Error: No tienes permiso para acceder a esta página.
-  </p>
-)}
+        <p className="text-red-500 text-center mt-4">
+          Error: No tienes permiso para acceder a esta página.
+        </p>
+      )}
     </>
   );
 };

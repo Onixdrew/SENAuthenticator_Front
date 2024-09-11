@@ -72,7 +72,7 @@ const Login = () => {
   const enviarForm = handleSubmit(async (values, event) => {
     event.preventDefault(); // Esto evita que el formulario recargue la página.
     try {
-      const data = await inicioSesion(numId, contraseña, Autenticador);
+      const data = await inicioSesion(values, guardarUserLocal);
       console.log(data);
 
       if (data) {
@@ -128,6 +128,7 @@ const Login = () => {
     <>
 
     { loading && <Loader/> }
+    
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">

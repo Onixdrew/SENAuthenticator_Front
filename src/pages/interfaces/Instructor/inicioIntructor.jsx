@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { useAuth } from "../../../Context/AuthContext";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   PieChart,
   Pie,
@@ -15,9 +15,6 @@ import {
 const InicioIntructor = () => {
 
 
-
-  // traer el rol de la base de datos
-  const rol2 = "Instructor";
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const {isAuthenticated, user} = useAuth();
@@ -115,4 +112,4 @@ const InicioIntructor = () => {
   );
 };
 
-export default InicioInstructor;
+export default InicioIntructor;

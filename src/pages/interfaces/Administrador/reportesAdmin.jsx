@@ -110,78 +110,15 @@ const ReportesAdmin = () => {
           />
 
           <div className="max-w-full mx-auto px-4 md:px-6">
-            <form
-              className="flex flex-col gap-4 justify-center mt-12 md:flex-row md:gap-6 lg:gap-10"
-            >
-              <select className="bg-white p-3 border rounded-lg w-full md:w-auto">
-                <option value="">Mañana</option>
-                <option value="">Tarde</option>
-                <option value="">Noche</option>
-              </select>
-              <select className="bg-white p-3 border rounded-lg w-full md:w-auto">
-                <option value="">2669742</option>
-                <option value="">2669756</option>
-                <option value="">2669723</option>
-              </select>
-
-              <input
-                type="text"
-                className="border rounded-lg pl-4 bg-white text-black w-full md:w-auto"
-                placeholder="# Documento"
-                value={documentoFiltro}
-                onChange={(e) => setDocumentoFiltro(e.target.value)}
-              />
-
-              <select className="bg-white p-3 border rounded-lg w-full md:w-auto">
-                <option value="">Hoy</option>
-                <option value="">Semanal</option>
-                <option value="">Mensual</option>
-              </select>
-
-              <Link to="/GraficasAdmin">
-                <button className="btn bg-white flex-1 md:flex-none">
-                  Gráficas
-                </button>
-              </Link>
-            </form>
-
-            <div className="mt-6 flex items-center justify-between bg-gray-100 border border-gray-300 rounded-lg p-2 shadow-md max-w-xs mx-auto">
-              <div className="flex flex-col">
-                <p className="text-center text-xl font-semibold">
-                  0/{datosFiltrados.length}
-                </p>
-                <h1 className="text-center text-sm">Ingresos</h1>
-              </div>
-
-              <button title="Refrescar" className="ml-4 p-1">
-                <MdOutlineRefresh
-                  className="text-2xl"
-                  onClick={actualizarUsers}
-                />
-              </button>
-            </div>
 
             {loading && (
               <div className="flex justify-center">
                 <Loader />
               </div>
             )}
-
             {error && (
               <p className="text-red-500 text-center mt-4">Error: {error}</p>
             )}
-
-            {/* Botones de descarga */}
-            <div className="flex justify-between mt-6">
-              <ReactToPrint
-                trigger={() => (
-                  <button className="btn bg-red-500 text-white hover:bg-red-600 hover:shadow-lg transition ease-in-out duration-150">
-                    PDF
-                  </button>
-                )}
-                content={() => printRef.current}
-              />
-            </div>
 
             <div className="max-w-full mx-auto px-4 md:px-6">
               <form
@@ -270,7 +207,7 @@ const ReportesAdmin = () => {
               {error && (
                 <p className="text-red-500 text-center mt-4">Error: {error}</p>
               )}
-              
+
               {/* Botones de descarga */}
               <div className="flex justify-between mt-6">
                 <ReactToPrint
@@ -288,7 +225,10 @@ const ReportesAdmin = () => {
                 <div className="max-h-[400px] overflow-y-auto">
                   {" "}
                   {/* Ajusta la altura según sea necesario */}
-                  <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md">
+                  <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md" 
+                  ref={printRef}
+                  
+                  >
                     <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
                       <tr>
                         <th className="px-4 py-2 text-center">Puesto</th>

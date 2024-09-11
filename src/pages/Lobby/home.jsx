@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NavbarInicio from "../../components/NavbarLobby/NavbarInicio"
 import foto from "../../../public/img/Reconocimiento Facial.webp"
 import Footer from '../../components/Footer/Footer';
@@ -53,6 +53,8 @@ const Home = () => {
        ruta3="#testimonios"
        color="" 
       />
+
+      
 
             <main className="">
                 <section className="  mb-12 h-[80vh] flex justify-center items-center w-full ">

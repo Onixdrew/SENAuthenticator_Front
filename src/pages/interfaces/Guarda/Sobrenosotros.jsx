@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import { useAuth } from "../../../Context/AuthContext";
-import { useAuth } from "../../../auth/authProvider";
 import { getAllUsers } from "../../../api/userController";
 import Loader from "../../../components/Loader/Loader";
 
