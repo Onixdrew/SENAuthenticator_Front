@@ -83,12 +83,12 @@ const NavbarInicio = ({
           {/* Botones */}
           <div className="hidden md:flex gap-4">
             <Link to="/Login">
-              <button className="btn rounded-box bg-blue-600 text-white py-2 px-4 hover:bg-blue-700 transition-colors">
+              <button className="btn rounded-box">
                 Iniciar Sesión
               </button>
             </Link>
             <button
-              className="btn rounded-box bg-blue-600 text-white py-2 px-4 hover:bg-blue-700 transition-colors"
+              className="btn rounded-box "
               onClick={() => cerrarModal(true)}
             >
               Registrarse

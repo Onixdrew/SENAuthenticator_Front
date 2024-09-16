@@ -127,11 +127,9 @@ const Navbar = ({
                 className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow "
               >
                 <li>
-                  <Link className="justify-between ">Perfil</Link>
+                  <Link className="justify-between " to="/perfil">Perfil</Link>
                 </li>
-                <li>
-                  <Link>Configuraciòn</Link>
-                </li>
+                
                 <li>
                   <button onClick={cerrarSesion}>Salir</button>
                 </li>
@@ -166,17 +164,12 @@ const Navbar = ({
             {item3}
           </Link>
           <Link
-            to="#"
+            to="/perfil"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
           >
             Perfil
           </Link>
-          <Link
-            to="#"
-            className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
-          >
-            Configuraciòn
-          </Link>
+          
           <Link
             to="#"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"

@@ -196,7 +196,7 @@ const GraficasAdmin = () => {
 
           {/* Indicadores Clave de Rendimiento (KPIs) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-            <div className="kpi-card bg-blue-500 text-white p-4 rounded-lg shadow-md">
+            <div className="kpi-card bg-blue-500   text-white p-4 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold">Total Aprendices</h3>
               <p className="text-3xl font-bold">
                 {filteredData.reduce((acc, curr) => acc + curr.Aprendices, 0)}
