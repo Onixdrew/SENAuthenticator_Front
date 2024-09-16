@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 import { getAllUsers } from "../../../api/userController";
 import { useAuth } from "../../../Context/AuthContext";
@@ -18,6 +18,7 @@ const ReportesAdmin = () => {
   const [documentoFiltro, setDocumentoFiltro] = useState("");
   const [refrescar, setRefrescar] = useState(false);
   const [tipoPersona, setTipoPersona] = useState("Aprendiz");
+  const location = useLocation(); // Obtiene la ruta actual
 
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -25,6 +26,12 @@ const ReportesAdmin = () => {
 
   // Referencia para impresión
   const printRef = useRef();
+
+
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
 
   useEffect(() => {
     const recibirDatos = async () => {
@@ -288,7 +295,7 @@ const ReportesAdmin = () => {
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : "mt-72"} `}>
+          <div className={`${loading ? "mt-52 " : null} `}>
             <Footer />
           </div>
         </div>

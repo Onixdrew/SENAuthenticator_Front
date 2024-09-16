@@ -1,18 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-
 import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
-import {useAuth}  from "../../Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
-
-const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
+const Navbar = ({
+  item1,
+  item2,
+  item3,
+  ruta1,
+  ruta2,
+  ruta3,
+  color,
+  color2,
+  color3,
+}) => {
   // Estado para controlar la visibilidad del menú móvil
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-   // los hooks solo pueden ser llamados dentro de un componente funcional
-   const {cerrarSesion} = useAuth();
+  // los hooks solo pueden ser llamados dentro de un componente funcional
+  const { cerrarSesion } = useAuth();
 
   // Función para alternar el estado del menú móvil
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -38,7 +46,9 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
         <nav className="flex font-serif items-center justify-between border-b  bg-[rgb(39,169,0)] p-4">
           <div className="flex items-center xl:ml-16">
             <img src={Logo} alt="Logo" className="w-12 text-black" />
-            <h1 className="text-xl ml-2 font-medium text-white ">SENAuthenticator</h1>
+            <h1 className="text-xl ml-2 font-medium text-white ">
+              SENAuthenticator
+            </h1>
           </div>
 
           {/* Menu Items for larger screens */}
@@ -46,21 +56,30 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
             <Link
               to={ruta1}
               className={`text-xl font-medium ${
-                color == "activo" ? "text-green-950 " : "text-white hover:text-green-200"} `}
+                color == "activo"
+                  ? "text-green-950 "
+                  : "text-white hover:text-green-200"
+              } `}
             >
               {item1}
             </Link>
             <Link
               to={ruta2}
               className={`text-xl font-medium ${
-                color2 == "activo" ? "text-green-950 " : "text-white hover:text-green-200"}`}
+                color2 == "activo"
+                  ? "text-green-950 "
+                  : "text-white hover:text-green-200"
+              }`}
             >
               {item2}
             </Link>
             <Link
               to={ruta3}
               className={`text-xl font-medium ${
-                color3 == "activo" ? "text-green-950 " : "text-white hover:text-green-200"} `}
+                color3 == "activo"
+                  ? "text-green-950 "
+                  : "text-white hover:text-green-200"
+              } `}
             >
               {item3}
             </Link>
@@ -92,14 +111,16 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle  avatar"
+                className=" avatar"
               >
-                <div className="w-16 rounded-full">
+                <div className=" btn btn-circle  w-14 h-14">
                   <img
                     alt="Profile"
                     src="https://www.shutterstock.com/image-photo/young-police-caucasian-man-isolated-260nw-2391831079.jpg"
                   />
                 </div>
+                
+            
               </div>
               <ul
                 tabIndex={0}
@@ -112,7 +133,7 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
                   <Link>Configuraciòn</Link>
                 </li>
                 <li>
-                <button onClick={cerrarSesion}>Salir</button>
+                  <button onClick={cerrarSesion}>Salir</button>
                 </li>
               </ul>
             </div>

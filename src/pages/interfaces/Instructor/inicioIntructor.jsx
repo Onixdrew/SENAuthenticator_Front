@@ -1,8 +1,8 @@
-import React from "react";
+import { useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { useAuth } from "../../../Context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   PieChart,
   Pie,
@@ -15,6 +15,13 @@ import {
 const InicioIntructor = () => {
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const { isAuthenticated, user } = useAuth();
+
+  const location = useLocation(); // Obtiene la ruta actual
+
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
 
   const data = [
     { name: "Mañana", Aprendices: 45 },
@@ -96,7 +103,7 @@ const InicioIntructor = () => {
             </div>
           </div>
 
-          <Footer />
+          <div className="mt-14"><Footer /></div>
         </div>
       ) : (
         <p className="text-red-500 ">Error: Pagina no encontrada.</p>

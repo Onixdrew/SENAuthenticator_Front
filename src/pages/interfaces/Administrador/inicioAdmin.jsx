@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { useAuth } from "../../../Context/AuthContext";
-import Loader from "../../../components/Loader/Loader";
+
 import {
   BarChart,
   Bar,
@@ -13,11 +13,17 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Navigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const InicioAdmin = () => {
   // Get authentication status and loading state
   const { isAuthenticated, loading, user } = useAuth();
+  const location = useLocation(); // Obtiene la ruta actual
+  
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
 
   // Example data (you can replace this with actual data if needed)
   const data = [
@@ -32,20 +38,16 @@ const InicioAdmin = () => {
   // Chart filtering and data processing (customize as needed)
   const filteredData = data; // Adjust this if you need specific filters
 
-  // // If still loading, show loader
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center min-h-screen">
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
-
   return (
     <>
       {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div>
-          <Navbar item1="Inicio" item2="Reportes" ruta2="/ReportesAdmin"  color="activo" />
+          <Navbar
+            item1="Inicio"
+            item2="Reportes"
+            ruta2="/ReportesAdmin"
+            color="activo"
+          />
 
           <main className="p-6 bg-gray-100 min-h-screen">
             <div className="container mx-auto">
@@ -99,6 +101,7 @@ const InicioAdmin = () => {
               </div>
             </div>
           </main>
+          <Footer></Footer>
         </div>
       ) : (
         <p className="text-red-500 ">Error: Pagina no encontrada.</p>

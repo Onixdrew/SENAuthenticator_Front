@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const location = useLocation(); // Obtiene la ruta actual
+  // const location = useLocation(); // Obtiene la ruta actual
 
   useEffect(() => {
     const verificarCookie = async () => {
@@ -54,11 +54,13 @@ const AuthProvider = ({ children }) => {
   const cerrarSesion = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("user");
+    localStorage.removeItem("lastRoute"); 
     return <Navigate to="/Login" />;
   };
 
   // Si loading es true y la ruta no es "/Login" ni "/", se muestra el Loader
-  if (loading && location.pathname !== "/Login" && location.pathname !== "/") {
+  if (loading) {
+    // && location.pathname !== "/Login" && location.pathname !== "/"
     return (
       <div className="text-center mt-10 font-bold">
         <Loader />

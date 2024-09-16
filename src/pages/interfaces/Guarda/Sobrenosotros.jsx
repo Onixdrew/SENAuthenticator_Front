@@ -3,6 +3,7 @@ import Navbar from "../../../components/Navbar/Navbar";
 import { useAuth } from "../../../Context/AuthContext";
 import { getAllUsers } from "../../../api/userController";
 import Loader from "../../../components/Loader/Loader";
+import { useLocation } from "react-router-dom";
 
 const Sobrenosotros = () => {
   const { isAuthenticated, user } = useAuth();
@@ -13,6 +14,13 @@ const Sobrenosotros = () => {
   const [documentoFiltro, setDocumentoFiltro] = useState("");
   const [datosFiltrados, setDatosFiltrados] = useState([]);
   const [refrescar, setRefrescar] = useState(false);
+  const location = useLocation(); // Obtiene la ruta actual
+  
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
+
   
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);

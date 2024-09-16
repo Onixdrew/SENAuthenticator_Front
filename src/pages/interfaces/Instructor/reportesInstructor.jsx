@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 
 import { getAllUsers } from "../../../api/userController";
@@ -18,6 +18,14 @@ const ReportesInstructor = () => {
   const [documentoFiltro, setDocumentoFiltro] = useState("");
   const [datosFiltrados, setDatosFiltrados] = useState([]);
   const [refrescar, setRefrescar] = useState(false);
+
+  const location = useLocation(); // Obtiene la ruta actual
+  
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
+
 
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -278,7 +286,7 @@ const ReportesInstructor = () => {
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : "mt-72"} `}>
+          <div className={`${loading ? "mt-52 " : null} `}>
             <Footer />
           </div>
         </div>
