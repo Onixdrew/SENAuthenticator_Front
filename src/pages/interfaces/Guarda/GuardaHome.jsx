@@ -4,12 +4,20 @@ import foto from "../../../../public/img/emmanuel.jpg";
 import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
 import { useAuth } from "../../../Context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 const GuardaHome = () => {
  
 
   const {isAuthenticated, user} = useAuth();
   const videoRef = useRef(null);
+  const location = useLocation(); // Obtiene la ruta actual
+  
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
+
 
   useEffect(() => {
     // Intentar acceder a la cámara sin solicitar permiso explícito

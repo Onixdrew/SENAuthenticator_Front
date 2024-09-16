@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import axios from "axios";
 import { useAuth } from "../../../Context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 const Inicio = () => {
   const [oficinas, setOficinas] = useState([]);
   const { isAuthenticated, user } = useAuth();
+  const location = useLocation(); // Obtiene la ruta actual
+  
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
+
 
   useEffect(() => {
     // Función para obtener datos de la API

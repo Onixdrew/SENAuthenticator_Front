@@ -120,14 +120,14 @@ body {
   display: none;
 }
 
-.navbar {
+/* .navbar {
   display: flex;
   justify-content: space-around;
   align-items: center; 
   gap: 25rem;
-}
+} */
 
-.navbar-brand {
+/* .navbar-brand {
   display: flex;
   align-items: center;
 }
@@ -157,7 +157,7 @@ body {
 
 .navbar-list-item a:hover {
   color: #000000; 
-}
+} */
 
 /* Main Content Styles */
 .main-container {
