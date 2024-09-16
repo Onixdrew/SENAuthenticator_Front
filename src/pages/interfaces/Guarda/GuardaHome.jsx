@@ -58,11 +58,7 @@ const Admin = () => {
             color=""
           />
 
-          <div className="p-4">
-            <h1 className="text-2xl font-bold text-left mb-4 inline-block">
-              Bienvenido {nombre}
-            </h1>
-          </div>
+        
           <div className="flex p-4 gap-4 justify-between">
             {/* Sección de cámara */}
             <div className="camara p-4 w-2/3">
