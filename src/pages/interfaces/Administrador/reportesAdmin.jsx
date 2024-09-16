@@ -95,6 +95,7 @@ const ReportesAdmin = () => {
     <>
       {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
+          {loading && <Loader />}
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
@@ -108,7 +109,7 @@ const ReportesAdmin = () => {
             <div className="max-w-full mx-auto px-4 md:px-6">
               <form
                 action=""
-                className="flex flex-col gap-4 justify-center mt-12 md:flex-row md:gap-6 lg:gap-10"
+                className="flex  gap-4 justify-center  mt-12 [@media(max-width:768px)]:flex-col  md:gap-6 md:px-24 [@media(max-width:425px)]:px-7 lg:gap-10"
               >
                 <select
                   name=""
@@ -124,7 +125,7 @@ const ReportesAdmin = () => {
                   id=""
                   value={tipoPersona}
                   onChange={(e) => setTipoPersona(e.target.value)}
-                  className="bg-white p-3 border rounded-lg w-full md:w-auto"
+                  className="bg-white p-3 border rounded-lg w-full md:w-auto "
                 >
                   <option value="Aprendiz">Aprendiz</option>
                   <option value="Instructor">Instructor</option>
@@ -145,7 +146,7 @@ const ReportesAdmin = () => {
 
                 <input
                   type="number"
-                  className="border rounded-lg pl-4 bg-white text-black w-full md:w-auto"
+                  className="border rounded-btn pl-6 h-11 bg-white text-black "
                   placeholder="# Documento"
                   value={documentoFiltro}
                   onChange={(e) => setDocumentoFiltro(e.target.value)}
@@ -182,8 +183,6 @@ const ReportesAdmin = () => {
                   />
                 </button>
               </div>
-
-              {loading && <Loader />}
 
               {error && (
                 <p className="text-red-500 text-center mt-4">Error: {error}</p>

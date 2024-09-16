@@ -3,24 +3,41 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
-
 // Importaciones dinámicas
-const InicioIntructor = lazy(() => import("./pages/interfaces/Instructor/inicioIntructor.jsx"));
-const ReportesInstructor = lazy(() => import("./pages/interfaces/Instructor/reportesInstructor.jsx"));
-const GraficasInstructor = lazy(() => import("./pages/interfaces/Instructor/Graficas/graficas.jsx"));
+const InicioIntructor = lazy(() =>
+  import("./pages/interfaces/Instructor/inicioIntructor.jsx")
+);
+const ReportesInstructor = lazy(() =>
+  import("./pages/interfaces/Instructor/reportesInstructor.jsx")
+);
+const GraficasInstructor = lazy(() =>
+  import("./pages/interfaces/Instructor/Graficas/graficas.jsx")
+);
 
-const GuardiaHome = lazy(() => import("./pages/interfaces/Guarda/GuardaHome.jsx"));
-const Sobrenosotros = lazy(() => import("./pages/interfaces/Guarda/Sobrenosotros.jsx"));
-const InicioGuardia = lazy(() => import("./pages/interfaces/Guarda/RegistroPersona.jsx"));
+const GuardiaHome = lazy(() =>
+  import("./pages/interfaces/Guarda/GuardaHome.jsx")
+);
+const Sobrenosotros = lazy(() =>
+  import("./pages/interfaces/Guarda/Sobrenosotros.jsx")
+);
+const InicioGuardia = lazy(() =>
+  import("./pages/interfaces/Guarda/RegistroPersona.jsx")
+);
 const Login = lazy(() => import("./pages/Login/Login.jsx"));
-const InicioAdmin = lazy(() => import("./pages/interfaces/Administrador/inicioAdmin.jsx"));
-const ReportesAdmin = lazy(() => import("./pages/interfaces/Administrador/reportesAdmin.jsx"));
-const GraficasAdmin = lazy(() => import("./pages/interfaces/Administrador/Graficas/graficas.jsx"));
+const InicioAdmin = lazy(() =>
+  import("./pages/interfaces/Administrador/inicioAdmin.jsx")
+);
+const ReportesAdmin = lazy(() =>
+  import("./pages/interfaces/Administrador/reportesAdmin.jsx")
+);
+const GraficasAdmin = lazy(() =>
+  import("./pages/interfaces/Administrador/Graficas/graficas.jsx")
+);
 const Home = lazy(() => import("./pages/Lobby/home.jsx"));
 
 const App = () => (
-  <AuthProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <AuthProvider>
       <Suspense>
         <Routes>
           {/* Publicas */}
@@ -36,8 +53,14 @@ const App = () => (
 
             {/* Instructor */}
             <Route path="/inicioInstructor" element={<InicioIntructor />} />
-            <Route path="/ReportesInstructor" element={<ReportesInstructor />} />
-            <Route path="/GraficasInstructor" element={<GraficasInstructor />} />
+            <Route
+              path="/ReportesInstructor"
+              element={<ReportesInstructor />}
+            />
+            <Route
+              path="/GraficasInstructor"
+              element={<GraficasInstructor />}
+            />
 
             {/* Administrador */}
             <Route path="/inicioAdmin" element={<InicioAdmin />} />
@@ -46,8 +69,8 @@ const App = () => (
           </Route>
         </Routes>
       </Suspense>
-    </BrowserRouter>
-  </AuthProvider>
+    </AuthProvider>
+  </BrowserRouter>
 );
 
 export default App;

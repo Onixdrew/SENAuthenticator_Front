@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "../api/axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
 
 const AuthContext = createContext();
@@ -8,11 +8,13 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Cambiar estado inicial a `true` porque está validando el token
+  const [loading, setLoading] = useState(false);
+  const location = useLocation(); // Obtiene la ruta actual
 
   useEffect(() => {
     const verificarCookie = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("validarToken/");
         if (response.status === 200) {
           const storedUser = localStorage.getItem("user");
@@ -28,7 +30,7 @@ const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.log("User not authenticated", error);
-        cerrarSesion(); // Si hay un error, cerrar sesión
+        cerrarSesion();
       } finally {
         setLoading(false); // Terminar el estado de carga después de intentar validar
       }
@@ -51,14 +53,17 @@ const AuthProvider = ({ children }) => {
 
   const cerrarSesion = () => {
     setIsAuthenticated(false);
-    setUser(null);
     localStorage.removeItem("user");
     return <Navigate to="/Login" />;
   };
 
-  // Muestra un componente de carga mientras `loading` sea true
-  if (loading) {
-    return <div className="text-center mt-10 font-bold"><Loader></Loader></div>;
+  // Si loading es true y la ruta no es "/Login" ni "/", se muestra el Loader
+  if (loading && location.pathname !== "/Login" && location.pathname !== "/") {
+    return (
+      <div className="text-center mt-10 font-bold">
+        <Loader />
+      </div>
+    );
   }
 
   return (

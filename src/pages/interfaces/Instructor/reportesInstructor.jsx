@@ -97,6 +97,8 @@ const ReportesInstructor = () => {
     <>
       {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div className="relative min-h-screen flex flex-col">
+          {loading && <Loader />}
+          
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
@@ -110,7 +112,7 @@ const ReportesInstructor = () => {
             <div className="max-w-full mx-auto px-4 md:px-6">
               <form
                 action=""
-                className="flex flex-col gap-4 justify-center mt-12 md:flex-row md:gap-6 lg:gap-10"
+                className="flex flex-col gap-4 justify-center mt-12 md:flex-row md:gap-6 lg:gap-10 [@media(max-width:425px)]:px-7"
               >
                 <select
                   name=""
@@ -132,8 +134,8 @@ const ReportesInstructor = () => {
                 </select>
 
                 <input
-                  type="text"
-                  className="border rounded-lg pl-4 bg-white text-black w-full md:w-auto"
+                  type="number"
+                  className="border rounded-btn pl-6 h-11  bg-white text-black w-full md:w-auto"
                   placeholder="# Documento"
                   value={documentoFiltro}
                   onChange={(e) => setDocumentoFiltro(e.target.value)}
@@ -171,8 +173,6 @@ const ReportesInstructor = () => {
                   />
                 </button>
               </div>
-
-              {loading && <Loader />}
 
               {error && (
                 <p className="text-red-500 text-center mt-4">Error: {error}</p>

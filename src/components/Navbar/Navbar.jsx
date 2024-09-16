@@ -68,7 +68,7 @@ const Navbar = ({item1,item2,item3,ruta1,ruta2,ruta3,color,color2,color3,}) => {
 
           {/* Menu Button (Hamburger) for smaller screens */}
           <div className="md:hidden flex items-center">
-            <button onClick={toggleMenu} className="text-white">
+            <button onClick={toggleMenu} className="text-white  btn btn-ghost">
               <svg
                 className="w-6 h-6"
                 fill="none"
