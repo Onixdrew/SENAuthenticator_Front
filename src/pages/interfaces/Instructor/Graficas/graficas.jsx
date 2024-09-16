@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -15,6 +15,7 @@ import {
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
 import { useAuth } from "../../../../Context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 const GraficasInstructor = () => {
   const [fechaInicio, setfechaInicio] = useState("");
@@ -25,6 +26,14 @@ const GraficasInstructor = () => {
 
     // los hooks solo pueden ser llamados dentro de un componente funcional
     const {isAuthenticated, user} = useAuth();
+
+    const location = useLocation(); // Obtiene la ruta actual
+  
+    // Almacenar la ruta actual en localStorage al cargar el componente
+    useEffect(() => {
+      localStorage.setItem("lastRoute", location.pathname);
+    }, [location]);
+  
 
   // Datos de ejemplo, en un caso real estos datos se obtendrían de una API o base de datos
   const data = [

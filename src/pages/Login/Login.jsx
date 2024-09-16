@@ -3,12 +3,11 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Swal from "sweetalert2";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
 import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
-
 import Loader from "../../components/Loader/Loader";
 
 const Login = () => {
@@ -17,67 +16,50 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const [errorsLocal, setErrors] = useState({});
   const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [dataRol, setDataRol] = useState(null);
-
-  const {
-    accessToken,
-    isAuthenticated,
-    user,
-    setIsAuthenticated,
-    setUser,
-    guardarUserLocal,
-    extraerUserStorege,
-    loading,
-  } = useAuth();
-
+  const { isAuthenticated, user, setUser, guardarUserLocal, loading } =
+    useAuth();
   const navegar = useNavigate();
 
-
   useEffect(() => {
-    const checarRolStorage = () => {
+    const checkRoleAndRedirect = () => {
       if (isAuthenticated) {
-        // const userStorage = extraerUserStorege();
-
-        // console.log(user);
-        // console.log(isAuthenticated);
-        if (user) {
-          switch (user.rol_usuario) {
-            case "Instructor":
-              return navegar("/inicioInstructor");
-            case "Administrador":
-              return navegar("/inicioAdmin");
-
-            case "Guardia de seguridad":
-              return navegar("/InicioGuardia");
-
-            default:
-              Swal.fire({
-                title: "Rol no reconocido",
-                text: `${dataRol} no es un rol reconocido`,
-                icon: "warning",
-                confirmButtonText: "OK",
-              });
-              break;
+        const lastRoute = localStorage.getItem("lastRoute");
+        if (lastRoute) {
+          navegar(lastRoute); // Redirige a la ruta almacenada si existe
+        } else {
+          if (user) {
+            switch (user.rol_usuario) {
+              case "Instructor":
+                return navegar("/inicioInstructor");
+              case "Administrador":
+                return navegar("/inicioAdmin");
+              case "Guardia de seguridad":
+                return navegar("/InicioGuardia");
+              default:
+                Swal.fire({
+                  title: "Rol no reconocido",
+                  text: `${user.rol_usuario} no es un rol reconocido`,
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                break;
+            }
           }
         }
       }
     };
-    checarRolStorage();
+    checkRoleAndRedirect();
   }, [isAuthenticated]);
 
   const enviarForm = handleSubmit(async (values, event) => {
-    event.preventDefault(); // Esto evita que el formulario recargue la página.
+    event.preventDefault();
     try {
       const data = await inicioSesion(values, guardarUserLocal);
-      console.log(data);
-
       if (data) {
         setUser(data);
-
+        localStorage.removeItem("lastRoute"); // Elimina la ruta almacenada tras iniciar sesión con éxito
         switch (data.rol_usuario) {
           case "Instructor":
             navegar("/inicioInstructor");
@@ -91,23 +73,18 @@ const Login = () => {
           default:
             Swal.fire({
               title: "Error",
-              text: `${data.user.rol_usuario} no es un rol reconocido`,
+              text: `${data.rol_usuario} no es un rol reconocido`,
               icon: "warning",
               confirmButtonText: "OK",
             });
             break;
         }
-      } else {
-        console.log("No se obtuvieron datos del inicio de sesión");
       }
-      setLoading(false)
     } catch (error) {
       setErrorsBack(error.message);
-      console.log(error.message);
     }
   });
 
-  
   useEffect(() => {
     if (errorsBack) {
       Swal.fire({
@@ -116,7 +93,7 @@ const Login = () => {
         icon: "error",
         confirmButtonText: "OK",
       });
-      setErrorsBack(""); // Limpiar el mensaje después de mostrarlo
+      setErrorsBack("");
     }
   }, [errorsBack]);
 
@@ -126,9 +103,8 @@ const Login = () => {
 
   return (
     <>
+      {loading && <Loader />}
 
-    { loading && <Loader/> }
-    
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
@@ -150,16 +126,18 @@ const Login = () => {
                 alt="Escudo"
                 className="top-4 left-4 w-16 sm:w-16 md:w-16 lg:w-14 xl:w-16 [@media(max-width:381px)]:w-12"
               />
-              <div className="flex items-center">
-                <img
-                  src={logoSENAuthenticator}
-                  alt="Logo"
-                  className="mr-3 w-11 sm:w-14 md:w-16 lg:w-11 xl:w-14"
-                />
-                <h1 className="text-black text-lg [@media(max-width:381px)]:hidden sm:text-3xl md:text-3xl lg:text-2xl font-bold">
-                  SENAuthenticator
-                </h1>
-              </div>
+              <Link to="/">
+                <div className="flex items-center">
+                  <img
+                    src={logoSENAuthenticator}
+                    alt="Logo"
+                    className="mr-3 w-11 sm:w-14 md:w-16 lg:w-11 xl:w-14"
+                  />
+                  <h1 className="text-black text-lg [@media(max-width:381px)]:hidden sm:text-3xl md:text-3xl lg:text-2xl font-bold">
+                    SENAuthenticator
+                  </h1>
+                </div>
+              </Link>
             </div>
             <h1 className="text-black text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               Bienvenido!

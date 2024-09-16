@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -16,6 +16,7 @@ import {
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
 import { useAuth } from "../../../../Context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 const GraficasAdmin = () => {
   const [fechaInicio, setfechaInicio] = useState("");
@@ -26,6 +27,13 @@ const GraficasAdmin = () => {
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const { isAuthenticated, user } = useAuth();
+
+  const location = useLocation(); // Obtiene la ruta actual
+
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
 
   const data = [
     {
@@ -284,9 +292,7 @@ const GraficasAdmin = () => {
           </div>
         </div>
       ) : (
-        <p className="text-red-500 ">
-          Error: Pagina no encontrada.
-        </p>
+        <p className="text-red-500 ">Error: Pagina no encontrada.</p>
 
         //  se redirecciona al login si no esta autenticado
         // <Navigate to="/" />

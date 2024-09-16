@@ -1,19 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineRefresh } from "react-icons/md";
 import { getAllUsers } from "../../../api/userController";
+import { useAuth } from "../../../Context/AuthContext";
 import Loader from "../../../components/Loader/Loader";
 import ReactToPrint from "react-to-print";
-import * as XLSX from 'xlsx';
-import { useAuth } from "../../../Context/AuthContext";
 
 const ReportesAdmin = () => {
-
   const { isAuthenticated, user } = useAuth();
 
-  // const [datos, setDatos] = useState([]);
   const [datos, setDatos] = useState([]);
   const [datosFiltrados, setDatosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +18,7 @@ const ReportesAdmin = () => {
   const [documentoFiltro, setDocumentoFiltro] = useState("");
   const [refrescar, setRefrescar] = useState(false);
   const [tipoPersona, setTipoPersona] = useState("Aprendiz");
-
+  const location = useLocation(); // Obtiene la ruta actual
 
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -29,6 +26,12 @@ const ReportesAdmin = () => {
 
   // Referencia para impresión
   const printRef = useRef();
+
+
+  // Almacenar la ruta actual en localStorage al cargar el componente
+  useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location]);
 
   useEffect(() => {
     const recibirDatos = async () => {
@@ -68,7 +71,7 @@ const ReportesAdmin = () => {
 
   const actualizarUsers = () => {
     setLoading(true);
-    setRefrescar((prevRefresh) => !prevRefresh);
+    setRefrescar((prevRefresh) => !prevRefresh); // Alterna el valor de `refrescar`
   };
 
   // Calcular el número total de páginas
@@ -95,35 +98,25 @@ const ReportesAdmin = () => {
     }
   };
 
-
-
   return (
     <>
       {isAuthenticated && user.rol_usuario === "Administrador" ? (
         <div className="relative min-h-screen flex flex-col">
-          <Navbar
-            item1="Inicio"
-            item2="Reportes"
-            ruta1="/inicioAdmin"
-            ruta2="/ReportesAdmin"
-            color2="activo"
-          />
-
-          <div className="max-w-full mx-auto px-4 md:px-6">
-
-            {loading && (
-              <div className="flex justify-center">
-                <Loader />
-              </div>
-            )}
-            {error && (
-              <p className="text-red-500 text-center mt-4">Error: {error}</p>
-            )}
+          {loading && <Loader />}
+          <div className="relative">
+            <div className="sticky top-0 z-40 bg-white">
+              <Navbar
+                item1="inicio"
+                item2="Reportes"
+                ruta1="/inicioAdmin"
+                color2="activo"
+              />
+            </div>
 
             <div className="max-w-full mx-auto px-4 md:px-6">
               <form
                 action=""
-                className="flex flex-col gap-4 justify-center mt-12 md:flex-row md:gap-6 lg:gap-10"
+                className="flex  gap-4 justify-center  mt-12 [@media(max-width:768px)]:flex-col  md:gap-6 md:px-24 [@media(max-width:425px)]:px-7 lg:gap-10"
               >
                 <select
                   name=""
@@ -139,7 +132,7 @@ const ReportesAdmin = () => {
                   id=""
                   value={tipoPersona}
                   onChange={(e) => setTipoPersona(e.target.value)}
-                  className="bg-white p-3 border rounded-lg w-full md:w-auto"
+                  className="bg-white p-3 border rounded-lg w-full md:w-auto "
                 >
                   <option value="Aprendiz">Aprendiz</option>
                   <option value="Instructor">Instructor</option>
@@ -160,7 +153,7 @@ const ReportesAdmin = () => {
 
                 <input
                   type="number"
-                  className="border rounded-lg pl-4 bg-white text-black w-full md:w-auto"
+                  className="border rounded-btn pl-6 h-11 bg-white text-black "
                   placeholder="# Documento"
                   value={documentoFiltro}
                   onChange={(e) => setDocumentoFiltro(e.target.value)}
@@ -198,18 +191,12 @@ const ReportesAdmin = () => {
                 </button>
               </div>
 
-              {loading && (
-                <div className="flex justify-center">
-                  <Loader />
-                </div>
-              )}
-
               {error && (
                 <p className="text-red-500 text-center mt-4">Error: {error}</p>
               )}
 
               {/* Botones de descarga */}
-              <div className="flex justify-between mt-6">
+              <div className="inline-block">
                 <ReactToPrint
                   trigger={() => (
                     <button className="btn bg-red-500 text-white hover:bg-red-600 hover:shadow-lg transition ease-in-out duration-150">
@@ -225,9 +212,9 @@ const ReportesAdmin = () => {
                 <div className="max-h-[400px] overflow-y-auto">
                   {" "}
                   {/* Ajusta la altura según sea necesario */}
-                  <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md" 
-                  ref={printRef}
-                  
+                  <table
+                    className="w-full table-auto border-collapse bg-white rounded-lg shadow-md"
+                    ref={printRef}
                   >
                     <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
                       <tr>
@@ -278,37 +265,37 @@ const ReportesAdmin = () => {
                       ))}
                     </tbody>
                   </table>
-                  <nav className="flex items-center justify-between pt-4">
-                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Mostrando {indicePrimerRegistro + 1}-
-                      {indiceUltimoRegistro > datosFiltrados.length
-                        ? datosFiltrados.length
-                        : indiceUltimoRegistro}{" "}
-                      de {datosFiltrados.length}
-                    </span>
-                    <div className="inline-flex">
-                      <button
-                        onClick={irAPaginaAnterior}
-                        disabled={paginaActual === 1}
-                        className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-blue-200   "
-                      >
-                        Anterior
-                      </button>
-                      <button
-                        onClick={irAPaginaSiguiente}
-                        disabled={paginaActual === totalPaginas}
-                        className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-blue-200"
-                      >
-                        Siguiente
-                      </button>
-                    </div>
-                  </nav>
                 </div>
+                <nav className="flex items-center justify-between pt-4">
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Mostrando {indicePrimerRegistro + 1}-
+                    {indiceUltimoRegistro > datosFiltrados.length
+                      ? datosFiltrados.length
+                      : indiceUltimoRegistro}{" "}
+                    de {datosFiltrados.length}
+                  </span>
+                  <div className="inline-flex">
+                    <button
+                      onClick={irAPaginaAnterior}
+                      disabled={paginaActual === 1}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-blue-200   "
+                    >
+                      Anterior
+                    </button>
+                    <button
+                      onClick={irAPaginaSiguiente}
+                      disabled={paginaActual === totalPaginas}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-blue-200"
+                    >
+                      Siguiente
+                    </button>
+                  </div>
+                </nav>
               </div>
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : "mt-72"} `}>
+          <div className={`${loading ? "mt-52 " : null} `}>
             <Footer />
           </div>
         </div>

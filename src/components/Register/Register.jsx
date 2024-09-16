@@ -34,8 +34,8 @@ const Register = ({ cerrarModal }) => {
     }
   });
 
-  const cerrarModalProp = (closeModal) => {
-    cerrarModal(closeModal);
+  const cerrarModalProp = (valorBool) => {
+    cerrarModal(valorBool);
   };
 
   return (
@@ -47,9 +47,9 @@ const Register = ({ cerrarModal }) => {
           </h2>
           <button
             onClick={() => cerrarModalProp(false)}
-            className="text-xl text-black hover:text-gray-400"
+            className=" text-black inline-block btn btn-sm btn-outline btn-circle "
           >
-            <i className="fas fa-times"></i>
+            <i className="fas fa-times text-lg  "></i>
           </button>
         </div>
         <form className="space-y-6 p-10 " onSubmit={enviarForm}>
@@ -162,7 +162,7 @@ const Register = ({ cerrarModal }) => {
           </div>
           <div className="mt-6 flex justify-end">
             <button
-              className="bg-[rgb(39,169,0)] text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="btn rounded-box bg-[rgb(39,169,0)] text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="submit"
             >
               Aceptar
