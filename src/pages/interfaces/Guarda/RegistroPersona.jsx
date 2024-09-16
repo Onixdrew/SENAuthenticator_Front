@@ -99,9 +99,10 @@ const Inicio = () => {
                       htmlFor="diligencia"
                       className="block text-sm font-medium text-black"
                     >
-                      Diligencia a realizar
+                      Diligencia a realizar (Opcional)
                     </label>
                     <textarea
+                    placeholder="Opcional "
                       id="diligencia"
                       name="diligencia"
                       rows="3"
@@ -127,10 +128,6 @@ const Inicio = () => {
                 alt="Indicaciones"
                 className="w-50 h-50 rounded border mb-10"
               />
-              <p className="text-center text-black">
-                Esto es solo para personas que no pertencen a el sena y solo van
-                a entrar a hacer algunas diligencias en especifico
-              </p>
             </div>
           </div>
         </div>

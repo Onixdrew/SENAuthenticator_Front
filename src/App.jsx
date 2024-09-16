@@ -3,14 +3,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
+
 // Importaciones dinámicas
 const InicioIntructor = lazy(() => import("./pages/interfaces/Instructor/inicioIntructor.jsx"));
 const ReportesInstructor = lazy(() => import("./pages/interfaces/Instructor/reportesInstructor.jsx"));
 const GraficasInstructor = lazy(() => import("./pages/interfaces/Instructor/Graficas/graficas.jsx"));
 
-const GuardiaHome = lazy(() => import("./pages/interfaces/Guarda/GuardaHome.jsx"));
+const GuardaHome = lazy(() => import("./pages/interfaces/Guarda/GuardaHome.jsx"));
 const Sobrenosotros = lazy(() => import("./pages/interfaces/Guarda/Sobrenosotros.jsx"));
 const InicioGuardia = lazy(() => import("./pages/interfaces/Guarda/RegistroPersona.jsx"));
+const Informes = lazy(()=> import("./pages/interfaces/Guarda/Informes.jsx") );
 const Login = lazy(() => import("./pages/Login/Login.jsx"));
 const InicioAdmin = lazy(() => import("./pages/interfaces/Administrador/inicioAdmin.jsx"));
 const ReportesAdmin = lazy(() => import("./pages/interfaces/Administrador/reportesAdmin.jsx"));
@@ -29,8 +31,9 @@ const App = () => (
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>
             {/* Guardia */}
-            <Route path="/InicioGuardia" element={<GuardiaHome />} />
+            <Route path="/InicioGuardia" element={<GuardaHome />} />
             <Route path="/ReconocimientoGuardia" element={<InicioGuardia />} />
+            <Route path="/Informes" element={<Informes />} />
             <Route path="/Mas" element={<Sobrenosotros />} />
 
             {/* Instructor */}

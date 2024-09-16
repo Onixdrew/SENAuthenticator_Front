@@ -86,10 +86,10 @@ const ModalGuarda = () => {
         },
         {
             id: 2,
-            brand: 'DELL',
+            brand: 'Teclado Gamer',
             model: 'XPS13',
-            color: 'Negro',
-            img: 'https://www.madrigal.co/wp-content/uploads/d2240-8.jpg',
+            color: 'Negro ',
+            img: 'https://http2.mlstatic.com/D_NQ_NP_965588-MLA50158986098_062022-O.webp',
         },
         {
             id: 3,
