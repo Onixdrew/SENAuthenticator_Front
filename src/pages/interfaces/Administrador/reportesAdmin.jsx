@@ -38,12 +38,18 @@ const ReportesAdmin = () => {
         const result = await getAllUsers();
 
         // Se obtiene solo los aprendices
-        if (result) {
-          const aprendices = result.filter(
-            (registro) => registro.rol_usuario === tipoPersona
-          );
-          setDatos(aprendices);
-          setDatosFiltrados(aprendices);
+        if (tipoPersona != "Todos") {
+          if (result) {
+            const aprendices = result.filter(
+              (registro) => registro.rol_usuario === tipoPersona
+            );
+
+            setDatos(aprendices);
+            setDatosFiltrados(aprendices);
+          }
+        } else {
+          setDatos(result);
+          setDatosFiltrados(result);
         }
       } catch (error) {
         console.error("Error al cargar los datos:", error.message);
@@ -221,14 +227,12 @@ const ReportesAdmin = () => {
                     <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
                       <tr>
                         <th className="px-4 py-2 text-center">Puesto</th>
-                        <th className="px-4 py-2 text-center">Nombre</th>
-                        <th className="px-4 py-2 text-center">
-                          Tipo Identificación
-                        </th>
-                        <th className="px-4 py-2 text-center">
+                        <th className="px-4 py-2 text-start ">Nombre</th>
+
+                        <th className="px-4 py-2 text-start inline-block">
                           Número Identificación
                         </th>
-                        <th className="px-4 py-2 text-center">Ingreso</th>
+                        <th className=" text-center">Ingreso</th>
                         <th className="px-4 py-2 text-center">Fecha</th>
                         <th className="px-4 py-2 text-center">Hora</th>
                       </tr>
@@ -237,16 +241,14 @@ const ReportesAdmin = () => {
                       {datosFiltrados.map((registro, index) => (
                         <tr key={index} className="border-b border-gray-300">
                           <td className="px-4 py-2">{index + 1}</td>
-                          <td className="px-4 py-2 font-semibold">
+                          <td className="px-4 py-2 font-semibold text-start">
                             {registro.first_name}
                           </td>
-                          <td className="px-4 py-2">
-                            {registro.tipo_documento_usuario}
-                          </td>
-                          <td className="px-4 py-2">
+
+                          <td className="px-4 py-2 text-start">
                             {registro.numero_documento_usuario}
                           </td>
-                          <td className="px-4 py-2 text-green-500 flex items-center justify-center">
+                          <td className=" py-2 text-green-500 flex items-center justify-center">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               className="w-5 h-5"
@@ -262,7 +264,7 @@ const ReportesAdmin = () => {
                             </svg>
                           </td>
                           <td className="px-4 py-2">05/06/2020</td>
-                          <td className="px-4 py-2">10:00</td>
+                          <td className="px-4 py-2">10:00 am</td>
                         </tr>
                       ))}
                     </tbody>

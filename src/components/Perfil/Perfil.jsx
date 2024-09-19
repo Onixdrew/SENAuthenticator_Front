@@ -22,8 +22,10 @@ const Perfil = () => {
             <Navbar
               item1="inicio"
               item2="Reportes"
+              item3="Perfil"
               ruta1="/inicioAdmin"
-              color2="activo"
+              ruta2="/ReportesAdmin"
+              color3="activo"
             />
           </div>
             <div className=" flex justify-center">
