@@ -3,7 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
+
 // Importaciones dinámicas
+const Perfil = lazy(() =>
+  import("./components/Perfil/Perfil.jsx")
+);
+
 const InicioIntructor = lazy(() =>
   import("./pages/interfaces/Instructor/inicioIntructor.jsx")
 );
@@ -66,6 +71,9 @@ const App = () => (
             <Route path="/inicioAdmin" element={<InicioAdmin />} />
             <Route path="/ReportesAdmin" element={<ReportesAdmin />} />
             <Route path="/GraficasAdmin" element={<GraficasAdmin />} />
+
+            {/* perfil */}
+            <Route path="/perfil" element={<Perfil />} />
           </Route>
         </Routes>
       </Suspense>

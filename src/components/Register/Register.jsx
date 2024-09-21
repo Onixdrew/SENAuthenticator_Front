@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-// import { registerUser } from "../../api/userController";
-import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/userController";
 
@@ -21,9 +19,9 @@ const Register = ({ cerrarModal }) => {
     }
   };
 
-  const enviarForm = handleSubmit(async (values) => {
+  const enviarForm = handleSubmit(async (values,e) => {
+    e.preventDefault();
     setDatosForm(values);
-    // values.preventDefault();
 
     // const response = await registerForm(data);
     const response = await registerUser(values);
