@@ -83,9 +83,7 @@ const NavbarInicio = ({
           {/* Botones */}
           <div className="hidden md:flex gap-4">
             <Link to="/Login">
-              <button className="btn rounded-box">
-                Iniciar Sesión
-              </button>
+              <button className="btn rounded-box">Iniciar Sesión</button>
             </Link>
             <button
               className="btn rounded-box "
@@ -141,24 +139,24 @@ const NavbarInicio = ({
               >
                 {item3}
               </a>
+              <div className="flex justify-end gap-8">
+                <Link to="/Login">
+                  <button className="btn rounded-box">Iniciar Sesión</button>
+                </Link>
+  
+                <button
+                  className="btn rounded-box "
+                  onClick={() => cerrarModal(true)}
+                >
+                  Registrarse
+                </button>
+              </div>
+              
             </div>
           )}
         </nav>
 
-        {/* Mobile buttons */}
-        {/* <div className="md:hidden flex gap-2 justify-center mt-4">
-          <Link to="/Login">
-            <button className="btn  rounded-box py-2 px-4 bg-blue-600 text-white  hover:bg-blue-700 ">
-              Iniciar Sesión
-            </button>
-          </Link>
-          <button
-            className="btn rounded-box py-2 px-4 bg-blue-600 text-white  hover:bg-blue-700 "
-            onClick={() => cerrarModal(true)}
-          >
-            Registrarse
-          </button>
-        </div> */}
+        
       </div>
     </>
   );

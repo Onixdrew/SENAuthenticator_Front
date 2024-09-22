@@ -18,8 +18,7 @@ const Login = () => {
   } = useForm();
   const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const { isAuthenticated, user, setUser, guardarUserLocal, loading } =
-    useAuth();
+  const { isAuthenticated, user, setUser, guardarUserLocal, loading } = useAuth();
   const navegar = useNavigate();
 
   useEffect(() => {
