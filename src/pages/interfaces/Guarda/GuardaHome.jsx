@@ -1,126 +1,210 @@
-import React, { useRef, useEffect } from "react";
-import Navbar from "../../../components/Navbar/Navbar";
+import React, { useRef, useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
 import foto from "../../../../public/img/emmanuel.jpg";
 import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
+import Logo from "../../../../public/img/Logo Reconocimiento Facial - Blanco.png";
 
 const Admin = () => {
- 
-
-  const {isAuthenticated, user} = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const videoRef = useRef(null);
-  const location = useLocation(); // Obtiene la ruta actual
-  
-  // Almacenar la ruta actual en localStorage al cargar el componente
+  const sidebarRef = useRef(null);
+  const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [cameraActive, setCameraActive] = useState(true); // Estado para activar/desactivar la cámara
+  const [stream, setStream] = useState(null); // Estado para almacenar el stream de la cámara
+
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
   }, [location]);
 
+  // Función para iniciar la cámara
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+      });
+      setStream(mediaStream); // Guardar el stream para poder detenerlo
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
+    } catch (error) {
+      console.error("Error al acceder a la cámara:", error);
+    }
+  };
+
+  // Función para detener la cámara
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+  };
+
+  // Efecto para manejar el encendido/apagado de la cámara
+  useEffect(() => {
+    if (cameraActive) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+
+    return () => {
+      stopCamera(); // Asegurarse de apagar la cámara al desmontar el componente
+    };
+  }, [cameraActive]);
 
   useEffect(() => {
-    // Intentar acceder a la cámara sin solicitar permiso explícito
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("Error al acceder a la cámara:", error);
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false);
       }
     };
 
-    startCamera();
+    if (sidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
 
-    // Limpiar el stream al desmontar el componente
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      }
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [sidebarOpen]);
 
   return (
     <>
       {isAuthenticated && user.rol_usuario === "Guardia de seguridad" ? (
-        <div className="flex flex-col min-h-screen">
-          <Navbar
-            item1="Registro Facial"
-            item2="Registro Personas"
-            item3="Informes"
-            ruta1="/InicioGuardia"
-            ruta2="/ReconocimientoGuardia"
-            ruta3="/Informes"
-            color=""
-          />
+        <div className="relative flex flex-col min-h-screen">
+          {!sidebarOpen && (
+            <button
+              className="absolute top-4 left-4 z-20 "
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <FaBars size={30} />
+            </button>
+          )}
 
-        
-          <div className="flex p-4 gap-4 justify-between">
-            {/* Sección de cámara */}
-            <div className="camara p-4 w-2/3">
-              <div className="relative w-full h-full shadow-lg rounded-lg overflow-hidden border border-gray-100">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  className="w-full h-full object-cover"
-                />
+          {/* Sidebar */}
+          <div
+            ref={sidebarRef}
+            className={`fixed inset-y-0 left-0 transform ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80 p-4 w-64 z-10 shadow-lg`}
+          >
+            <div className="text-white text-center mt-4">
+              <div className="flex items-center flex-col">
+                <img src={Logo} alt="Logo" className="w-12" />
+                <h1 className="text-xl font-medium">SENAuthenticator</h1>
               </div>
-            </div>
 
-            {/* Sección de información del usuario */}
-            <div className="p-4 w-4/12 shadow-lg mt-4 rounded-lg bg-white">
-              <div className="p-6 flex flex-col gap-8">
-                <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
-                  ROL
-                </h2>
-                <form className="flex flex-col items-center gap-3">
-                  <div className="flex justify-center w-40 h-90 mb-4">
-                    <img
-                      className="w-auto h-auto max-w-full max-h-full text-center object-cover rounded border border-gray-300"
-                      src={foto}
-                      alt="Foto de usuario"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-3 items-center">
-                    <label
-                      htmlFor="nombre"
-                      className="block text-gray-700 text-sm font-medium"
-                    >
-                      Emmanuel Castañeda
-                    </label>
-                  </div>
-                </form>
-
-                {/* Información de objetos */}
-                <div className="flex flex-col items-center gap-5">
-                  <div className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg bg-gray-100">
-                    <img
-                      src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png"
-                      alt="Objeto"
-                      className="w-28 rounded border border-gray-300"
-                    />
-                    <div className="flex flex-col text-center gap-1">
-                      <span className="text-gray-600 text-sm">ACER</span>
-                      <span className="text-gray-600 text-sm">DE34021</span>
-                      <span className="text-gray-600 text-sm">Gris</span>
-                    </div>
-                  </div>
-
-                  <button
-                    className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300"
-                    onClick={() =>
-                      document.getElementById("my_modal_1").showModal()
-                    }
+              <ul className="space-y-7 mt-16 text-lg">
+                <li>
+                  <a
+                    href="/InicioGuardia"
+                    className="text-gray-300 hover:text-[rgb(39,169,0)]"
                   >
-                    Más objetos
-                  </button>
-                </div>
+                    Registro Facial
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/ReconocimientoGuardia"
+                    className="text-gray-300 hover:text-[rgb(39,169,0)]"
+                  >
+                    Registro Personas
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/Informes"
+                    className="text-gray-300 hover:text-[rgb(39,169,0)]"
+                  >
+                    Historial
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="flex p-4 gap-4 justify-between">
+            {/* Sección de cámara con toggle */}
+            <div className="camara p-4 w-2/3 relative">
+              <div className="flex justify-end items-center mb-2">
+                <label className="flex items-center  gap-2">
+                  <span className="text-sm">Activar cámara</span>
+                  <input
+                    type="checkbox"
+                    checked={cameraActive}
+                    onChange={() => setCameraActive(!cameraActive)}
+                    className="toggle toggle-success"
+                  />
+                </label>
+              </div>
+              <div className="relative w-full h-full shadow-lg rounded-lg overflow-hidden border border-gray-100">
+                {cameraActive ? (
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                    <p className="text-gray-500">Cámara desactivada</p>
+                  </div>
+                )}
               </div>
             </div>
+
+           {/* Tarjeta de información del usuario */}
+<div class="p-4 w-4/12 shadow-xl border rounded-lg bg-white flex flex-col items-center">
+  <div class="flex flex-col items-center ">
+    <p class="text-gray-600 font-semibold">Aprendiz</p>
+    <div class="w-48 h-48 mb-2 border rounded-box">
+      <img
+        class="zoom-img"
+        src={foto}
+        alt="Foto de usuario"
+      />
+    </div>
+    <h2 class="text-xl font-semibold  text-gray-800">
+      Emmanuel Castañeda
+    </h2>
+    <p class="text-gray-600">Programa: ADSO</p>
+    <p class="text-gray-600">Ficha: 2669742</p>
+  </div>
+
+  {/* Información de objetos */}
+  <div class="mt-4 w-full bg-gray-100 p-4 rounded-lg">
+    <h3 class="text-lg font-medium mb-4 text-gray-700">
+      Objetos asociados
+    </h3>
+    <div class="flex items-center gap-4 p-4 border border-gray-300 rounded-lg bg-white">
+      <div class=" w-20 h-20">
+        <img
+          src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png"
+          alt="Objeto"
+          class="zoom-img"
+        />
+      </div>
+      <div class="flex flex-col  gap-1">
+        <span class="text-gray-600 text-sm">Objeto: Laptop ACER</span>
+        <span class="text-gray-600 text-sm">Serial: DE34021</span>
+        <span class="text-gray-600 text-sm">Descripción: color Gris</span>
+      </div>
+    </div>
+    <button
+      class="bg-gray-200 text-black px-4 py-2 mt-4 rounded hover:bg-gray-300 w-full"
+      onClick={() =>
+        document.getElementById("my_modal_1").showModal()
+      }
+    >
+      Más objetos
+    </button>
+  </div>
+</div>
           </div>
 
           {/* Modal */}
