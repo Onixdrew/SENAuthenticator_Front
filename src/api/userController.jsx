@@ -10,8 +10,8 @@ export const inicioSesion = async (values, guardarUserLocal) => {
 
   // const [Datos, setDatos]=useState();
 
-  // console.log(values.numID)
-  // console.log(values.password)
+  console.log(values.numID)
+  console.log(values.password)
   try {
     // creo la peticcion http
     const response = await axios.post("inicioSesion/",
@@ -25,7 +25,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
         },
       }
     );
-    console.log(response);
+   
     
     if (response.status == 200) {
       console.log("Usuario Logueado correctamente");

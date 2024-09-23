@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 
+
 /* Ocultar los íconos de incremento y decremento en Chrome, Safari y Edge */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -61,8 +62,6 @@ input[type="number"] {
 
 
 /* graficas */
-
-
 /* General Styles */
 body {
   margin: 0;
@@ -274,4 +273,23 @@ body {
   display: block; /* Hace que el Link abarque toda la tarjeta */
   text-decoration: none; /* Quita la subrayado del link */
   color: inherit; /* Hereda el color de texto del padre */
+}
+
+
+
+/* Zoom fotos y objetos de usuarios */
+.zoom-img {
+  /* Initial size and positioning */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Maintain aspect ratio */
+
+  /* Hover effect for zoom */
+  transition: transform 0.3s ease-in-out;
+}
+
+.zoom-img:hover {
+  /* Zoom effect on hover */
+  transform: scale(1.2); /* Increase size by 20% */
+  cursor: zoom-in;  /* Change cursor to indicate zoom */
 }

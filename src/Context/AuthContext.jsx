@@ -2,38 +2,32 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "../api/axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
-import Cookies from 'js-cookie';
-
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const location = useLocation(); // Obtiene la ruta actual
 
   useEffect(() => {
     const verificarCookie = async () => {
       try {
-        const cookie = Cookies.get("jwt-access");
-        if (cookie) {
-          setLoading(true);
-          const response = await axios.get("validarToken/");
-          if (response.status === 200) {
-            const storedUser = localStorage.getItem("user");
+        // setLoading(true);
+        const response = await axios.get("validarToken/");
+        if (response.status === 200) {
+          const storedUser = localStorage.getItem("user");
 
-            if (storedUser) {
-              const user = JSON.parse(storedUser);
-              setUser(user);
-            } else {
-              console.log("No hay usuario en el localStorage");
-            }
-
+          if (storedUser) {
+            const user = JSON.parse(storedUser);
             setIsAuthenticated(true);
+            setUser(user);
           } else {
-            cerrarSesion();
+            console.log("No estas logueado");
           }
+        } else {
+          cerrarSesion();
         }
       } catch (error) {
         console.log("User not authenticated", error);
@@ -66,8 +60,8 @@ const AuthProvider = ({ children }) => {
   };
 
   // Si loading es true y la ruta no es "/Login" ni "/", se muestra el Loader
-  if (loading && location.pathname !== "/") {
-    // && location.pathname !== "/Login" &&
+  if (loading && location.pathname !== "/" && location.pathname !== "/Login") {
+    // && location.pathname !== "/Login"
     return (
       <div className="text-center mt-10 font-bold">
         <Loader />
