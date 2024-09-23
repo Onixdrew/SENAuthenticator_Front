@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/userController";
 
-const Register = ({ cerrarModal }) => {
+const Register = ({ cerrarModal, datosRegister }) => {
   const [passwordError, setPasswordError] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [datosForm, setDatosForm] = useState();
@@ -22,6 +22,7 @@ const Register = ({ cerrarModal }) => {
   const enviarForm = handleSubmit(async (values,e) => {
     e.preventDefault();
     setDatosForm(values);
+    datosRegister(values)
 
     // const response = await registerForm(data);
     const response = await registerUser(values);
@@ -38,6 +39,8 @@ const Register = ({ cerrarModal }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
+
+      
       <div className="relative w-full max-w-4xl max-h-[90vh] bg-white p-6 overflow-auto rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl md:text-3xl mx-auto font-semibold text-gray-800 ">

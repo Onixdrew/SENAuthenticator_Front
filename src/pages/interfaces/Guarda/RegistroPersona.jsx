@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import axios from "axios";
+import axios from "../../../api/axios";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ const Inicio = () => {
     const fetchOficinas = async () => {
       try {
         const response = await axios.get(
-          "https://senauthenticator.onrender.com/api/oficina/"
+          "oficina/"
         );
         setOficinas(response.data);
       } catch (error) {
@@ -54,10 +54,10 @@ const Inicio = () => {
           <Navbar
             item1="Registro Facial"
             item2="Registro Personas"
-            item3="Informes"
+            item3="Historial"
             ruta1="/InicioGuardia"
             ruta2="/ReconocimientoGuardia"
-            ruta3="/Informes"
+            ruta3="/HistorialUser"
             color=""
           />
 

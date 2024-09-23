@@ -90,9 +90,8 @@ const Admin = () => {
           {/* Sidebar */}
           <div
             ref={sidebarRef}
-            className={`fixed inset-y-0 left-0 transform ${
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80 p-4 w-64 z-10 shadow-lg`}
+            className={`fixed inset-y-0 left-0 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+              } transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80 p-4 w-64 z-10 shadow-lg`}
           >
             <div className="text-white text-center mt-4">
               <div className="flex items-center flex-col">
@@ -158,53 +157,53 @@ const Admin = () => {
               </div>
             </div>
 
-           {/* Tarjeta de información del usuario */}
-<div class="p-4 w-4/12 shadow-xl border rounded-lg bg-white flex flex-col items-center">
-  <div class="flex flex-col items-center ">
-    <p class="text-gray-600 font-semibold">Aprendiz</p>
-    <div class="w-48 h-48 mb-2 border rounded-box">
-      <img
-        class="zoom-img"
-        src={foto}
-        alt="Foto de usuario"
-      />
-    </div>
-    <h2 class="text-xl font-semibold  text-gray-800">
-      Emmanuel Castañeda
-    </h2>
-    <p class="text-gray-600">Programa: ADSO</p>
-    <p class="text-gray-600">Ficha: 2669742</p>
-  </div>
+            {/* Tarjeta de información del usuario */}
+            <div class="p-4 w-4/12 shadow-xl border rounded-lg bg-white flex flex-col items-center">
+              <div class="flex flex-col items-center ">
+                <p class="text-gray-600 font-semibold">Aprendiz</p>
+                <div class="w-48 h-48 mb-2 border rounded-box">
+                  <img
+                    class="zoom-img"
+                    src={foto}
+                    alt="Foto de usuario"
+                  />
+                </div>
+                <h2 class="text-xl font-semibold  text-gray-800">
+                  Emmanuel Castañeda
+                </h2>
+                <p class="text-gray-600">Programa: ADSO</p>
+                <p class="text-gray-600">Ficha: 2669742</p>
+              </div>
 
-  {/* Información de objetos */}
-  <div class="mt-4 w-full bg-gray-100 p-4 rounded-lg">
-    <h3 class="text-lg font-medium mb-4 text-gray-700">
-      Objetos asociados
-    </h3>
-    <div class="flex items-center gap-4 p-4 border border-gray-300 rounded-lg bg-white">
-      <div class=" w-20 h-20">
-        <img
-          src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png"
-          alt="Objeto"
-          class="zoom-img"
-        />
-      </div>
-      <div class="flex flex-col  gap-1">
-        <span class="text-gray-600 text-sm">Objeto: Laptop ACER</span>
-        <span class="text-gray-600 text-sm">Serial: DE34021</span>
-        <span class="text-gray-600 text-sm">Descripción: color Gris</span>
-      </div>
-    </div>
-    <button
-      class="bg-gray-200 text-black px-4 py-2 mt-4 rounded hover:bg-gray-300 w-full"
-      onClick={() =>
-        document.getElementById("my_modal_1").showModal()
-      }
-    >
-      Más objetos
-    </button>
-  </div>
-</div>
+              {/* Información de objetos */}
+              <div class="mt-4 w-full bg-gray-100 p-4 rounded-lg">
+                <h3 class="text-lg font-medium mb-4 text-gray-700">
+                  Objetos asociados
+                </h3>
+                <div class="flex items-center gap-4 p-4 border border-gray-300 rounded-lg bg-white">
+                  <div class=" w-20 h-20">
+                    <img
+                      src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png"
+                      alt="Objeto"
+                      class="zoom-img"
+                    />
+                  </div>
+                  <div class="flex flex-col  gap-1">
+                    <span class="text-gray-600 text-sm">Objeto: Laptop ACER</span>
+                    <span class="text-gray-600 text-sm">Serial: DE34021</span>
+                    <span class="text-gray-600 text-sm">Descripción: color Gris</span>
+                  </div>
+                </div>
+                <button
+                  class="bg-gray-200 text-black px-4 py-2 mt-4 rounded hover:bg-gray-300 w-full"
+                  onClick={() =>
+                    document.getElementById("my_modal_1").showModal()
+                  }
+                >
+                  Más objetos
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Modal */}
