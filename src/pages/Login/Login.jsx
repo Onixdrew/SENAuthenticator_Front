@@ -19,6 +19,7 @@ const Login = () => {
   } = useForm();
   const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
+  const [modalCamara, setModalCamara] = useState(false);
   const [getDatos, setGetDatos] = useState({});
   const { isAuthenticated, user, setUser, guardarUserLocal, loading } = useAuth();
   const navegar = useNavigate();
@@ -101,6 +102,9 @@ const Login = () => {
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
+  const cerrarModalCamara = (e) => {
+    setModalCamara(e);
+  };
   const datosRegister = (e) => {
     setGetDatos(e);
   };
@@ -112,15 +116,15 @@ const Login = () => {
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <Register cerrarModal={cerrarModal} datosRegister={datosRegister} />
+            <Register cerrarModal={cerrarModal} datosRegister={datosRegister} cerrarModalCamara={cerrarModalCamara}/>
           </div>
         </div>
       )}
 
-      {abrirRegister && (
+      {modalCamara && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <CapturaFacial  datos={getDatos} />
+            <CapturaFacial  datos={getDatos} cerrarModalCamara={cerrarModalCamara} />
           </div>
         </div>
       )}

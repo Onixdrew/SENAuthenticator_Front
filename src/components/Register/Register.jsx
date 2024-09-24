@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/userController";
 
-const Register = ({ cerrarModal, datosRegister }) => {
+const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
   const [passwordError, setPasswordError] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [datosForm, setDatosForm] = useState();
@@ -19,17 +19,23 @@ const Register = ({ cerrarModal, datosRegister }) => {
     }
   };
 
-  const enviarForm = handleSubmit(async (values,e) => {
-    e.preventDefault();
+  const enviarForm = handleSubmit(async (values) => {
     setDatosForm(values);
     datosRegister(values)
+    
 
     // const response = await registerForm(data);
     const response = await registerUser(values);
+    // console.log(response.error)
 
     if (response.status === 201 || response.status === 200) {
       // se cierra el modal
       cerrarModalProp(false);
+      
+      setTimeout(() => {
+        cerrarModalCamara(true); // Abre el modal de la cámara después de un pequeño retraso
+      }, 300);
+      
     }
   });
 
@@ -166,7 +172,7 @@ const Register = ({ cerrarModal, datosRegister }) => {
               className="btn rounded-box bg-[rgb(39,169,0)] text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="submit"
             >
-              Aceptar
+              Siguiente <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </form>

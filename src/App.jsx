@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
+import CapturaFacial from "./components/CapturaFacial/capturaFacial.jsx";
 
 
 
@@ -52,7 +53,8 @@ const App = () => (
       <Suspense>
         <Routes>
           {/* Publicas */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<CapturaFacial />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route path="/Login" element={<Login />} />
 
           {/* Privadas */}
