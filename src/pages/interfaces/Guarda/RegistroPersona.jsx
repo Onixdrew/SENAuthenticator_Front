@@ -58,7 +58,8 @@ const Inicio = () => {
             ruta1="/InicioGuardia"
             ruta2="/ReconocimientoGuardia"
             ruta3="/HistorialUser"
-            color=""
+            color2="activo"
+
           />
 
           {/* Main Content */}

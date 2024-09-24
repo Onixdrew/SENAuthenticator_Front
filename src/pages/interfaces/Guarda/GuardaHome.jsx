@@ -93,17 +93,17 @@ const Admin = () => {
             className={`fixed inset-y-0 left-0 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80 p-4 w-64 z-10 shadow-lg`}
           >
-            <div className="text-white text-center mt-4">
+            <div className="text-white text-center mt-4 lg:mt-10 ">
               <div className="flex items-center flex-col">
                 <img src={Logo} alt="Logo" className="w-12" />
                 <h1 className="text-xl font-medium">SENAuthenticator</h1>
               </div>
 
-              <ul className="space-y-7 mt-16 text-lg">
+              <ul className="space-y-7 mt-16 text-lg lg:mt-32 lg:text-xl lg:space-y-10">
                 <li>
                   <a
                     href="/InicioGuardia"
-                    className="text-gray-300 hover:text-[rgb(39,169,0)]"
+                    className="text-gray-400"
                   >
                     Registro Facial
                   </a>
@@ -118,7 +118,7 @@ const Admin = () => {
                 </li>
                 <li>
                   <a
-                    href="/Informes"
+                    href="/HistorialUser"
                     className="text-gray-300 hover:text-[rgb(39,169,0)]"
                   >
                     Historial

@@ -9,7 +9,7 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
   const [abrirCamara, setAbrirCamara] = useState(false);
   const [registroExitoso, setRegistroExitoso] = useState(false);
   const [mostrarBotonAceptar, setMostrarBotonAceptar] = useState(false);
-  const [fotoCapturada, setFotoCapturada] = useState(null); // Previsualización de la foto
+  const [fotoCapturada, setFotoCapturada] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
@@ -45,8 +45,8 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
   const captureImage = () => {
     if (canvasRef.current && videoRef.current) {
       const context = canvasRef.current.getContext("2d");
-      canvasRef.current.width = 640;
-      canvasRef.current.height = 480;
+      canvasRef.current.width = 800;  // Tamaño más grande
+      canvasRef.current.height = 600;
       context.drawImage(
         videoRef.current,
         0,
@@ -111,11 +111,11 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
         <div className="text-center">
           {!fotoCapturada ? (
             <h2 className="text-3xl font-semibold mb-6 text-gray-800">
-              Ahora toma una foto de tu rostro, busca un lugar iluminado!!
+              Toma una foto de tu rostro en un lugar iluminado
             </h2>
           ) : (
             <h2 className="text-3xl font-semibold mb-4 text-gray-800">
@@ -125,7 +125,7 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
 
           {!fotoCapturada && !abrirCamara && (
             <button
-              className="btn  bg-blue-500 text-white px-6 py-3  shadow-lg hover:bg-blue-600 transition-all duration-300"
+              className="btn bg-blue-500 text-white px-6 py-3 shadow-lg hover:bg-blue-600 transition-all duration-300"
               onClick={() => setAbrirCamara(true)}
             >
               Empezar
@@ -137,17 +137,17 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
           <div className="flex flex-col items-center mt-6">
             <video
               ref={videoRef}
-              style={{ width: "480px", height: "360px" }}
+              style={{ width: "600px", height: "450px" }} // Aumentar tamaño
               className="border-2 border-gray-300 rounded-lg mb-6 shadow-md"
             />
             <canvas
               ref={canvasRef}
               style={{ display: "none" }}
-              width="640"
-              height="480"
+              width="800"
+              height="600"
             ></canvas>
             <button
-              className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300"
+              className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300 mt-4"
               onClick={captureImage}
             >
               Capturar Foto
@@ -167,7 +167,7 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
                 className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300"
                 onClick={submitData}
               >
-                Aceptar
+                Enviar
               </button>
               <button
                 className="btn bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-600 transition-all duration-300"

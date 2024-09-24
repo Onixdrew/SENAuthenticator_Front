@@ -14,6 +14,7 @@ const Navbar = ({
   color,
   color2,
   color3,
+  OpenPerfil,
 }) => {
   // Estado para controlar la visibilidad del menú móvil
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,7 +44,7 @@ const Navbar = ({
   return (
     <>
       <div className="flex   w-full z-50 flex-col ">
-        <nav className="flex font-serif items-center justify-between border-b  bg-[rgb(39,169,0)] p-4">
+        <nav className="flex font-serif items-center justify-around border-b  bg-[rgb(39,169,0)] p-4">
           <div className="flex items-center xl:ml-16">
             <img src={Logo} alt="Logo" className="w-12 text-black" />
             <h1 className="text-xl ml-2 font-medium text-white ">
@@ -106,36 +107,35 @@ const Navbar = ({
           </div>
 
           {/* Avatar (visible in all screens) */}
-          <div className="hidden md:flex items-center mr-16">
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className=" avatar"
-              >
-                <div className=" btn btn-circle  w-14 h-14">
-                  <img
-                    alt="Profile"
-                    src="https://www.shutterstock.com/image-photo/young-police-caucasian-man-isolated-260nw-2391831079.jpg"
-                  />
+          {OpenPerfil && (
+            <div className="hidden md:flex items-center mr-16">
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className=" avatar">
+                  <div className=" btn btn-circle  w-14 h-14">
+                    <img
+                      alt="Profile"
+                      src="https://www.shutterstock.com/image-photo/young-police-caucasian-man-isolated-260nw-2391831079.jpg"
+                    />
+                  </div>
                 </div>
-                
-            
+
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow "
+                >
+                  <li>
+                    <Link className="justify-between " to="/perfil">
+                      Perfil
+                    </Link>
+                  </li>
+
+                  <li>
+                    <button onClick={cerrarSesion}>Salir</button>
+                  </li>
+                </ul>
               </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow "
-              >
-                <li>
-                  <Link className="justify-between " to="/perfil">Perfil</Link>
-                </li>
-                
-                <li>
-                  <button onClick={cerrarSesion}>Salir</button>
-                </li>
-              </ul>
             </div>
-          </div>
+          )}
         </nav>
 
         {/* Mobile Menu */}
@@ -167,9 +167,9 @@ const Navbar = ({
             to="/perfil"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
           >
-            Perfil
+            perfil
           </Link>
-          
+
           <Link
             to="#"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
