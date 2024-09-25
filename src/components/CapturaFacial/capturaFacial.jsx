@@ -20,9 +20,6 @@ function CapturaFacial({
   const streamRef = useRef(null);
   const navigate = useNavigate();
 
-  // console.log(datos);
-  console.log(`Esta es la foto: ${fotoCapturada}`);
-
   useEffect(() => {
     if (abrirCamara) {
       startCamera();
@@ -53,10 +50,9 @@ function CapturaFacial({
   const captureImage = () => {
     if (canvasRef.current && videoRef.current) {
       const context = canvasRef.current.getContext("2d");
-      canvasRef.current.width = 800; // Tamaño más grande
+      canvasRef.current.width = 800;
       canvasRef.current.height = 600;
 
-      // Asegúrate de que el video esté listo
       context.drawImage(
         videoRef.current,
         0,
@@ -69,7 +65,7 @@ function CapturaFacial({
         if (blob) {
           const newFile = new File([blob], "face.jpg", { type: "image/jpeg" });
           setFile(newFile);
-          setFotoCapturada(URL.createObjectURL(blob)); // Guardar la previsualización
+          setFotoCapturada(URL.createObjectURL(blob));
           setMostrarBotonAceptar(true);
         } else {
           console.error("No se pudo crear el blob de la imagen");
@@ -81,9 +77,9 @@ function CapturaFacial({
   };
 
   const retakePhoto = () => {
-    setFotoCapturada(null); // Limpiar la previsualización
-    setMostrarBotonAceptar(false); // Ocultar botón de aceptar hasta nueva captura
-    startCamera(); // Reiniciar la cámara
+    setFotoCapturada(null);
+    setMostrarBotonAceptar(false);
+    startCamera();
   };
 
   const submitData = async () => {
@@ -97,8 +93,6 @@ function CapturaFacial({
       formData.append("nombre_completo", datos.nombre);
       formData.append("numero_documento", datos.numID);
       formData.append("face_register", file);
-
-      console.log(`hola desde submitData: ${formData}`);
 
       const response = await axios.post(
         "https://backendsenauthenticator.up.railway.app/api/registro-facial/",
@@ -131,35 +125,31 @@ function CapturaFacial({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <div className="text-center">
-          {!fotoCapturada ? (
-            <h2 className="text-3xl font-semibold mb-6 text-gray-800">
-              Toma una foto de tu rostro en un lugar iluminado
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 overflow-y-scroll">
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-xl w-full max-w-3xl [@media(max-width:425px)]:mt-16 [@media(max-width:425px)]:mb-10  [@media(max-width:1440px)]:mt-16 [@media(max-width:1440px)]:mb-10 [@media(max-width:1440px)]:p-2">
+        
+        {!fotoCapturada && !abrirCamara && (
+          <div className="text-center">
+            <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-gray-800">
+              Ahora toma una foto de tu rostro.
             </h2>
-          ) : (
-            <h2 className="text-3xl font-semibold mb-4 text-gray-800">
-              Revisa tu Foto
-            </h2>
-          )}
-
-          {!fotoCapturada && !abrirCamara && (
             <button
-              className="btn bg-blue-500 text-white px-6 py-3 shadow-lg hover:bg-blue-600 transition-all duration-300"
+              className="btn bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300"
               onClick={() => setAbrirCamara(true)}
             >
               Empezar
             </button>
-          )}
-        </div>
-
+          </div>
+        )};
+       
         {abrirCamara && !fotoCapturada && (
-          <div className="flex flex-col items-center mt-6">
+          <div className="flex flex-col items-center">
+            <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-gray-800">
+              Posiciona el rostro en el centro
+            </h2>
             <video
               ref={videoRef}
-              style={{ width: "600px", height: "450px" }} // Aumentar tamaño
-              className="border-2 border-gray-300 rounded-lg mb-6 shadow-md"
+              className="w-full max-w-[600px] h-auto border-2 border-gray-300 rounded-lg mb-6 shadow-md"
             />
             <canvas
               ref={canvasRef}
@@ -168,30 +158,32 @@ function CapturaFacial({
               height="600"
             ></canvas>
             <button
-              className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300 mt-4"
+              className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition-all duration-300 mt-4"
               onClick={captureImage}
             >
-              Capturar Foto
+              Capturar
             </button>
           </div>
         )}
-
         {fotoCapturada && (
-          <div className="mt-6">
+          <div>
+            <h2 className="text-2xl md:text-3xl text-center font-semibold mb-4 text-gray-800">
+              Elije la foto de mejor calidad.
+            </h2>
             <img
               src={fotoCapturada}
               alt="Foto Capturada"
-              className="mb-4 border-2 border-gray-300 rounded-lg shadow-md"
+              className="mb-4 w-full max-w-[500px] mx-auto border-2 border-gray-300 rounded-lg shadow-md"
             />
             <div className="flex justify-center gap-4">
               <button
-                className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300"
+                className="btn bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition-all duration-300"
                 onClick={submitData}
               >
                 Enviar
               </button>
               <button
-                className="btn bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-600 transition-all duration-300"
+                className="btn bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-300"
                 onClick={retakePhoto}
               >
                 Tomar otra foto
@@ -199,13 +191,11 @@ function CapturaFacial({
             </div>
           </div>
         )}
-
         {error && (
           <div className="text-red-500 mt-4 text-center">
             Error: {error.message || JSON.stringify(error)}
           </div>
         )}
-
         {registroExitoso && (
           <p className="text-green-500 mt-4 text-center">
             Registro exitoso. ¡Gracias por registrarte!
