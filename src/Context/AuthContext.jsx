@@ -14,20 +14,21 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const verificarCookie = async () => {
       try {
-        // setLoading(true);
-        const response = await axios.get("validarToken/");
-        if (response.status === 200) {
-          const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem("user");
 
-          if (storedUser) {
-            const user = JSON.parse(storedUser);
-            setIsAuthenticated(true);
-            setUser(user);
+        if (storedUser) {
+          const response = await axios.get("validarToken/");
+          if (response.status === 200) {
+            if (storedUser) {
+              const user = JSON.parse(storedUser);
+              setIsAuthenticated(true);
+              setUser(user);
+            } else {
+              console.log("No estas logueado");
+            }
           } else {
-            console.log("No estas logueado");
+            cerrarSesion();
           }
-        } else {
-          cerrarSesion();
         }
       } catch (error) {
         console.log("User not authenticated", error);

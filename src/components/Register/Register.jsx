@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/userController";
 
-const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
+const Register = ({ cerrarModal, datosRegister, cerrarModalCamara, mensajeExito }) => {
   const [passwordError, setPasswordError] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [datosForm, setDatosForm] = useState();
@@ -31,6 +31,7 @@ const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
     if (response.status === 201 || response.status === 200) {
       // se cierra el modal
       cerrarModalProp(false);
+      mensajeExito(true)
       
       setTimeout(() => {
         cerrarModalCamara(true); // Abre el modal de la cámara después de un pequeño retraso

@@ -88,8 +88,7 @@ export const registerUser = async (data) => {
     );
 
     if (response.status === 201 || response.status === 200) {
-      alert("Usuario creado correctamente");
-      // enviarDatosLogin(response.data);
+
       return response;
     } else {
       alert(response.data.error || "Ocurrió un error desconocido en el registro");

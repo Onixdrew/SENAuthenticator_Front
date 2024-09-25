@@ -1,9 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "axios";
 import Swal from "sweetalert2";
 
-function CapturaFacial({ datos, cerrarModalCamara }) {
+function CapturaFacial({
+  datos,
+  cerrarModalCamara,
+  mensajeSuccesfull,
+  mensajeExitoCaptura,
+}) {
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const [abrirCamara, setAbrirCamara] = useState(false);
@@ -14,6 +19,9 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const navigate = useNavigate();
+
+  // console.log(datos);
+  console.log(`Esta es la foto: ${fotoCapturada}`);
 
   useEffect(() => {
     if (abrirCamara) {
@@ -45,8 +53,10 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
   const captureImage = () => {
     if (canvasRef.current && videoRef.current) {
       const context = canvasRef.current.getContext("2d");
-      canvasRef.current.width = 800;  // Tamaño más grande
+      canvasRef.current.width = 800; // Tamaño más grande
       canvasRef.current.height = 600;
+
+      // Asegúrate de que el video esté listo
       context.drawImage(
         videoRef.current,
         0,
@@ -56,17 +66,19 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
       );
 
       canvasRef.current.toBlob((blob) => {
-        const newFile = new File([blob], "face.jpg", { type: "image/jpeg" });
-        
-        console.log(`Esta es la foto: ${JSON.stringify(newFile)}`)
-        
-        setFile(newFile);
-        setFotoCapturada(URL.createObjectURL(blob)); // Guardar la previsualización
-        setMostrarBotonAceptar(true);
+        if (blob) {
+          const newFile = new File([blob], "face.jpg", { type: "image/jpeg" });
+          setFile(newFile);
+          setFotoCapturada(URL.createObjectURL(blob)); // Guardar la previsualización
+          setMostrarBotonAceptar(true);
+        } else {
+          console.error("No se pudo crear el blob de la imagen");
+        }
       }, "image/jpeg");
+    } else {
+      console.error("El canvas o el video no están disponibles");
     }
   };
-
 
   const retakePhoto = () => {
     setFotoCapturada(null); // Limpiar la previsualización
@@ -86,8 +98,10 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
       formData.append("numero_documento", datos.numID);
       formData.append("face_register", file);
 
+      console.log(`hola desde submitData: ${formData}`);
+
       const response = await axios.post(
-        "registro-facial/",
+        "https://backendsenauthenticator.up.railway.app/api/registro-facial/",
         formData,
         {
           headers: {
@@ -97,6 +111,9 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
       );
 
       if (response.status === 200) {
+        if (mensajeSuccesfull) {
+          mensajeExitoCaptura("Usuario creado correctamente");
+        }
         setRegistroExitoso(true);
         cerrarModalCamara(false);
       }
@@ -185,7 +202,7 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
 
         {error && (
           <div className="text-red-500 mt-4 text-center">
-            Error: {error.message || error}
+            Error: {error.message || JSON.stringify(error)}
           </div>
         )}
 
