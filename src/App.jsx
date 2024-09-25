@@ -4,9 +4,14 @@ import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
 
+
+
 // Importaciones dinámicas
 const Perfil = lazy(() =>
   import("./components/Perfil/Perfil.jsx")
+);
+const CapturaFacial = lazy(() =>
+  import("./components/CapturaFacial/capturaFacial.jsx")
 );
 
 const InicioIntructor = lazy(() =>
@@ -28,6 +33,11 @@ const Sobrenosotros = lazy(() =>
 const InicioGuardia = lazy(() =>
   import("./pages/interfaces/Guarda/RegistroPersona.jsx")
 );
+const HistorialUser = lazy(() =>
+  import("./pages/interfaces/Guarda/historialUser.jsx")
+);
+
+
 const Login = lazy(() => import("./pages/Login/Login.jsx"));
 const InicioAdmin = lazy(() =>
   import("./pages/interfaces/Administrador/inicioAdmin.jsx")
@@ -49,12 +59,15 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
 
+          {/* <Route path="/" element={<CapturaFacial />} /> */}
+
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>
             {/* Guardia */}
             <Route path="/InicioGuardia" element={<GuardiaHome />} />
             <Route path="/ReconocimientoGuardia" element={<InicioGuardia />} />
             <Route path="/Mas" element={<Sobrenosotros />} />
+            <Route path="/HistorialUser" element={<HistorialUser />} />
 
             {/* Instructor */}
             <Route path="/inicioInstructor" element={<InicioIntructor />} />

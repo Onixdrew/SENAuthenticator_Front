@@ -135,6 +135,8 @@ const GraficasAdmin = () => {
             ruta1="/inicioAdmin"
             ruta2="/ReportesAdmin"
             color3="activo"
+            OpenPerfil={true}
+
           />
 
           {/* Filtros Avanzados */}

@@ -20,7 +20,7 @@ const ReportesInstructor = () => {
   const [refrescar, setRefrescar] = useState(false);
 
   const location = useLocation(); // Obtiene la ruta actual
-  
+
   // Almacenar la ruta actual en localStorage al cargar el componente
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
@@ -106,7 +106,7 @@ const ReportesInstructor = () => {
       {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div className="relative min-h-screen flex flex-col">
           {loading && <Loader />}
-          
+
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
@@ -114,6 +114,8 @@ const ReportesInstructor = () => {
                 item2="Reportes"
                 ruta1="/inicioInstructor"
                 color2="activo"
+                OpenPerfil={true}
+
               />
             </div>
 
@@ -211,7 +213,7 @@ const ReportesInstructor = () => {
                       <tr>
                         <th className="px-4 py-2 text-center">Puesto</th>
                         <th className=" py-2 text-start">Nombre</th>
-                       
+
                         <th className="px-4 py-2 text-start">
                           Número Identificación
                         </th>
@@ -227,7 +229,7 @@ const ReportesInstructor = () => {
                           <td className=" py-2 font-semibold text-start">
                             {registro.first_name}
                           </td>
-                          
+
                           <td className="px-4 py-2 text-start">
                             {registro.numero_documento_usuario}
                           </td>

@@ -149,6 +149,8 @@ const GraficasInstructor = () => {
             ruta1="/inicioInstructor"
             ruta2="/reportesInstructor"
             color3="activo"
+            OpenPerfil={true}
+
           />
 
           {/* Filtros Avanzados */}
