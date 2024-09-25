@@ -93,7 +93,7 @@ const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
                 <option value="Tarjeta de Identidad">
                   Tarjeta de Identidad
                 </option>
-                <option value="Cedula de ciudadania">
+                <option value="Cédula de ciudadanía">
                   Cédula de ciudadanía
                 </option>
                 <option value="Cedula de extranjeria">

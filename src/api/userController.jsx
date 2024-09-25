@@ -14,7 +14,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
   console.log(values.password)
   try {
     // creo la peticcion http
-    const response = await axios.post("inicioSesion/",
+    const response = await axios.post("inicio-sesion/",
       {
         numero_documento_usuario: values.numID,
         password: values.password,
@@ -25,7 +25,6 @@ export const inicioSesion = async (values, guardarUserLocal) => {
         },
       }
     );
-   
     
     if (response.status == 200) {
       console.log("Usuario Logueado correctamente");
@@ -72,7 +71,7 @@ export const registerUser = async (data) => {
     const userName = data.nombre.split(" ")[0];
 
     const response = await axios.post(
-      "usuario/",
+      "usuarios/",
       {
         username: userName,
         first_name: data.nombre,
@@ -107,7 +106,7 @@ export const registerUser = async (data) => {
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get("usuario/", {
+    const response = await axios.get("usuarios/", {
       headers: {
         "Content-Type": "application/json",
       },

@@ -47,6 +47,8 @@ const InicioAdmin = () => {
             item2="Reportes"
             ruta2="/ReportesAdmin"
             color="activo"
+            OpenPerfil={true}
+
           />
 
           <main className="p-6 bg-gray-100 min-h-screen">

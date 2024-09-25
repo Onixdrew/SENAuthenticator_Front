@@ -39,6 +39,8 @@ const InicioIntructor = () => {
             item2="Reportes"
             ruta2="/reportesInstructor"
             color=""
+            OpenPerfil={true}
+
           />
 
           <div className="p-4 flex-1 flex flex-col items-center justify-center">

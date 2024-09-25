@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axios";
 import Swal from "sweetalert2";
 
 function CapturaFacial({ datos, cerrarModalCamara }) {
@@ -57,12 +57,16 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
 
       canvasRef.current.toBlob((blob) => {
         const newFile = new File([blob], "face.jpg", { type: "image/jpeg" });
+        
+        console.log(`Esta es la foto: ${JSON.stringify(newFile)}`)
+        
         setFile(newFile);
         setFotoCapturada(URL.createObjectURL(blob)); // Guardar la previsualización
         setMostrarBotonAceptar(true);
       }, "image/jpeg");
     }
   };
+
 
   const retakePhoto = () => {
     setFotoCapturada(null); // Limpiar la previsualización
@@ -83,7 +87,7 @@ function CapturaFacial({ datos, cerrarModalCamara }) {
       formData.append("face_register", file);
 
       const response = await axios.post(
-        "https://backsenauthenticator.up.railway.app/api/registroFacial/",
+        "registro-facial/",
         formData,
         {
           headers: {

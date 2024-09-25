@@ -20,12 +20,15 @@ const ReportesAdmin = () => {
   const [tipoPersona, setTipoPersona] = useState("Aprendiz");
   const location = useLocation(); // Obtiene la ruta actual
 
+
   // Estados para la paginación
   const [paginaActual, setPaginaActual] = useState(1);
   const registrosPorPagina = 5;
 
+
   // Referencia para impresión
   const printRef = useRef();
+
 
   // Almacenar la ruta actual en localStorage al cargar el componente
   useEffect(() => {
@@ -61,6 +64,7 @@ const ReportesAdmin = () => {
 
     recibirDatos();
   }, [refrescar, tipoPersona]);
+
 
   // se filtra por numero de documento
   useEffect(() => {
@@ -115,6 +119,7 @@ const ReportesAdmin = () => {
                 item2="Reportes"
                 ruta1="/inicioAdmin"
                 color2="activo"
+                OpenPerfil={true}
               />
             </div>
 

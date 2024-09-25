@@ -2,13 +2,16 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
-import CapturaFacial from "./components/CapturaFacial/capturaFacial.jsx";
+
 
 
 
 // Importaciones dinámicas
 const Perfil = lazy(() =>
   import("./components/Perfil/Perfil.jsx")
+);
+const CapturaFacial = lazy(() =>
+  import("./components/CapturaFacial/capturaFacial.jsx")
 );
 
 const InicioIntructor = lazy(() =>
@@ -53,9 +56,10 @@ const App = () => (
       <Suspense>
         <Routes>
           {/* Publicas */}
-          <Route path="/" element={<CapturaFacial />} />
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
+
+          {/* <Route path="/" element={<CapturaFacial />} /> */}
 
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>
