@@ -4,7 +4,7 @@ import axios from "axios";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
 
-const Inicio = () => {
+const RegistroPersona = () => {
   const [oficinas, setOficinas] = useState([]);
   const { isAuthenticated, user } = useAuth();
   const location = useLocation(); // Obtiene la ruta actual
@@ -19,7 +19,7 @@ const Inicio = () => {
     // Función para obtener datos de la API
     const fetchOficinas = async () => {
       try {
-        const response = await axios.get("https://senauthenticator.onrender.com/api/oficina/");
+        const response = await axios.get("https://backendsenauthenticator.up.railway.app/api/oficinas/");
         setOficinas(response.data); // Asumiendo que `response.data` es un array
       } catch (error) {
         console.error("Error al obtener las oficinas", error);
@@ -107,10 +107,10 @@ const Inicio = () => {
                       htmlFor="diligencia"
                       className="block text-sm font-medium text-black"
                     >
-                      Diligencia a realizar (Opcional)
+                      Diligencia a realizar (no obligatorio)
                     </label>
                     <textarea
-                    placeholder="Opcional "
+                    placeholder="no obligatorio "
                       id="diligencia"
                       name="diligencia"
                       rows="3"
@@ -148,4 +148,4 @@ const Inicio = () => {
   );
 };
 
-export default Inicio;
+export default RegistroPersona;

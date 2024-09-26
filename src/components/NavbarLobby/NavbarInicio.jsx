@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
+import foto from "../../../public/img/Reconocimiento Facial.webp";
 
 const NavbarInicio = ({
   item1,
@@ -47,9 +48,9 @@ const NavbarInicio = ({
         <nav className="flex items-center justify-between border-b bg-[rgb(39,169,0)] p-4">
           <div className="flex items-center xl:ml-16">
             <img src={Logo} alt="Logo" className="w-12 text-black" />
-            <h1 className="text-xl ml-2 font-medium text-white">
+            <a  href="#" className="text-xl ml-2 font-medium text-white">
               SENAuthenticator
-            </h1>
+            </a>
           </div>
 
           {/* Menu Desktop */}
@@ -83,12 +84,12 @@ const NavbarInicio = ({
           {/* Botones */}
           <div className="hidden md:flex gap-4">
             <Link to="/Login">
-              <button className="btn rounded-box bg-blue-600 text-white py-2 px-4 hover:bg-blue-700 transition-colors">
+              <button className="btn rounded-box bg-[rgb(39,169,0)] text-white py-2 px-4 hover:bg-green-800 transition-colors">
                 Iniciar Sesión
               </button>
             </Link>
             <button
-              className="btn rounded-box bg-blue-600 text-white py-2 px-4 hover:bg-blue-700 transition-colors"
+              className="btn rounded-box bg-[rgb(39,169,0)] text-white py-2 px-4 hover:bg-green-800 transition-colors"
               onClick={() => cerrarModal(true)}
             >
               Registrarse

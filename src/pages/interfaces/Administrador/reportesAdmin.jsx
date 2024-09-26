@@ -104,6 +104,8 @@ const ReportesAdmin = () => {
         <div className="relative min-h-screen flex flex-col">
           {loading && <Loader />}
           <div className="relative">
+
+            
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
                 item1="inicio"
@@ -112,7 +114,6 @@ const ReportesAdmin = () => {
                 color2="activo"
               />
             </div>
-
             <div className="max-w-full mx-auto px-4 md:px-6">
               <form
                 action=""
@@ -309,3 +310,5 @@ const ReportesAdmin = () => {
 };
 
 export default ReportesAdmin;
+
+

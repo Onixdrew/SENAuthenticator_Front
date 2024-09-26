@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import { toast } from 'react-hot-toast';
 import axios from "./axios";
 
 // /////////////////////////////////////////// inicioSesion
@@ -11,7 +11,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
   // const [Datos, setDatos]=useState();
   try {
     // creo la peticcion http
-    const response = await axios.post("inicioSesion/",
+    const response = await axios.post("inicio-sesion/",
       {
         numero_documento_usuario: values.numID,
         password: values.password,
@@ -38,12 +38,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
     }
   } catch (error) {
 
-    Swal.fire({
-      title: "Eror",
-      text: error ,
-      icon: "warning",
-      confirmButtonText: "OK",
-    });
+
 
     if (error.response) {
       // La solicitud se realizó y el servidor respondió con un código de estado
@@ -68,9 +63,9 @@ export const registerUser = async (data) => {
     const userName = data.nombre.split(" ")[0];
 
     const response = await axios.post(
-      "usuario/",
+      "usuarios/",
       {
-        username: userName,
+        // username: userName,
         first_name: data.nombre,
         tipo_documento_usuario: data.tipoID,
         numero_documento_usuario: data.numID,

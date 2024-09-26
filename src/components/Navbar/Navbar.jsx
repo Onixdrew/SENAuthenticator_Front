@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import foto from "../../../public/img/Reconocimiento Facial.webp";
 
 import Logo from "../../../public/img/Logo Reconocimiento Facial - Blanco.png";
 import { useAuth } from "../../Context/AuthContext";
@@ -116,7 +117,7 @@ const Navbar = ({
                 <div className=" btn btn-circle  w-14 h-14">
                   <img
                     alt="Profile"
-                    src="https://www.shutterstock.com/image-photo/young-police-caucasian-man-isolated-260nw-2391831079.jpg"
+                    src={foto}
                   />
                 </div>
                 

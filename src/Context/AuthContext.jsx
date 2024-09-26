@@ -59,8 +59,8 @@ const AuthProvider = ({ children }) => {
   };
 
   // Si loading es true y la ruta no es "/Login" ni "/", se muestra el Loader
-  if (loading) {
-    // && location.pathname !== "/Login" && location.pathname !== "/"
+  if (loading && location.pathname !== "/") {
+    // && location.pathname !== "/Login" && 
     return (
       <div className="text-center mt-10 font-bold">
         <Loader />

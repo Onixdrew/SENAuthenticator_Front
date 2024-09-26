@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import foto from "../../../../public/img/emmanuel.jpg";
 import "./media/guardia.css";
@@ -7,42 +7,44 @@ import { useAuth } from "../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
 
 const GuardaHome = () => {
- 
-
-  const {isAuthenticated, user} = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const videoRef = useRef(null);
   const location = useLocation(); // Obtiene la ruta actual
-  
+  const [cameraActive, setCameraActive] = useState(false); // Estado para manejar la cámara
+
   // Almacenar la ruta actual en localStorage al cargar el componente
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
   }, [location]);
 
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error("Error al acceder a la cámara:", error);
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    }
+  };
 
   useEffect(() => {
-    // Intentar acceder a la cámara sin solicitar permiso explícito
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("Error al acceder a la cámara:", error);
-      }
-    };
-
-    startCamera();
-
+    if (cameraActive) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
     // Limpiar el stream al desmontar el componente
-    return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
+    return () => stopCamera();
+  }, [cameraActive]);
 
   return (
     <>
@@ -57,16 +59,33 @@ const GuardaHome = () => {
             ruta3="/Informes"
             color=""
           />
-          
+
           <div className="flex p-4 gap-4 justify-between">
-            {/* Sección de cámara */}
-            <div className="camara p-4 w-2/3">
+            {/* Sección de cámara con toggle */}
+            <div className="camara p-4 w-2/3 relative">
+              <div className="flex justify-end items-center mb-2">
+                <label className="flex items-center gap-2">
+                  <span className="text-sm">Activar cámara</span>
+                  <input
+                    type="checkbox"
+                    checked={cameraActive}
+                    onChange={() => setCameraActive(!cameraActive)}
+                    className="toggle toggle-success"
+                  />
+                </label>
+              </div>
               <div className="relative w-full h-full shadow-lg rounded-lg overflow-hidden border border-gray-100">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  className="w-full h-full object-cover"
-                />
+                {cameraActive ? (
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                    <p className="text-gray-500">Cámara desactivada</p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -115,7 +134,7 @@ const GuardaHome = () => {
                       document.getElementById("my_modal_1").showModal()
                     }
                   >
-                    Más objetos
+                    Mis objetos
                   </button>
                 </div>
               </div>
