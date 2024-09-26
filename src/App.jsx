@@ -10,9 +10,7 @@ import RutasProtegidas from "./auth/authRoutes.jsx";
 const Perfil = lazy(() =>
   import("./components/Perfil/Perfil.jsx")
 );
-const CapturaFacial = lazy(() =>
-  import("./components/CapturaFacial/capturaFacial.jsx")
-);
+
 
 const InicioIntructor = lazy(() =>
   import("./pages/interfaces/Instructor/inicioIntructor.jsx")
@@ -59,7 +57,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
 
-          {/* <Route path="/" element={<CapturaFacial />} /> */}
+     
 
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>

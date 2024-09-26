@@ -304,7 +304,7 @@ const ReportesAdmin = () => {
             </div>
           </div>
 
-          <div className={`${loading ? "mt-52 " : null} `}>
+          <div className={`${loading ? "mt-52 " : "mt-44"} `}>
             <Footer />
           </div>
         </div>

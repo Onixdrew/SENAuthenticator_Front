@@ -17,24 +17,25 @@ const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem("user");
 
         if (storedUser) {
-          const response = await axios.get("validarToken/");
-          if (response.status === 200) {
-            if (storedUser) {
-              const user = JSON.parse(storedUser);
-              setIsAuthenticated(true);
-              setUser(user);
-            } else {
-              console.log("No estas logueado");
-            }
+          const response = await axios.get("validar-token/");
+          if (response.status == 200) {
+            const user = JSON.parse(storedUser);
+            setIsAuthenticated(true);
+            setUser(user);
+
           } else {
+            console.log("Token invalido");
+          
             cerrarSesion();
           }
-        }else{
-          alert("No hay user en el storage")
+        } else {
+          cerrarSesion();
         }
+
       } catch (error) {
-        console.log("User not authenticated", error);
+        console.log("Usuario no autenticado: Error", error.message);
         cerrarSesion();
+
       } finally {
         setLoading(false); // Terminar el estado de carga después de intentar validar
       }

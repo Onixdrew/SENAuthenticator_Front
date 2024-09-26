@@ -3,13 +3,13 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Swal from "sweetalert2";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
 import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 import Loader from "../../components/Loader/Loader";
-import CapturaFacial from "../../components/CapturaFacial/capturaFacial";
+
 
 const Login = () => {
   const {
@@ -17,15 +17,10 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [modalCamara, setModalCamara] = useState(false);
-  const [getDatos, setGetDatos] = useState({});
-  const [mensajeSuccesfull, setMensajeSuccesfull] = useState(false);
-  const [visible, setVisible] = useState(false);
-
-  const { isAuthenticated, user, setUser, guardarUserLocal, loading } =
-    useAuth();
+  const { isAuthenticated, user, setUser, guardarUserLocal, loading } = useAuth();
   const navegar = useNavigate();
 
   useEffect(() => {
@@ -106,26 +101,6 @@ const Login = () => {
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
-  const cerrarModalCamara = (e) => {
-    setModalCamara(e);
-  };
-  const datosRegister = (e) => {
-    setGetDatos(e);
-  };
-
-  const mensajeExito = (e) => {
-    setMensajeSuccesfull(e);
-  };
-
-  const mensajeExitoCaptura = (e) => {
-    if (e) {
-      setTimeout(() => {
-        setVisible(false);
-      }, 3000);
-    }
-
-    setMensajeSuccesfull(e);
-  };
 
   return (
     <>
@@ -134,17 +109,12 @@ const Login = () => {
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <Register
-              cerrarModal={cerrarModal}
-              datosRegister={datosRegister}
-              mensajeExito={mensajeExito}
-              cerrarModalCamara={cerrarModalCamara}
-            />
+            <Register cerrarModal={cerrarModal} />
           </div>
         </div>
       )}
 
-      {modalCamara && (
+      {/* {modalCamara && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
             <CapturaFacial
@@ -155,9 +125,7 @@ const Login = () => {
             />
           </div>
         </div>
-      )}
-
-      {visible && <h1 className="text-center mt-5">{mensajeSuccesfull}</h1>}
+      )} */}
 
       <div
         className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
