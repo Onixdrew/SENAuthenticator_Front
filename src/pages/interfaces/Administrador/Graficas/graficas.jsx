@@ -511,7 +511,7 @@ const Graficas = () => {
                 id="personas"
                 className="bg-white p-3 border border-gray-300 rounded-lg w-full"
                 value={tipoPersona}
-                value={tipoPersona}
+                
                 onChange={(e) => setTipoPersona(e.target.value)}
               >
                 <option value="Aprendiz">Aprendiz</option>
@@ -520,7 +520,7 @@ const Graficas = () => {
               </select>
             </div>
 
-            {tipoPersona === "Aprendiz" && (
+            
             {tipoPersona === "Aprendiz" && (
               <div className="flex flex-col w-full md:w-auto">
                 <label htmlFor="ficha" className="text-gray-600 mb-1 opacity-50">
