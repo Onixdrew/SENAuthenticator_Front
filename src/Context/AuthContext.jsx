@@ -29,6 +29,8 @@ const AuthProvider = ({ children }) => {
           } else {
             cerrarSesion();
           }
+        }else{
+          alert("No hay user en el storage")
         }
       } catch (error) {
         console.log("User not authenticated", error);

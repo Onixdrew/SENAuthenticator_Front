@@ -56,10 +56,10 @@ const App = () => (
       <Suspense>
         <Routes>
           {/* Publicas */}
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
 
-          <Route path="/" element={<CapturaFacial />} />
+          {/* <Route path="/" element={<CapturaFacial />} /> */}
 
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>
