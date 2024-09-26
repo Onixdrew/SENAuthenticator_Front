@@ -124,10 +124,20 @@ const Login = () => {
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <Register cerrarModal={cerrarModal} />
+            <Register cerrarModal={cerrarModal} datosRegister={datosRegister} cerrarModalCamara={cerrarModalCamara}/>
           </div>
         </div>
       )}
+
+      {modalCamara && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
+            <CapturaFacial  datos={getDatos} cerrarModalCamara={cerrarModalCamara} />
+          </div>
+        </div>
+      )}
+
+
 
       {abrirModalClave && (
         <ModalClave cerrarModal={cerrarModalClave} />
@@ -239,7 +249,7 @@ const Login = () => {
               </div>
 
               <button
-                className="btn w-full hover:bg-green-700 bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 rounded-full text-lg"
+                className="btn rounded-btn  w-full hover:bg-green-700 bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 text-lg"
                 type="submit"
               >
                 Aceptar

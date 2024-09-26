@@ -4,7 +4,16 @@ import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
 
+
+
 // Importaciones dinámicas
+const Perfil = lazy(() =>
+  import("./components/Perfil/Perfil.jsx")
+);
+const CapturaFacial = lazy(() =>
+  import("./components/CapturaFacial/capturaFacial.jsx")
+);
+
 const InicioIntructor = lazy(() =>
   import("./pages/interfaces/Instructor/inicioIntructor.jsx")
 );
@@ -15,10 +24,20 @@ const GraficasInstructor = lazy(() =>
   import("./pages/interfaces/Instructor/Graficas/graficas.jsx")
 );
 
-const GuardaHome = lazy(() => import("./pages/interfaces/Guarda/GuardaHome.jsx"));
-const Sobrenosotros = lazy(() => import("./pages/interfaces/Guarda/Sobrenosotros.jsx"));
-const InicioGuardia = lazy(() => import("./pages/interfaces/Guarda/RegistroPersona.jsx"));
-const Informes = lazy(()=> import("./pages/interfaces/Guarda/Informes.jsx") );
+const GuardiaHome = lazy(() =>
+  import("./pages/interfaces/Guarda/GuardaHome.jsx")
+);
+const Sobrenosotros = lazy(() =>
+  import("./pages/interfaces/Guarda/Sobrenosotros.jsx")
+);
+const InicioGuardia = lazy(() =>
+  import("./pages/interfaces/Guarda/RegistroPersona.jsx")
+);
+const HistorialUser = lazy(() =>
+  import("./pages/interfaces/Guarda/historialUser.jsx")
+);
+
+
 const Login = lazy(() => import("./pages/Login/Login.jsx"));
 const InicioAdmin = lazy(() =>
   import("./pages/interfaces/Administrador/inicioAdmin.jsx")
@@ -40,6 +59,8 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
 
+          {/* <Route path="/" element={<CapturaFacial />} /> */}
+
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>
             {/* Guardia */}
@@ -47,6 +68,7 @@ const App = () => (
             <Route path="/ReconocimientoGuardia" element={<InicioGuardia />} />
             <Route path="/Informes" element={<Informes />} />
             <Route path="/Mas" element={<Sobrenosotros />} />
+            <Route path="/HistorialUser" element={<HistorialUser />} />
 
             {/* Instructor */}
             <Route path="/inicioInstructor" element={<InicioIntructor />} />
@@ -63,6 +85,9 @@ const App = () => (
             <Route path="/inicioAdmin" element={<InicioAdmin />} />
             <Route path="/ReportesAdmin" element={<ReportesAdmin />} />
             <Route path="/GraficasAdmin" element={<GraficasAdmin />} />
+
+            {/* perfil */}
+            <Route path="/perfil" element={<Perfil />} />
           </Route>
         </Routes>
       </Suspense>

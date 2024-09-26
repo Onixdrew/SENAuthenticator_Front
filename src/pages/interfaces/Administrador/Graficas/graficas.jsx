@@ -323,6 +323,9 @@ import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
 import { useAuth } from "../../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
+import domtoimage from "dom-to-image";
+import jsPDF from "jspdf";
+import Logo from "../../../../../public/img/Logo Reconocimiento Facial - Verde.png";
 
 const Graficas = () => {
   const [fechaInicio, setfechaInicio] = useState("");
@@ -342,6 +345,7 @@ const Graficas = () => {
     { name: "2024-08-20", ficha: "2669742", jornada: "Mañana", Aprendices: 45 },
     { name: "2024-08-20", ficha: "2669756", jornada: "Tarde", Aprendices: 38 },
     { name: "2024-08-21", ficha: "2669742", jornada: "Noche", Aprendices: 20 },
+    { name: "2024-08-21", ficha: "2669723", jornada: "Mañana", Aprendices: 50 },
     { name: "2024-08-21", ficha: "2669723", jornada: "Mañana", Aprendices: 50 },
     { name: "2024-08-22", ficha: "2669756", jornada: "Tarde", Aprendices: 42 },
     { name: "2024-08-22", ficha: "2669723", jornada: "Noche", Aprendices: 35 },
@@ -404,8 +408,66 @@ const Graficas = () => {
   ];
 
   const descargarGrafica = () => {
-    console.log("Descargando reporte...");
+    const input = document.getElementById("grafica-container");
+
+    domtoimage
+      .toPng(input)
+      .then((imgData) => {
+        const pdf = new jsPDF();
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        // Añadir el logo
+        const logoUrl = Logo; // Cambia esto por la ruta de tu logo
+        const currentDate = new Date().toLocaleDateString(); // Obtener la fecha actual
+
+        // Añadir el logo al PDF
+        const logoWidth = 10;
+        const logoHeight = 10;
+        const logoX = 10; // Posición X del logo
+        const logoY = 10; // Posición Y del logo
+
+        pdf.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+        // Añadir el texto centrado del "Centro de teleinformática y producción industrial..."
+        const textoCentro1 =
+          "Centro de teleinformática y producción industrial";
+        const textoCentro2 = "SENA alto Cauca.";
+
+        pdf.setFontSize(12);
+        const textoCentroX = logoX + logoWidth + 5; // Posición X del texto junto al logo
+        const textoCentroY1 = logoY + 7; // Alinear con el logo verticalmente
+        const textoCentroY2 = logoY + 15; // Segunda línea
+
+        pdf.text(textoCentro1, textoCentroX, textoCentroY1);
+        pdf.text(textoCentro2, textoCentroX, textoCentroY2);
+
+        // Añadir título centrado "Reporte de Gráficas"
+        const titulo = "Reporte de Gráficas";
+        pdf.setFontSize(16);
+        const tituloX =
+          pageWidth / 2 -
+          (pdf.getStringUnitWidth(titulo) * pdf.internal.getFontSize()) / 2;
+        const tituloY = logoY + 30; // Ajustar la posición Y debajo del logo y el texto
+        pdf.text(titulo, tituloX, tituloY);
+
+        // Añadir la fecha actual en el encabezado
+        pdf.setFontSize(12);
+        pdf.text(`Fecha: ${currentDate}`, 10, tituloY + 10); // Fecha debajo del título
+
+        // Ajustar la imagen de la gráfica
+        const yPosition = tituloY + 20; // Espacio debajo del título para la gráfica
+        const imgWidth = pdf.internal.pageSize.getWidth() - 20; // Ancho del PDF
+        const imgHeight = (input.offsetHeight * imgWidth) / input.offsetWidth;
+        pdf.addImage(imgData, "PNG", 10, yPosition, imgWidth, imgHeight);
+
+        // Guardar el PDF
+        pdf.save("GraficasAdmin.pdf");
+      })
+      .catch((error) => {
+        console.error("Error al capturar la gráfica:", error);
+        alert("Ocurrió un error al capturar la gráfica.");
+      });
   };
+  
 
   return (
     <>
@@ -418,6 +480,8 @@ const Graficas = () => {
             ruta1="/inicioAdmin"
             ruta2="/ReportesAdmin"
             color3="activo"
+            OpenPerfil={true}
+
           />
 
           {/* Filtros Avanzados */}
@@ -447,6 +511,7 @@ const Graficas = () => {
                 id="personas"
                 className="bg-white p-3 border border-gray-300 rounded-lg w-full"
                 value={tipoPersona}
+                value={tipoPersona}
                 onChange={(e) => setTipoPersona(e.target.value)}
               >
                 <option value="Aprendiz">Aprendiz</option>
@@ -455,6 +520,7 @@ const Graficas = () => {
               </select>
             </div>
 
+            {tipoPersona === "Aprendiz" && (
             {tipoPersona === "Aprendiz" && (
               <div className="flex flex-col w-full md:w-auto">
                 <label htmlFor="ficha" className="text-gray-600 mb-1 opacity-50">

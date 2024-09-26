@@ -8,23 +8,24 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  // const location = useLocation(); // Obtiene la ruta actual
+  const [loading, setLoading] = useState(true);
+  const location = useLocation(); // Obtiene la ruta actual
 
   useEffect(() => {
     const verificarCookie = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const response = await axios.get("validarToken/");
         if (response.status === 200) {
           const storedUser = localStorage.getItem("user");
 
           if (storedUser) {
             const user = JSON.parse(storedUser);
+            setIsAuthenticated(true);
             setUser(user);
+          } else {
+            console.log("No estas logueado");
           }
-
-          setIsAuthenticated(true);
         } else {
           cerrarSesion();
         }
@@ -54,13 +55,13 @@ const AuthProvider = ({ children }) => {
   const cerrarSesion = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("user");
-    localStorage.removeItem("lastRoute"); 
+    localStorage.removeItem("lastRoute");
     return <Navigate to="/Login" />;
   };
 
   // Si loading es true y la ruta no es "/Login" ni "/", se muestra el Loader
-  if (loading && location.pathname !== "/") {
-    // && location.pathname !== "/Login" && 
+  if (loading && location.pathname !== "/" && location.pathname !== "/Login") {
+    // && location.pathname !== "/Login"
     return (
       <div className="text-center mt-10 font-bold">
         <Loader />

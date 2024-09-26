@@ -15,6 +15,7 @@ const Navbar = ({
   color,
   color2,
   color3,
+  OpenPerfil,
 }) => {
   // Estado para controlar la visibilidad del menú móvil
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,7 +45,7 @@ const Navbar = ({
   return (
     <>
       <div className="flex   w-full z-50 flex-col ">
-        <nav className="flex font-serif items-center justify-between border-b  bg-[rgb(39,169,0)] p-4">
+        <nav className="flex font-serif items-center justify-around border-b  bg-[rgb(39,169,0)] p-4">
           <div className="flex items-center xl:ml-16">
             <img src={Logo} alt="Logo" className="w-12 text-black" />
             <h1 className="text-xl ml-2 font-medium text-white ">
@@ -167,17 +168,12 @@ const Navbar = ({
             {item3}
           </Link>
           <Link
-            to="#"
+            to="/perfil"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
           >
-            Perfil
+            perfil
           </Link>
-          <Link
-            to="#"
-            className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
-          >
-            Configuraciòn
-          </Link>
+
           <Link
             to="#"
             className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"

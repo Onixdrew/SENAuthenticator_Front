@@ -20,7 +20,7 @@ const ReportesInstructor = () => {
   const [refrescar, setRefrescar] = useState(false);
 
   const location = useLocation(); // Obtiene la ruta actual
-  
+
   // Almacenar la ruta actual en localStorage al cargar el componente
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
@@ -106,7 +106,7 @@ const ReportesInstructor = () => {
       {isAuthenticated && user.rol_usuario === "Instructor" ? (
         <div className="relative min-h-screen flex flex-col">
           {loading && <Loader />}
-          
+
           <div className="relative">
             <div className="sticky top-0 z-40 bg-white">
               <Navbar
@@ -114,6 +114,8 @@ const ReportesInstructor = () => {
                 item2="Reportes"
                 ruta1="/inicioInstructor"
                 color2="activo"
+                OpenPerfil={true}
+
               />
             </div>
 
@@ -210,11 +212,9 @@ const ReportesInstructor = () => {
                     <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
                       <tr>
                         <th className="px-4 py-2 text-center">Puesto</th>
-                        <th className="px-4 py-2 text-center">Nombre</th>
-                        <th className="px-4 py-2 text-center">
-                          Tipo Identificación
-                        </th>
-                        <th className="px-4 py-2 text-center">
+                        <th className=" py-2 text-start">Nombre</th>
+
+                        <th className="px-4 py-2 text-start">
                           Número Identificación
                         </th>
                         <th className="px-4 py-2 text-center">Ingreso</th>
@@ -226,13 +226,11 @@ const ReportesInstructor = () => {
                       {datosFiltrados.map((registro, index) => (
                         <tr key={index} className="border-b border-gray-300">
                           <td className="px-4 py-2">{index}</td>
-                          <td className="px-4 py-2 font-semibold">
+                          <td className=" py-2 font-semibold text-start">
                             {registro.first_name}
                           </td>
-                          <td className="px-4 py-2">
-                            {registro.tipo_documento_usuario}
-                          </td>
-                          <td className="px-4 py-2">
+
+                          <td className="px-4 py-2 text-start">
                             {registro.numero_documento_usuario}
                           </td>
                           <td className="px-4 py-2 text-green-500 flex items-center justify-center">

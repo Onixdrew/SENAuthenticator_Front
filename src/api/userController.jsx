@@ -9,6 +9,9 @@ export const inicioSesion = async (values, guardarUserLocal) => {
   // console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${values.numID}`);
 
   // const [Datos, setDatos]=useState();
+
+  console.log(values.numID)
+  console.log(values.password)
   try {
     // creo la peticcion http
     const response = await axios.post("inicio-sesion/",
@@ -22,7 +25,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
         },
       }
     );
-
+    
     if (response.status == 200) {
       console.log("Usuario Logueado correctamente");
 
@@ -98,7 +101,7 @@ export const registerUser = async (data) => {
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get("usuario/", {
+    const response = await axios.get("usuarios/", {
       headers: {
         "Content-Type": "application/json",
       },

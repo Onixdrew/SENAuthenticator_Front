@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/userController";
 import { toast } from 'react-hot-toast';
 
-const Register = ({ cerrarModal }) => {
+const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
   const [passwordError, setPasswordError] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [datosForm, setDatosForm] = useState();
@@ -23,13 +23,21 @@ const Register = ({ cerrarModal }) => {
   const enviarForm = handleSubmit(async (values,e) => {
     e.preventDefault();
     setDatosForm(values);
+    datosRegister(values)
+    
 
     // const response = await registerForm(data);
     const response = await registerUser(values);
+    // console.log(response.error)
 
     if (response.status === 201 || response.status === 200) {
       // se cierra el modal
       cerrarModalProp(false);
+      
+      setTimeout(() => {
+        cerrarModalCamara(true); // Abre el modal de la cámara después de un pequeño retraso
+      }, 300);
+      
     }
   });
 
@@ -39,6 +47,8 @@ const Register = ({ cerrarModal }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
+
+      
       <div className="relative w-full max-w-4xl max-h-[90vh] bg-white p-6 overflow-auto rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl md:text-3xl mx-auto font-semibold text-gray-800 ">
@@ -85,7 +95,7 @@ const Register = ({ cerrarModal }) => {
                 <option value="Tarjeta de Identidad">
                   Tarjeta de Identidad
                 </option>
-                <option value="Cedula de ciudadania">
+                <option value="Cédula de ciudadanía">
                   Cédula de ciudadanía
                 </option>
                 <option value="Cedula de extranjeria">
@@ -164,7 +174,7 @@ const Register = ({ cerrarModal }) => {
               className="btn rounded-box bg-[rgb(39,169,0)] text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="submit"
             >
-              Aceptar
+              Siguiente <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </form>

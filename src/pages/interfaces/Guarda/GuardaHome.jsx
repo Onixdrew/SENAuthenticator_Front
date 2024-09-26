@@ -5,6 +5,7 @@ import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
+import Logo from "../../../../public/img/Logo Reconocimiento Facial - Blanco.png";
 
 const GuardaHome = () => {
   const { isAuthenticated, user } = useAuth();
@@ -86,46 +87,55 @@ const GuardaHome = () => {
                     <p className="text-gray-500">Cámara desactivada</p>
                   </div>
                 )}
+                {cameraActive ? (
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                    <p className="text-gray-500">Cámara desactivada</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Sección de información del usuario */}
-            <div className="p-4 w-4/12 shadow-lg mt-4 rounded-lg bg-white">
-              <div className="p-6 flex flex-col gap-8">
-                <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
-                  ROL
+            {/* Tarjeta de información del usuario */}
+            <div class="p-4 w-4/12 shadow-xl border rounded-lg bg-white flex flex-col items-center">
+              <div class="flex flex-col items-center ">
+                <p class="text-gray-600 font-semibold">Aprendiz</p>
+                <div class="w-48 h-48 mb-2 border rounded-box">
+                  <img
+                    class="zoom-img"
+                    src={foto}
+                    alt="Foto de usuario"
+                  />
+                </div>
+                <h2 class="text-xl font-semibold  text-gray-800">
+                  Emmanuel Castañeda
                 </h2>
-                <form className="flex flex-col items-center gap-3">
-                  <div className="flex justify-center w-40 h-90 mb-4">
-                    <img
-                      className="w-auto h-auto max-w-full max-h-full text-center object-cover rounded border border-gray-300"
-                      src={foto}
-                      alt="Foto de usuario"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-3 items-center">
-                    <label
-                      htmlFor="nombre"
-                      className="block text-gray-700 text-sm font-medium"
-                    >
-                      Emmanuel Castañeda
-                    </label>
-                  </div>
-                </form>
+                <p class="text-gray-600">Programa: ADSO</p>
+                <p class="text-gray-600">Ficha: 2669742</p>
+              </div>
 
-                {/* Información de objetos */}
-                <div className="flex flex-col items-center gap-5">
-                  <div className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg bg-gray-100">
+              {/* Información de objetos */}
+              <div class="mt-4 w-full bg-gray-100 p-4 rounded-lg">
+                <h3 class="text-lg font-medium mb-4 text-gray-700">
+                  Objetos asociados
+                </h3>
+                <div class="flex items-center gap-4 p-4 border border-gray-300 rounded-lg bg-white">
+                  <div class=" w-20 h-20">
                     <img
                       src="https://e7.pngegg.com/pngimages/289/417/png-clipart-laptop-hewlett-packard-computer-monitors-graphy-laptop-electronics-netbook.png"
                       alt="Objeto"
-                      className="w-28 rounded border border-gray-300"
+                      class="zoom-img"
                     />
-                    <div className="flex flex-col text-center gap-1">
-                      <span className="text-gray-600 text-sm">ACER</span>
-                      <span className="text-gray-600 text-sm">DE34021</span>
-                      <span className="text-gray-600 text-sm">Gris</span>
-                    </div>
+                  </div>
+                  <div class="flex flex-col  gap-1">
+                    <span class="text-gray-600 text-sm">Objeto: Laptop ACER</span>
+                    <span class="text-gray-600 text-sm">Serial: DE34021</span>
+                    <span class="text-gray-600 text-sm">Descripción: color Gris</span>
                   </div>
 
                   <button
