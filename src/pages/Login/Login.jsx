@@ -3,13 +3,13 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Swal from "sweetalert2";
 import logoSENAuthenticator from "../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import logoSena from "../../../public/img/logoVerdeSENA.png";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { inicioSesion } from "../../api/userController";
 import Register from "../../components/Register/Register";
 import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 import Loader from "../../components/Loader/Loader";
-import CapturaFacial from "../../components/CapturaFacial/capturaFacial";
+
 
 const Login = () => {
   const {
@@ -17,10 +17,9 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const [modalCamara, setModalCamara] = useState(false);
-  const [getDatos, setGetDatos] = useState({});
   const { isAuthenticated, user, setUser, guardarUserLocal, loading } = useAuth();
   const navegar = useNavigate();
 
@@ -102,12 +101,6 @@ const Login = () => {
   const cerrarModal = (e) => {
     setAbrirRegister(e);
   };
-  const cerrarModalCamara = (e) => {
-    setModalCamara(e);
-  };
-  const datosRegister = (e) => {
-    setGetDatos(e);
-  };
 
   return (
     <>
@@ -116,24 +109,28 @@ const Login = () => {
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <Register cerrarModal={cerrarModal} datosRegister={datosRegister} cerrarModalCamara={cerrarModalCamara}/>
+            <Register cerrarModal={cerrarModal} />
           </div>
         </div>
       )}
 
-      {modalCamara && (
+      {/* {modalCamara && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <CapturaFacial  datos={getDatos} cerrarModalCamara={cerrarModalCamara} />
+            <CapturaFacial
+              datos={getDatos}
+              mensajeExitoCaptura={mensajeExitoCaptura}
+              mensajeSuccesfull={mensajeSuccesfull}
+              cerrarModalCamara={cerrarModalCamara}
+            />
           </div>
         </div>
-      )}
-
-
+      )} */}
 
       <div
-        className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${abrirRegister ? "opacity-50" : ""
-          }`}
+        className={`min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 ${
+          abrirRegister ? "opacity-50" : ""
+        }`}
       >
         <div className="bg-opacity-70 p-6 rounded-lg max-w-6xl w-full flex flex-wrap [@media(max-width:381px)]:flex-col-reverse justify-between">
           <div className="w-full lg:w-2/3 lg:pr-10 mb-6 lg:mb-0">
@@ -182,8 +179,9 @@ const Login = () => {
                 </label>
                 <div className="relative">
                   <input
-                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.numID ? "border-red-500" : ""
-                      }`}
+                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
+                      errors.numID ? "border-red-500" : ""
+                    }`}
                     {...register("numID", {
                       required: "El número de identidad es requerido.",
                     })}
@@ -210,8 +208,9 @@ const Login = () => {
                 </label>
                 <div className="relative">
                   <input
-                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.password ? "border-red-500" : ""
-                      }`}
+                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
                     {...register("password", {
                       required: "La contraseña es requerida.",
                     })}

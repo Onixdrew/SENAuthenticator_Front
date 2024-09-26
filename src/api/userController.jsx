@@ -6,15 +6,10 @@ import axios from "./axios";
 // const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
 
 export const inicioSesion = async (values, guardarUserLocal) => {
-  // console.log(`Holaaaaaaaaaaaaaaa desde el sesion ${values.numID}`);
-
-  // const [Datos, setDatos]=useState();
-
-  console.log(values.numID)
-  console.log(values.password)
   try {
     // creo la peticcion http
-    const response = await axios.post("inicio-sesion/",
+    const response = await axios.post(
+      "inicio-sesion/",
       {
         numero_documento_usuario: values.numID,
         password: values.password,
@@ -25,13 +20,12 @@ export const inicioSesion = async (values, guardarUserLocal) => {
         },
       }
     );
-    
+
     if (response.status == 200) {
       console.log("Usuario Logueado correctamente");
 
       // se accede al objeto, pero no se puede visualizar en consola
       const dataUser = response.data.user;
-    
 
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarUserLocal(dataUser);
@@ -40,10 +34,9 @@ export const inicioSesion = async (values, guardarUserLocal) => {
       console.log("El usuario no fue encontrado");
     }
   } catch (error) {
-
     Swal.fire({
       title: "Eror",
-      text: error ,
+      text: error,
       icon: "warning",
       confirmButtonText: "OK",
     });
@@ -88,20 +81,25 @@ export const registerUser = async (data) => {
     );
 
     if (response.status === 201 || response.status === 200) {
-      alert("Usuario creado correctamente");
-      // enviarDatosLogin(response.data);
+      Swal.fire({
+        title: "Usuario creado correctamente",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
       return response;
     } else {
-      alert(response.data.error || "Ocurrió un error desconocido en el registro");
+      alert(
+        response.data.error || "Ocurrió un error desconocido en el registro"
+      );
     }
   } catch (error) {
     alert(
-      "Error en la solicitud de registro: " + (error.response?.data?.error || error.message)
+      "Error en la solicitud de registro: " +
+        (error.response?.data?.error || error.message)
     );
   }
 };
-
-
 
 // /////////////////////////////////////////// obtener todos los user
 export const getAllUsers = async () => {

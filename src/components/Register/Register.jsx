@@ -3,10 +3,11 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/userController";
 
-const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
+const Register = ({ cerrarModal }) => {
+
   const [passwordError, setPasswordError] = useState("");
   const [contraseña, setContraseña] = useState("");
-  const [datosForm, setDatosForm] = useState();
+  // const [datosForm, setDatosForm] = useState();
 
   // hooks de react-hook-form
   const { register, handleSubmit } = useForm();
@@ -20,9 +21,7 @@ const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
   };
 
   const enviarForm = handleSubmit(async (values) => {
-    setDatosForm(values);
-    datosRegister(values)
-    
+    // setDatosForm(values);
 
     // const response = await registerForm(data);
     const response = await registerUser(values);
@@ -31,11 +30,6 @@ const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
     if (response.status === 201 || response.status === 200) {
       // se cierra el modal
       cerrarModalProp(false);
-      
-      setTimeout(() => {
-        cerrarModalCamara(true); // Abre el modal de la cámara después de un pequeño retraso
-      }, 300);
-      
     }
   });
 
@@ -45,8 +39,6 @@ const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-
-      
       <div className="relative w-full max-w-4xl max-h-[90vh] bg-white p-6 overflow-auto rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl md:text-3xl mx-auto font-semibold text-gray-800 ">
@@ -172,7 +164,7 @@ const Register = ({ cerrarModal, datosRegister, cerrarModalCamara }) => {
               className="btn rounded-box bg-[rgb(39,169,0)] text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="submit"
             >
-              Siguiente <i class="fa-solid fa-arrow-right"></i>
+              Aceptar
             </button>
           </div>
         </form>
