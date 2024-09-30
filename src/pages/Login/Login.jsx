@@ -36,10 +36,13 @@ const Login = () => {
           if (user) {
             switch (user.rol_usuario) {
               case "Instructor":
+                toast.success(`Bienvenido Devuelta ${user.first_name}!`);
                 return navegar("/inicioInstructor");
               case "Administrador":
+                toast.success(`Bienvenido Devuelta ${user.first_name}!`);
                 return navegar("/inicioAdmin");
               case "Guardia de seguridad":
+                toast.success(`Bienvenido Devuelta ${user.first_name}!`);
                 return navegar("/InicioGuardia");
               default:
                 // Swal.fire({
@@ -71,15 +74,17 @@ const Login = () => {
         localStorage.removeItem("lastRoute"); // Elimina la ruta almacenada tras iniciar sesión con éxito
         switch (data.rol_usuario) {
           case "Instructor":
-            toast.success("Usuario logueado correctamente");
+            toast.success(`Bienvenido ${data.first_name}!`);
             navegar("/inicioInstructor");
             break;
           case "Administrador":
-            toast.success("Usuario logueado correctamente");
+            toast.success(`Bienvenido ${data.first_name}!`);
+
             navegar("/inicioAdmin");
             break;
           case "Guardia de seguridad":
-            toast.success("Usuario logueado correctamente");
+            toast.success(`Bienvenido ${data.first_name}!`);
+
             navegar("/InicioGuardia");
             break;
           default:
@@ -246,14 +251,15 @@ const Login = () => {
                   >
                     <i
                       className={`fas ${
-                        showPassword ? "fa-eye": "fa-eye-slash" 
+                        showPassword ? "fa-eye" : "fa-eye-slash"
                       } text-black`}
                     ></i>
                   </div>
                   {errors.password && (
                     <p className="text-red-500 text-sm">
                       {errors.password.message}
-                    </p>
+                    </p
+                    >
                   )}
                   {/* <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <i className="fas fa-lock text-black"></i>
@@ -278,17 +284,6 @@ const Login = () => {
                   </button>
                 </div>
               </h2>
-              <div className="flex justify-around mt-6 text-black text-2xl">
-                <a href="#">
-                  <i className="fab fa-facebook-f"></i>
-                </a>
-                <a href="#">
-                  <i className="fab fa-instagram"></i>
-                </a>
-                <a href="#">
-                  <i className="fab fa-pinterest-p"></i>
-                </a>
-              </div>
             </form>
           </div>
         </div>

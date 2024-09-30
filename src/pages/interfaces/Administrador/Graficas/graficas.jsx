@@ -21,6 +21,7 @@ import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
 import Logo from "../../../../../public/img/Logo Reconocimiento Facial - Verde.png";
 import { getAllUsers } from "../../../../api/userController";
+import Swal from "sweetalert2";
 
 const GraficasAdmin = () => {
   // const [fechaInicio, setfechaInicio] = useState("");
@@ -31,6 +32,7 @@ const GraficasAdmin = () => {
   const [selectedJornada, setSelectedJornada] = useState("Todos");
   const [tipoPersona, setTipoPersona] = useState("Todos");
   const [selectedTiempo, setSelectedTiempo] = useState("Semanal");
+  const [botonDescarga, setBotonDescarga] = useState(false);
 
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
@@ -62,39 +64,122 @@ const GraficasAdmin = () => {
 
   const data = [
     {
-      tiempo: "Semana 1",
+      Semanal: "Semana 1",
+      Mensual: "Enero",
       ficha: selectedFicha,
       jornada: selectedJornada,
+      Aprendiz: 1300,
+      Instructor: 120,
+      Todos: 2250,
+      PersonalAseo: 30,
+      cantidad: users.length,
+    },
+    {
+      Semanal: "Semana 2",
+      Mensual: "Febrero",
+      ficha: selectedFicha,
+      Aprendiz: 450,
+      Instructor: 40,
+      Todos: 3524,
+      PersonalAseo: 22,
       persona: tipoPersona,
       cantidad: users.length,
     },
     {
-      tiempo: "Semana 2",
+      Semanal: "Semana 3",
+      Mensual: "Marzo",
       ficha: selectedFicha,
       jornada: selectedJornada,
-      persona: tipoPersona,
+      Aprendiz: 820,
+      Instructor: 85,
+      Todos: 2658,
+      PersonalAseo: 26,
       cantidad: users.length,
     },
     {
-      tiempo: "Semana 3",
+      Semanal: "Semana 4",
+      Mensual: "Abril",
       ficha: selectedFicha,
       jornada: selectedJornada,
       persona: tipoPersona,
+      Aprendiz: 642,
+      Instructor: 57,
+      Todos: 2857,
+      PersonalAseo: 24,
       cantidad: users.length,
     },
     {
-      tiempo: "Semana 4",
+      Mensual: "Mayo",
       ficha: selectedFicha,
       jornada: selectedJornada,
       persona: tipoPersona,
+      Aprendiz: 463,
+      Instructor: 25,
+      Todos: 2357,
+      PersonalAseo: 15,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Junio",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      persona: tipoPersona,
+      Aprendiz: 800,
+      Instructor: 56,
+      Todos: 3500,
+      PersonalAseo: 27,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Julio",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      persona: tipoPersona,
+      Aprendiz: 268,
+      Instructor: 66,
+      Todos: 1723,
+      PersonalAseo: 34,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Agosto",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      persona: tipoPersona,
+      Aprendiz: 587,
+      Instructor: 47,
+      Todos: 1324,
+      PersonalAseo: 31,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Septiembre",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      persona: tipoPersona,
+      Aprendiz: 675,
+      Instructor: 32,
+      Todos: 2000,
+      PersonalAseo: 25,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Octubre",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      persona: tipoPersona,
+      Aprendiz: 589,
+      Instructor: 53,
+      Todos: 3009,
+      PersonalAseo: 28,
       cantidad: users.length,
     },
   ];
 
   const filteredData = data.filter(
-    (item) =>
-      (selectedFicha === "Todos" || item.ficha === selectedFicha) &&
-      (selectedJornada === "Todos" || item.jornada === selectedJornada)
+    (item) => (selectedTiempo === "Semanal" ? item.Semanal : item.Mensual)
+    // (selectedFicha === "Todos" || item.ficha === selectedFicha) &&
+    // (selectedJornada === "Todos" || item.jornada === selectedJornada)||
     // (fechaInicio === "" || new Date(item.name) >= new Date(fechaInicio)) &&
     // (fechaFin === "" || new Date(item.name) <= new Date(fechaFin))
   );
@@ -163,12 +248,28 @@ const GraficasAdmin = () => {
 
         // Guardar el PDF
         pdf.save("GraficasAdmin.pdf");
+        setBotonDescarga(false);
       })
       .catch((error) => {
         console.error("Error al capturar la gráfica:", error);
         alert("Ocurrió un error al capturar la gráfica.");
       });
   };
+
+  botonDescarga &&
+    Swal.fire({
+      title: "¿Desea descargarlo?",
+      icon: "question",
+      confirmButtonText: "Aceptar",
+      showCloseButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        descargarGrafica();
+      } else {
+        setBotonDescarga(false);
+      }
+    });
+
 
   return (
     <>
@@ -222,7 +323,7 @@ const GraficasAdmin = () => {
                 <option value="Todos">Todos</option>
                 <option value="Aprendiz">Aprendiz</option>
                 <option value="Instructor">Instructor</option>
-                <option value="Personal Aseo">Personal Aseo</option>
+                <option value="PersonalAseo">Personal Aseo</option>
               </select>
             </div>
 
@@ -300,7 +401,7 @@ const GraficasAdmin = () => {
           {/* Botón de Descarga */}
           <div className="flex justify-center mt-10">
             <button
-              onClick={descargarGrafica}
+              onClick={() => setBotonDescarga(true)}
               className="btn bg-blue-500 text-white p-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
             >
               Descargar Reporte
@@ -316,7 +417,6 @@ const GraficasAdmin = () => {
                   {users.length}
                   {/* {filteredData.reduce((acc, curr) => acc + curr.cantidad, 0)} */}
                 </p>
-               
               </div>
               <div className="kpi-card bg-green-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Promedio por Día</h3>
@@ -326,20 +426,17 @@ const GraficasAdmin = () => {
                     (filteredData.length || 1)
                   ).toFixed(2)}
                 </p>
-                
               </div>
               <div className="kpi-card bg-yellow-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Día con Mayor Entrada</h3>
                 <p className="text-3xl font-bold">
-                  26/09/2024 ({filteredData.reduce(
-                    (max, curr) =>
-                      curr.cantidad > max ? curr.cantidad : max,
+                  26/09/2024 (
+                  {filteredData.reduce(
+                    (max, curr) => (curr.cantidad > max ? curr.cantidad : max),
                     0
-                  )})
-                  
-                  
+                  )}
+                  )
                 </p>
-                
               </div>
             </div>
 
@@ -347,13 +444,18 @@ const GraficasAdmin = () => {
               <div className="charts grid gap-4 md:grid-cols-2 mb-10">
                 <div className="chart-container p-2  bg-white rounded-lg shadow-md">
                   <ResponsiveContainer width="100%" height={300}>
+                    <h1>Jornada: {selectedJornada}</h1>
+                    {selectedTiempo == "Semanal" ? (
+                      <h1 className="mb-4">Mes: Septiembre</h1>
+                    ) : null}
+
                     <BarChart
                       data={filteredData}
                       margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis
-                        dataKey="tiempo"
+                        dataKey={selectedTiempo}
                         label={{
                           value: selectedTiempo,
                           position: "insideBottom",
@@ -361,7 +463,7 @@ const GraficasAdmin = () => {
                         }}
                       />
                       <YAxis
-                        dataKey="cantidad"
+                        dataKey={tipoPersona}
                         label={{
                           value: tipoPersona,
                           angle: -90,
@@ -371,7 +473,7 @@ const GraficasAdmin = () => {
                       <Tooltip cursor={{ fill: "rgba(0, 0, 0, 0.1)" }} />
                       <Legend />
                       <Bar
-                        dataKey="cantidad"
+                        dataKey={tipoPersona}
                         fill="#82ca9d"
                         animationDuration={1500}
                       />
@@ -384,8 +486,8 @@ const GraficasAdmin = () => {
                     <PieChart>
                       <Pie
                         data={filteredData}
-                        dataKey="cantidad"
-                        nameKey="tiempo"
+                        dataKey={tipoPersona}
+                        nameKey={selectedTiempo}
                         outerRadius={100}
                         fill="#8884d8"
                         label

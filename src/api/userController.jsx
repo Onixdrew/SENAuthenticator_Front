@@ -42,7 +42,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
     //   confirmButtonText: "OK",
     // });
 
-    toast.error("Error: " + error);
+    // toast.error("Error: " + error);
 
     if (error.response) {
       // La solicitud se realizó y el servidor respondió con un código de estado

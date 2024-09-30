@@ -20,7 +20,7 @@ const Inicio = () => {
     const fetchOficinas = async () => {
       try {
         const response = await axios.get(
-          "oficina/"
+          "oficinas/"
         );
         setOficinas(response.data);
       } catch (error) {
