@@ -17,7 +17,7 @@ const ReportesAdmin = () => {
   const [error, setError] = useState(null);
   const [documentoFiltro, setDocumentoFiltro] = useState("");
   const [refrescar, setRefrescar] = useState(false);
-  const [tipoPersona, setTipoPersona] = useState("Aprendiz");
+  const [tipoPersona, setTipoPersona] = useState("Todos");
   const location = useLocation(); // Obtiene la ruta actual
 
 
@@ -133,10 +133,10 @@ const ReportesAdmin = () => {
                   id=""
                   className="bg-white p-3 border rounded-lg w-full md:w-auto"
                 >
-                  <option value="">Mañana</option>
-                  <option value="">Tarde</option>
-                  <option value="">Noche</option>
-                  <option value="">Todos</option>
+                  <option value="Todos">Todos</option>
+                  <option value="Mañana">Mañana</option>
+                  <option value="Tarde">Tarde</option>
+                  <option value="Noche">Noche</option>
                 </select>
                 <select
                   name=""
@@ -145,10 +145,10 @@ const ReportesAdmin = () => {
                   onChange={(e) => setTipoPersona(e.target.value)}
                   className="bg-white p-3 border rounded-lg w-full md:w-auto "
                 >
+                  <option value="Todos">Todos</option>
                   <option value="Aprendiz">Aprendiz</option>
                   <option value="Instructor">Instructor</option>
                   <option value="Personal Aseo">Personal Aseo</option>
-                  <option value="Todos">Todos</option>
                 </select>
 
                 {tipoPersona == "Aprendiz" && (
@@ -157,10 +157,10 @@ const ReportesAdmin = () => {
                     id=""
                     className="bg-white p-3 border rounded-lg w-full md:w-auto"
                   >
+                    <option value="Todos">Todos</option>
                     <option value="2669742">2669742</option>
                     <option value="">2669756</option>
                     <option value="">2669723</option>
-                    <option value="Todos">Todos</option>
                   </select>
                 )}
 

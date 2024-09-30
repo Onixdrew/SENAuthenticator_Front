@@ -316,7 +316,7 @@ const GraficasAdmin = () => {
                   {users.length}
                   {/* {filteredData.reduce((acc, curr) => acc + curr.cantidad, 0)} */}
                 </p>
-                <span className="text-sm">Rango de fechas seleccionado</span>
+               
               </div>
               <div className="kpi-card bg-green-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Promedio por Día</h3>
@@ -326,7 +326,7 @@ const GraficasAdmin = () => {
                     (filteredData.length || 1)
                   ).toFixed(2)}
                 </p>
-                <span className="text-sm">Rango de fechas seleccionado</span>
+                
               </div>
               <div className="kpi-card bg-yellow-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Día con Mayor Entrada</h3>
@@ -339,7 +339,7 @@ const GraficasAdmin = () => {
                   
                   
                 </p>
-                <span className="text-sm">Rango de fechas seleccionado</span>
+                
               </div>
             </div>
 
