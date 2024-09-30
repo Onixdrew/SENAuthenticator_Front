@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import axios from "./axios";
+import { toast } from "react-hot-toast";
 
 // /////////////////////////////////////////// inicioSesion
 // SQLite
@@ -22,7 +23,7 @@ export const inicioSesion = async (values, guardarUserLocal) => {
     );
 
     if (response.status == 200) {
-      console.log("Usuario Logueado correctamente");
+      // console.log("Usuario Logueado correctamente");
 
       // se accede al objeto, pero no se puede visualizar en consola
       const dataUser = response.data.user;
@@ -34,12 +35,14 @@ export const inicioSesion = async (values, guardarUserLocal) => {
       console.log("El usuario no fue encontrado");
     }
   } catch (error) {
-    Swal.fire({
-      title: "Eror",
-      text: error,
-      icon: "warning",
-      confirmButtonText: "OK",
-    });
+    // Swal.fire({
+    //   title: "Error",
+    //   text: error,
+    //   icon: "warning",
+    //   confirmButtonText: "OK",
+    // });
+
+    toast.error("Error: " + error);
 
     if (error.response) {
       // La solicitud se realizó y el servidor respondió con un código de estado
@@ -81,16 +84,23 @@ export const registerUser = async (data) => {
     );
 
     if (response.status === 201 || response.status === 200) {
-      Swal.fire({
-        title: "Usuario creado correctamente",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      // Swal.fire({
+      //   title: "Usuario creado correctamente",
+      //   icon: "success",
+      //   confirmButtonText: "OK",
+      // });
+
+      toast.success("Usuario creado correctamente");
 
       return response;
     } else {
-      alert(
-        response.data.error || "Ocurrió un error desconocido en el registro"
+      // alert(
+      //   response.data.error || "Ocurrió un error desconocido en el registro"
+      // );
+
+      toast.error(
+        "Error en la solicitud de registro: " +
+          (error.response?.data?.error || error.message)
       );
     }
   } catch (error) {
@@ -115,6 +125,11 @@ export const getAllUsers = async () => {
     // console.log(data);
     return data;
   } catch (error) {
+    toast.error(
+      "Error al obtener los usuarios: " +
+        (error.response?.data?.error || error.message)
+    );
+
     if (error.response) {
       throw new Error(error.response.data.error);
     } else if (error.request) {
