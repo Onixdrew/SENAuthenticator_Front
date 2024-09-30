@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import { toast } from "react-hot-toast";
 import axios from "./axios";
 
 // /////////////////////////////////////////// inicioSesion
@@ -34,13 +34,6 @@ export const inicioSesion = async (values, guardarUserLocal) => {
       console.log("El usuario no fue encontrado");
     }
   } catch (error) {
-    Swal.fire({
-      title: "Eror",
-      text: error,
-      icon: "warning",
-      confirmButtonText: "OK",
-    });
-
     if (error.response) {
       // La solicitud se realizó y el servidor respondió con un código de estado
       // que cae fuera del rango de 2xx
@@ -81,20 +74,16 @@ export const registerUser = async (data) => {
     );
 
     if (response.status === 201 || response.status === 200) {
-      Swal.fire({
-        title: "Usuario creado correctamente",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      toast.success("Usuario creado correctamente");
 
       return response;
     } else {
-      alert(
+      toast.error(
         response.data.error || "Ocurrió un error desconocido en el registro"
       );
     }
   } catch (error) {
-    alert(
+    toast.error(
       "Error en la solicitud de registro: " +
         (error.response?.data?.error || error.message)
     );
@@ -115,6 +104,10 @@ export const getAllUsers = async () => {
     // console.log(data);
     return data;
   } catch (error) {
+    toast.error(
+      "Error al obtener los usuarios: " +
+        (error.response?.data?.error || error.message)
+    );
     if (error.response) {
       throw new Error(error.response.data.error);
     } else if (error.request) {

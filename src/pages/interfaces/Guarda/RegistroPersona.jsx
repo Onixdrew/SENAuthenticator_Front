@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
-import axios from "../../../api/axios";
+import axios from "../../../api/axios"; // Ya tienes configurado axios
 import { useAuth } from "../../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,9 @@ const Inicio = () => {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
   // hooks de react-hook-form
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm(); // reset() para limpiar el formulario después de enviar
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
@@ -19,9 +21,7 @@ const Inicio = () => {
   useEffect(() => {
     const fetchOficinas = async () => {
       try {
-        const response = await axios.get(
-          "oficina/"
-        );
+        const response = await axios.get("oficinas/");
         setOficinas(response.data);
       } catch (error) {
         console.error("Error al obtener las oficinas", error);
@@ -31,20 +31,27 @@ const Inicio = () => {
     fetchOficinas();
   }, []);
 
-  
+  const enviarForm = handleSubmit(async (values) => {
+    try {
+      // Definir los datos que se enviarán en la solicitud POST
+      const newUserData = {
+        first_name: values.nombre, // Nombres completos
+        numero_documento_usuario_externo: values.numID, // Número de documento
+        oficina_usuario_externo: values.oficina, // Oficina seleccionada
+        password: values.password || "", // El campo password es opcional
+      };
 
-  const enviarForm = handleSubmit(async (values,e) => {
-    e.preventDefault();
- 
-    console.log(values)
+      // Hacer la solicitud POST
+      const response = await axios.post("usuarios_externos/", newUserData);
 
-    // // const response = await registerForm(data);
-    // const response = await registerUser(values);
-
-    // if (response.status === 201 || response.status === 200) {
-    //   // se cierra el modal
-    //   cerrarModalProp(false);
-    // }
+      if (response.status === 201) {
+        setSuccessMessage("Usuario registrado exitosamente.");
+        reset(); // Limpiar el formulario
+      }
+    } catch (error) {
+      console.error("Error al registrar el usuario", error);
+      setErrorMessage("Ocurrió un error al registrar el usuario.");
+    }
   });
 
   return (
@@ -59,7 +66,6 @@ const Inicio = () => {
             ruta2="/ReconocimientoGuardia"
             ruta3="/HistorialUser"
             color2="activo"
-
           />
 
           {/* Main Content */}
@@ -69,6 +75,11 @@ const Inicio = () => {
               <h2 className="text-3xl font-bold text-gray-700 mb-6 text-center">
                 Formulario de Registro
               </h2>
+
+              {/* Mensajes de éxito o error */}
+              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+              {successMessage && <p className="text-green-500">{successMessage}</p>}
+
               <form className="space-y-5" onSubmit={enviarForm}>
                 <div>
                   <label
@@ -114,12 +125,11 @@ const Inicio = () => {
                   <select
                     id="oficina"
                     {...register("oficina", { required: true })}
-
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                   >
                     <option value="">Seleccione una oficina</option>
                     {oficinas.map((oficina) => (
-                      <option key={oficina.id} value={oficina.nombre_oficina}>
+                      <option key={oficina.id} value={oficina.id}>
                         {oficina.nombre_oficina}
                       </option>
                     ))}
@@ -128,20 +138,18 @@ const Inicio = () => {
 
                 <div>
                   <label
-                    htmlFor="diligencia"
+                    htmlFor="password"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Diligencia a realizar
+                    Contraseña (opcional)
                   </label>
-                  <textarea
-                    id="diligencia"
-                    name="diligencia"
-                    placeholder="Opcional"
-                    {...register("diligencia", { required: true })}
-                    
-                    rows="4"
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    {...register("password")}
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                  ></textarea>
+                  />
                 </div>
 
                 <button

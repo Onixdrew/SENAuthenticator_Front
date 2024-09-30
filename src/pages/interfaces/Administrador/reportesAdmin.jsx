@@ -8,6 +8,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import Loader from "../../../components/Loader/Loader";
 import ReactToPrint from "react-to-print";
 
+
 const ReportesAdmin = () => {
   const { isAuthenticated, user } = useAuth();
 
@@ -64,6 +65,7 @@ const ReportesAdmin = () => {
 
     recibirDatos();
   }, [refrescar, tipoPersona]);
+
 
 
   // se filtra por numero de documento
@@ -188,8 +190,8 @@ const ReportesAdmin = () => {
                 </Link>
               </form>
 
-              <div className="mt-6 flex  bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md max-w-xs mx-auto  ">
-                <div className="flex flex-col mx-auto">
+              <div className="relative max-w-full mt-4  overflow-x-auto p-6 ">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                   <p className="text-center text-2xl font-semibold">
                     0/{datosFiltrados.length}
                   </p>
@@ -226,34 +228,34 @@ const ReportesAdmin = () => {
                   {" "}
                   {/* Ajusta la altura según sea necesario */}
                   <table
-                    className="w-full table-auto border-collapse bg-white rounded-lg shadow-md"
+                    className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                     ref={printRef}
                   >
-                    <thead className="bg-gray-200 border-b border-gray-300 text-gray-600 sticky top-0 z-10">
+                    <thead className="text-xs text-white uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
-                        <th className="px-4 py-2 text-center">Puesto</th>
-                        <th className="px-4 py-2 text-start ">Nombre</th>
+                        <th scope="col" className="px-6 py-3">Puesto</th>
+                        <th scope="col" className="px-6 py-3 ">Nombre</th>
 
-                        <th className="px-4 py-2 text-start inline-block">
+                        <th scope="col" className="px-6 py-3 inline-block">
                           Número Identificación
                         </th>
-                        <th className=" text-center">Ingreso</th>
-                        <th className="px-4 py-2 text-center">Fecha</th>
-                        <th className="px-4 py-2 text-center">Hora</th>
+                        <th scope="col" className=" px-6 py-3 text-center">Ingreso</th>
+                        <th scope="col" className="px-6 py-3 text-center">Fecha</th>
+                        <th scope="col" className="px-6 py-3 text-center">Hora</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-gray-100 text-center">
+                    <tbody className="">
                       {datosFiltrados.map((registro, index) => (
-                        <tr key={index} className="border-b border-gray-300">
-                          <td className="px-4 py-2">{index + 1}</td>
-                          <td className="px-4 py-2 font-semibold text-start">
+                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                          <td className="px-6 py-4">{index + 1}</td>
+                          <td className="px-6 py-4 font-semibold">
                             {registro.first_name}
                           </td>
 
-                          <td className="px-4 py-2 text-start">
+                          <td className="px-6 py-4">
                             {registro.numero_documento_usuario}
                           </td>
-                          <td className=" py-2 text-green-500 flex items-center justify-center">
+                          <td className=" px-6 py-4 text-green-500 flex items-center justify-center">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               className="w-5 h-5"
@@ -268,8 +270,8 @@ const ReportesAdmin = () => {
                               <path d="M5 12l5 5l10 -10" />
                             </svg>
                           </td>
-                          <td className="px-4 py-2">05/06/2020</td>
-                          <td className="px-4 py-2">10:00 am</td>
+                          <td className="px-6 py-4 text-center">05/06/2020</td>
+                          <td className="px-6 py-4 text-center">10:00 am</td>
                         </tr>
                       ))}
                     </tbody>

@@ -1,16 +1,13 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
 
-
-
+import Loader from "./components/Loader/Loader.jsx";
 
 // Importaciones dinámicas
-const Perfil = lazy(() =>
-  import("./components/Perfil/Perfil.jsx")
-);
-
+const Perfil = lazy(() => import("./components/Perfil/Perfil.jsx"));
 
 const InicioIntructor = lazy(() =>
   import("./pages/interfaces/Instructor/inicioIntructor.jsx")
@@ -35,7 +32,6 @@ const HistorialUser = lazy(() =>
   import("./pages/interfaces/Guarda/historialUser.jsx")
 );
 
-
 const Login = lazy(() => import("./pages/Login/Login.jsx"));
 const InicioAdmin = lazy(() =>
   import("./pages/interfaces/Administrador/inicioAdmin.jsx")
@@ -51,13 +47,17 @@ const Home = lazy(() => import("./pages/Lobby/home.jsx"));
 const App = () => (
   <BrowserRouter>
     <AuthProvider>
-      <Suspense>
+      <Suspense
+        fallback={
+          <div>
+            <Loader></Loader>
+          </div>
+        }
+      >
         <Routes>
           {/* Publicas */}
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
-
-     
 
           {/* Privadas */}
           <Route element={<RutasProtegidas />}>
