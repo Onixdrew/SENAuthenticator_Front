@@ -9,7 +9,7 @@ import Register from "../../components/Register/Register";
 import { useAuth } from "../../Context/AuthContext";
 import { useForm } from "react-hook-form";
 import Loader from "../../components/Loader/Loader";
-
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -20,7 +20,10 @@ const Login = () => {
 
   const [errorsBack, setErrorsBack] = useState("");
   const [abrirRegister, setAbrirRegister] = useState(false);
-  const { isAuthenticated, user, setUser, guardarUserLocal, loading } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { isAuthenticated, user, setUser, guardarUserLocal, loading } =
+    useAuth();
   const navegar = useNavigate();
 
   useEffect(() => {
@@ -39,11 +42,16 @@ const Login = () => {
               case "Guardia de seguridad":
                 return navegar("/InicioGuardia");
               default:
-                Swal.fire({
-                  title: "Rol no reconocido",
-                  text: `${user.rol_usuario} no es un rol reconocido`,
-                  icon: "warning",
-                  confirmButtonText: "OK",
+                // Swal.fire({
+                //   title: "Rol no reconocido",
+                //   text: `${user.rol_usuario} no es un rol reconocido`,
+                //   icon: "warning",
+                //   confirmButtonText: "OK",
+                // });
+
+                toast.error(`El rol ${user.rol_usuario} no existe`, {
+                  duration: 4000,
+                  position: "top-center", // Centra el toast horizontalmente en la parte superior
                 });
                 break;
             }
@@ -63,20 +71,27 @@ const Login = () => {
         localStorage.removeItem("lastRoute"); // Elimina la ruta almacenada tras iniciar sesión con éxito
         switch (data.rol_usuario) {
           case "Instructor":
+            toast.success("Usuario logueado correctamente");
             navegar("/inicioInstructor");
             break;
           case "Administrador":
+            toast.success("Usuario logueado correctamente");
             navegar("/inicioAdmin");
             break;
           case "Guardia de seguridad":
+            toast.success("Usuario logueado correctamente");
             navegar("/InicioGuardia");
             break;
           default:
-            Swal.fire({
-              title: "Error",
-              text: `${data.rol_usuario} no es un rol reconocido`,
-              icon: "warning",
-              confirmButtonText: "OK",
+            // Swal.fire({
+            //   title: "Error",
+            //   text: `${data.rol_usuario} no es un rol reconocido`,
+            //   icon: "warning",
+            //   confirmButtonText: "OK",
+            // });
+            toast.error(`Prueba ingresar en la app SENAuthenticator`, {
+              duration: 4000,
+              position: "top-center", // Centra el toast horizontalmente en la parte superior
             });
             break;
         }
@@ -88,11 +103,16 @@ const Login = () => {
 
   useEffect(() => {
     if (errorsBack) {
-      Swal.fire({
-        title: "Error",
-        text: errorsBack,
-        icon: "error",
-        confirmButtonText: "OK",
+      // Swal.fire({
+      //   title: "Error",
+      //   text: errorsBack,
+      //   icon: "error",
+      //   confirmButtonText: "OK",
+      // });
+
+      toast.error(errorsBack, {
+        duration: 4000,
+        position: "top-center", // Centra el toast horizontalmente en la parte superior
       });
       setErrorsBack("");
     }
@@ -178,25 +198,27 @@ const Login = () => {
                   Número identificación
                 </label>
                 <div className="relative">
-                  <input
-                    className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
-                      errors.numID ? "border-red-500" : ""
-                    }`}
-                    {...register("numID", {
-                      required: "El número de identidad es requerido.",
-                    })}
-                    id="numID"
-                    type="number"
-                    placeholder="Identificación"
-                  />
+                  <div>
+                    <input
+                      className={`w-full p-3 rounded border bg-white text-black focus:outline-none focus:ring-2 focus:ring-gray-200 ${
+                        errors.numID ? "border-red-500" : ""
+                      }`}
+                      {...register("numID", {
+                        required: "El número de identidad es requerido.",
+                      })}
+                      id="numID"
+                      type="number"
+                      placeholder="Identificación"
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <i className="fas fa-address-book text-black"></i>
+                    </div>
+                  </div>
                   {errors.numID && (
                     <p className="text-red-500 text-sm">
                       {errors.numID.message}
                     </p>
                   )}
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <i className="fas fa-address-book text-black"></i>
-                  </div>
                 </div>
               </div>
               <div className="mb-8">
@@ -215,21 +237,31 @@ const Login = () => {
                       required: "La contraseña es requerida.",
                     })}
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Contraseña"
                   />
+                  <div
+                    className="absolute inset-y-0 right-0 flex items-center px-2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <i
+                      className={`fas ${
+                        showPassword ? "fa-eye": "fa-eye-slash" 
+                      } text-black`}
+                    ></i>
+                  </div>
                   {errors.password && (
                     <p className="text-red-500 text-sm">
                       {errors.password.message}
                     </p>
                   )}
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                  {/* <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <i className="fas fa-lock text-black"></i>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <button
-                className="btn rounded-btn  w-full hover:bg-green-700 bg-gradient-to-r bg-[rgb(39,169,0)] text-white font-bold p-3 text-lg"
+                className="btn rounded-btn  w-full hover:bg-green-700  bg-gradient-to-r from-green-500 to-green-700 text-white font-bold p-3 text-lg"
                 type="submit"
               >
                 Aceptar
