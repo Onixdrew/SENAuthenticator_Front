@@ -163,12 +163,14 @@ const Navbar = ({
           >
             {item3}
           </Link>
-          <Link
-            to="/perfil"
-            className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
-          >
-            perfil
-          </Link>
+          {OpenPerfil && (
+            <Link
+              to="/perfil"
+              className="block bg-green-600 text-white py-2 px-4 hover:bg-green-700"
+            >
+              perfil
+            </Link>
+          )}
 
           <Link
             to="#"

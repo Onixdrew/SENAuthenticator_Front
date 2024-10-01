@@ -4,7 +4,7 @@ import foto from "../../../../public/img/emmanuel.jpg";
 import "./media/guardia.css";
 import ModalGuarda from "./modalGuarda";
 import { useAuth } from "../../../Context/AuthContext";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../../../../public/img/Logo Reconocimiento Facial - Blanco.png";
 
 const Admin = () => {
@@ -15,6 +15,8 @@ const Admin = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cameraActive, setCameraActive] = useState(true); // Estado para activar/desactivar la cámara
   const [stream, setStream] = useState(null); // Estado para almacenar el stream de la cámara
+
+  const { cerrarSesion } = useAuth();
 
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
@@ -90,8 +92,9 @@ const Admin = () => {
           {/* Sidebar */}
           <div
             ref={sidebarRef}
-            className={`fixed inset-y-0 left-0 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-              } transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80 p-4 w-64 z-10 shadow-lg`}
+            className={`fixed inset-y-0 left-0 transform ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80 p-4 w-64 z-10 shadow-lg`}
           >
             <div className="text-white text-center mt-4 lg:mt-10 ">
               <div className="flex items-center flex-col">
@@ -101,10 +104,7 @@ const Admin = () => {
 
               <ul className="space-y-7 mt-16 text-lg lg:mt-32 lg:text-xl lg:space-y-10">
                 <li>
-                  <a
-                    href="/InicioGuardia"
-                    className="text-gray-400"
-                  >
+                  <a href="/InicioGuardia" className="text-gray-400">
                     Registro Facial
                   </a>
                 </li>
@@ -123,6 +123,14 @@ const Admin = () => {
                   >
                     Historial
                   </a>
+                </li>
+                <li>
+                  <button
+                    onClick={cerrarSesion}
+                    className="btn mt-72 w-full hover:text-[rgb(39,169,0)]"
+                  >
+                    Cerrar Sesión
+                  </button>
                 </li>
               </ul>
             </div>
@@ -162,11 +170,7 @@ const Admin = () => {
               <div class="flex flex-col items-center ">
                 <p class="text-gray-600 font-semibold">Aprendiz</p>
                 <div class="w-48 h-48 mb-2 border rounded-box">
-                  <img
-                    class="zoom-img"
-                    src={foto}
-                    alt="Foto de usuario"
-                  />
+                  <img class="zoom-img" src={foto} alt="Foto de usuario" />
                 </div>
                 <h2 class="text-xl font-semibold  text-gray-800">
                   Emmanuel Castañeda
@@ -189,9 +193,13 @@ const Admin = () => {
                     />
                   </div>
                   <div class="flex flex-col  gap-1">
-                    <span class="text-gray-600 text-sm">Objeto: Laptop ACER</span>
+                    <span class="text-gray-600 text-sm">
+                      Objeto: Laptop ACER
+                    </span>
                     <span class="text-gray-600 text-sm">Serial: DE34021</span>
-                    <span class="text-gray-600 text-sm">Descripción: color Gris</span>
+                    <span class="text-gray-600 text-sm">
+                      Descripción: color Gris
+                    </span>
                   </div>
                 </div>
                 <button
