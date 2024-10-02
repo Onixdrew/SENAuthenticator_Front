@@ -6,6 +6,15 @@ import { toast } from "react-hot-toast";
 // SQLite
 // const API_URL ="https://backprojecto.onrender.com/api/inicioSesion/";
 
+/**
+ * La funcion envia los datos del login a la api para el inisio de sesión.
+ *
+ * @async
+ * @param {object} values Datos del usuario.
+ * @param {Function} guardarUserLocal Guarda datos del usuario en el localstorage
+ * @returns {object} dataUser: Datos del usuario.
+ * @returns {void}
+ */
 export const inicioSesion = async (values, guardarUserLocal) => {
   try {
     // creo la peticcion http
@@ -31,9 +40,10 @@ export const inicioSesion = async (values, guardarUserLocal) => {
       // Llamo a los hooks del contexto, que lo traigo como parametro desde el componente Login
       guardarUserLocal(dataUser);
       return dataUser;
-    } else {
-      console.log("El usuario no fue encontrado");
     }
+
+    console.log("El usuario no fue encontrado");
+    return;
   } catch (error) {
     // Swal.fire({
     //   title: "Error",
@@ -59,6 +69,11 @@ export const inicioSesion = async (values, guardarUserLocal) => {
 };
 
 // /////////////////////////////////////////// Register
+/**
+ * La funcion registra a un nuevo usuario
+ * @param {Object} data datos del usuario
+ * @returns {Object} response: datos de la respuesta del back
+ */
 export const registerUser = async (data) => {
   try {
     // console.log(data);
@@ -93,16 +108,20 @@ export const registerUser = async (data) => {
       toast.success("Usuario creado correctamente");
 
       return response;
-    } else {
-      // alert(
-      //   response.data.error || "Ocurrió un error desconocido en el registro"
-      // );
-
-      toast.error(
-        "Error en la solicitud de registro: " +
-          (error.response?.data?.error || error.message)
-      );
     }
+    return(
+      
+    // alert(
+    //   response.data.error || "Ocurrió un error desconocido en el registro"
+    // );
+
+    toast.error(
+      "Error en la solicitud de registro: " +
+        (error.response?.data?.error || error.message)
+    )
+
+    );
+    
   } catch (error) {
     alert(
       "Error en la solicitud de registro: " +

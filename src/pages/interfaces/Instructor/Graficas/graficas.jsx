@@ -41,6 +41,7 @@ const GraficasInstructor = () => {
     localStorage.setItem("lastRoute", location.pathname);
   }, [location]);
 
+ /** */
   useEffect(() => {
     const getdatos = async () => {
       const users = await getAllUsers();

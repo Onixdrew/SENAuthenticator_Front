@@ -1,97 +1,87 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState  } from "react";
 import "./media/perfil.css";
 import { useAuth } from "../../Context/AuthContext";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
+import { FaUserEdit } from 'react-icons/fa';
 
 const Perfil = () => {
-  const { isAuthenticated, user } = useAuth();
-  const location = useLocation(); // Obtiene la ruta actual
+  const [avatar, setAvatar] = useState('https://via.placeholder.com/150');
+  const [name, setName] = useState('John Doe');
+  const [email, setEmail] = useState('johndoe@example.com');
+  const [isEditingAvatar, setIsEditingAvatar] = useState(false);
+  const [newAvatar, setNewAvatar] = useState(null);
 
-  // Almacenar la ruta actual en localStorage al cargar el componente
-  useEffect(() => {
-    localStorage.setItem("lastRoute", location.pathname);
-  }, [location]);
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewAvatar(URL.createObjectURL(file));
+    }
+  };
 
+  const handleSaveAvatar = () => {
+    setAvatar(newAvatar);
+    setIsEditingAvatar(false);
+  };
 
   return (
-    <>
-      {isAuthenticated && user ? (
-        <div>
-            <div className="sticky top-0 z-40 bg-white">
-            <Navbar
-              item1="inicio"
-              item2="Reportes"
-              item3="Perfil"
-              ruta1="/inicioAdmin"
-              ruta2="/ReportesAdmin"
-              color3="activo"
+    <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-lg max-w-md mx-auto mt-10">
+      {/* Avatar Section */}
+      <div className="relative">
+        <img
+          src={avatar}
+          alt="Avatar"
+          className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+        />
+        <button
+          className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full"
+          onClick={() => setIsEditingAvatar(true)}
+        >
+          <FaUserEdit />
+        </button>
+      </div>
+
+      {/* Edit Avatar Modal */}
+      {isEditingAvatar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Cambiar Foto</h2>
+            <input
+              type="file"
+              onChange={handleAvatarChange}
+              className="mb-4"
             />
-          </div>
-            <div className=" flex justify-center">
-              <div className="border-2  border-black  mt-2 inline-block  bg-slate-50 h-auto shadow-xl">
-                <div className="flex mt-6 ml-10">
-                  <div>
-                    <img
-                      src="https://certificadossena.net/wp-content/uploads/2022/10/logo-sena-naranja-png-2022.png"
-                      alt="Logo SENA"
-                      className="w-20"
-                    />
-                  </div>
-    
-                  <img
-                    src="https://media.istockphoto.com/id/913062404/es/foto/cara-de-hombre-de-negocios-contra-el-fondo-blanco.jpg?s=612x612&w=0&k=20&c=KWNbHS35bjiMRjHFXg5FLCMNOpBI7rTEAfyds_3XQ-8="
-                    alt="Foto"
-                    className="w-28 ml-7 border border-black"
-                  />
-    
-                  <div>
-                    <p className="apre  ">{user.rol_usuario}</p>
-                  </div>
-                </div>
-                <div className="w-72 ml-4 h-1 mt-1 bg-orange-500"></div>
-                <p className="text-xl flex mt-3">
-                  <p className="text-lg mr-2 ml-4 text-orange-500">Nombres: </p>
-                  {user.first_name || "Alejandro"}
-                </p>
-                <p className="text-xl flex ">
-                  <p className="text-lg mr-2 ml-4 text-orange-500">Apellidos: </p>
-                  {user.last_name || "Carvajal Gómez"}
-                </p>
-                <p className="text-xl flex mt-2">
-                  <p className="text-lg mr-2 ml-4 text-orange-500">Cc : </p>
-                  {user.numero_documento_usuario || "1.061.367.623"}
-                </p>
-                <p className="text-xl flex mt-2">
-                  <p className="text-lg mr-2 ml-4 text-orange-500">RH: </p>A+
-                </p>
-                <div className="w-40 ml-4 h-1 mt-2 bg-orange-500"></div>
-    
-                {user.rol_usuario == "Aprendiz" && (
-                  <div>
-                    <p className="text-xl flex mt-1">
-                      <p className="text-lg mr-2 ml-4 text-orange-500">
-                        Programa:{" "}
-                      </p>
-                      ADSO
-                    </p>
-                    <p className="text-xl flex ">
-                      <p className="text-lg mr-2 ml-4 text-orange-500">Ficha: </p>
-                      2669742
-                    </p>
-                    <div className="w-20 ml-4 h-1 mt-2 bg-orange-500"></div>
-                  </div>
-                )}
-    
-                <p className="text-xl mr-2 ml-4 mt-2 text-black">Regional Cauca</p>
-                <p className="text-xl mr-2 ml-4 mb-6 text-orange-600">C.T.P.I.</p>
+            {newAvatar && (
+              <div className="mb-4">
+                <img
+                  src={newAvatar}
+                  alt="New Avatar Preview"
+                  className="w-24 h-24 rounded-full object-cover"
+                />
               </div>
-            </div>
+            )}
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+              onClick={handleSaveAvatar}
+            >
+              Guardar
+            </button>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => setIsEditingAvatar(false)}
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
-      ) : (
-        <p className="text-red-500 ">Error: Pagina no encontrada.</p>
       )}
-    </>
+
+      {/* User Information */}
+      <div className="mt-6">
+        <h2 className="text-2xl font-semibold">{name}</h2>
+        <p className="text-gray-600">{email}</p>
+      </div>
+    </div>
   );
 };
 
