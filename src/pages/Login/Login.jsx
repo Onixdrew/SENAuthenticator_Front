@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import Loader from "../../components/Loader/Loader";
 import { toast } from "react-hot-toast";
 import ModalClave from "../../components/Modal/ModalClave";
+// import ModalClave from "../../components/Modal/ModalClave";
 
 const Login = () => {
   const {
@@ -124,18 +125,18 @@ const Login = () => {
       {abrirRegister && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
-            <Register cerrarModal={cerrarModal} datosRegister={datosRegister} cerrarModalCamara={cerrarModalCamara}/>
+            <Register cerrarModal={cerrarModal} />
           </div>
         </div>
       )}
 
-      {modalCamara && (
+      {/* {modalCamara && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white md:max-w-2xl max-w-4xl mx-auto p-8 rounded-lg shadow-lg lg:max-w-6xl max-h-[90vh] overflow-auto">
             <CapturaFacial  datos={getDatos} cerrarModalCamara={cerrarModalCamara} />
           </div>
         </div>
-      )}
+      )} */}
 
 
 

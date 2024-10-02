@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
     const verificarCookie = async () => {
       try {
         // setLoading(true);
-        const response = await axios.get("validarToken/");
+        const response = await axios.get("validar-token/");
         if (response.status === 200) {
           const storedUser = localStorage.getItem("user");
 

@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
+import GuardaHome from "./pages/interfaces/Guarda/GuardaHome.jsx";
+import Informes from "./pages/interfaces/Guarda/Informes.jsx";
 
 
 

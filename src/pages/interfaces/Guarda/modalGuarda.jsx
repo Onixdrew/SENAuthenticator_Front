@@ -8,7 +8,7 @@ const ModalGuarda = () => {
     // Función para obtener los objetos desde la API
     const fetchItems = async () => {
         try {
-            const response = await fetch('https://senauthenticator-6nrt.onrender.com/api/objeto/');
+            const response = await fetch('https://backendsenauthenticator.up.railway.app/api/objetos/');
             const data = await response.json();
             setItems(data); // Asumiendo que la respuesta es un array de objetos
         } catch (error) {
