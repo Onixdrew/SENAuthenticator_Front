@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./Context/AuthContext.jsx";
 import RutasProtegidas from "./auth/authRoutes.jsx";
+import CameraComponent from "./pages/interfaces/Guarda/camaraPrueba.jsx";
 
 
 
@@ -55,6 +56,7 @@ const App = () => (
         <Routes>
           {/* Publicas */}
           <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<CameraComponent />} /> */}
           <Route path="/Login" element={<Login />} />
 
      

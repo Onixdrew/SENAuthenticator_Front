@@ -15,6 +15,7 @@
     "@headlessui/react": "^2.1.2",
     "axios": "^1.7.4",
     "dom-to-image": "^2.6.0",
+    "face-api.js": "^0.22.2",
     "flowbite-react": "^0.10.2",
     "front": "file:",
     "html2canvas": "^1.4.1",
