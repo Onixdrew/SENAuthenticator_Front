@@ -12,6 +12,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import Swal from "sweetalert2";
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
 import { useAuth } from "../../../../Context/AuthContext";
@@ -19,13 +20,16 @@ import { useLocation } from "react-router-dom";
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
 import Logo from "../../../../../public/img/Logo Reconocimiento Facial - Verde.png";
-
+import { getAllUsers } from "../../../../api/userController";
 
 const GraficasInstructor = () => {
-  const [fechaInicio, setfechaInicio] = useState("");
-  const [fechaFin, setFechaFin] = useState("");
-  const [selectedFicha, setSelectedFicha] = useState("All");
-  const [selectedJornada, setSelectedJornada] = useState("All");
+  // const [fechaInicio, setfechaInicio] = useState("");
+  // const [fechaFin, setFechaFin] = useState("");
+  const [users, setUsers] = useState([]);
+  const [selectedFicha, setSelectedFicha] = useState("Todos");
+  const [selectedJornada, setSelectedJornada] = useState("Todos");
+  const [selectedTiempo, setSelectedTiempo] = useState("Semanal");
+  const [botonDescarga, setBotonDescarga] = useState(false);
 
   // los hooks solo pueden ser llamados dentro de un componente funcional
   const { isAuthenticated, user } = useAuth();
@@ -37,33 +41,114 @@ const GraficasInstructor = () => {
     localStorage.setItem("lastRoute", location.pathname);
   }, [location]);
 
-  // Datos de ejemplo, en un caso real estos datos se obtendrían de una API o base de datos
+ /** */
+  useEffect(() => {
+    const getdatos = async () => {
+      const users = await getAllUsers();
+
+      if (users) {
+        const usersFiltrados = users.filter((user) => {
+          // const aprendices = user.rol_usuario == "Aprendiz";
+          const aprendices = user.rol_usuario == "Aprendiz";
+          if (selectedJornada != "Todos") {
+            return aprendices.jornada == selectedJornada;
+          }
+          // return aprendices.ficha_usuario == selectedFicha;
+          return aprendices;
+        });
+
+        setUsers(usersFiltrados);
+        return;
+      }
+      console.log(`Error al traer usuarios en graficas Admin`);
+    };
+    getdatos();
+  }, [selectedTiempo]);
+
   const data = [
     {
-      name: "2024-08-20",
-      ficha: "2669742",
-      jornada: "Mañana",
-      Aprendices: 45,
+      Semanal: "Semana 1",
+      Mensual: "Enero",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 1300,
+      cantidad: users.length,
     },
-    { name: "2024-08-20", ficha: "2669756", jornada: "Tarde", Aprendices: 38 },
-    { name: "2024-08-21", ficha: "2669742", jornada: "Noche", Aprendices: 20 },
     {
-      name: "2024-08-21",
-      ficha: "2669723",
-      jornada: "Mañana",
-      Aprendices: 50,
+      Semanal: "Semana 2",
+      Mensual: "Febrero",
+      ficha: selectedFicha,
+      Aprendiz: 450,
+      cantidad: users.length,
     },
-    { name: "2024-08-22", ficha: "2669756", jornada: "Tarde", Aprendices: 42 },
-    { name: "2024-08-22", ficha: "2669723", jornada: "Noche", Aprendices: 35 },
+    {
+      Semanal: "Semana 3",
+      Mensual: "Marzo",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 820,
+      cantidad: users.length,
+    },
+    {
+      Semanal: "Semana 4",
+      Mensual: "Abril",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 642,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Mayo",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 463,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Junio",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 800,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Julio",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 268,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Agosto",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 587,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Septiembre",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 675,
+      cantidad: users.length,
+    },
+    {
+      Mensual: "Octubre",
+      ficha: selectedFicha,
+      jornada: selectedJornada,
+      Aprendiz: 589,
+      cantidad: users.length,
+    },
   ];
 
   // Filtrar los datos según los filtros seleccionados
   const filteredData = data.filter(
-    (item) =>
-      (selectedFicha === "All" || item.ficha === selectedFicha) &&
-      (selectedJornada === "All" || item.jornada === selectedJornada) &&
-      (fechaInicio === "" || new Date(item.name) >= new Date(fechaInicio)) &&
-      (fechaFin === "" || new Date(item.name) <= new Date(fechaFin))
+    (item) => (selectedTiempo === "Semanal" ? item.Semanal : item.Mensual)
+    // (item) =>
+    //   (selectedFicha === "All" || item.ficha === selectedFicha) &&
+    //   (selectedJornada === "All" || item.jornada === selectedJornada) &&
+    //   (fechaInicio === "" || new Date(item.name) >= new Date(fechaInicio)) &&
+    //   (fechaFin === "" || new Date(item.name) <= new Date(fechaFin))
   );
 
   const COLORS = [
@@ -131,12 +216,27 @@ const GraficasInstructor = () => {
 
         // Guardar el PDF
         pdf.save("GraficasAdmin.pdf");
+        setBotonDescarga(false);
       })
       .catch((error) => {
         console.error("Error al capturar la gráfica:", error);
         alert("Ocurrió un error al capturar la gráfica.");
       });
   };
+
+  botonDescarga &&
+    Swal.fire({
+      title: "¿Desea descargarlo?",
+      icon: "question",
+      confirmButtonText: "Aceptar",
+      showCloseButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        descargarGrafica();
+      } else {
+        setBotonDescarga(false);
+      }
+    });
 
   return (
     <>
@@ -150,7 +250,6 @@ const GraficasInstructor = () => {
             ruta2="/reportesInstructor"
             color3="activo"
             OpenPerfil={true}
-
           />
 
           {/* Filtros Avanzados */}
@@ -168,6 +267,7 @@ const GraficasInstructor = () => {
                 value={selectedJornada}
                 onChange={(e) => setSelectedJornada(e.target.value)}
               >
+                <option value="Todos">Todos</option>
                 <option value="Mañana">Mañana</option>
                 <option value="Tarde">Tarde</option>
                 <option value="Noche">Noche</option>
@@ -184,13 +284,28 @@ const GraficasInstructor = () => {
                 value={selectedFicha}
                 onChange={(e) => setSelectedFicha(e.target.value)}
               >
+                <option value="Todos">Todos</option>
                 <option value="2669742">2669742</option>
                 <option value="2669756">2669756</option>
                 <option value="2669723">2669723</option>
               </select>
             </div>
-
             <div className="flex flex-col w-full md:w-auto">
+              <label htmlFor="Tiempo" className="text-gray-600 mb-1 opacity-50">
+                Tiempo
+              </label>
+              <select
+                id="Tiempo"
+                className="bg-white p-3 border border-gray-300 rounded-lg w-full"
+                value={selectedTiempo}
+                onChange={(e) => setSelectedTiempo(e.target.value)}
+              >
+                <option value="Semanal">Semanal</option>
+                <option value="Mensual">Mensual</option>
+              </select>
+            </div>
+
+            {/* <div className="flex flex-col w-full md:w-auto">
               <label
                 htmlFor="fechaInicio"
                 className="text-gray-600 mb-1 opacity-50"
@@ -219,14 +334,14 @@ const GraficasInstructor = () => {
                 value={fechaFin}
                 onChange={(e) => setFechaFin(e.target.value)}
               />
-            </div>
+            </div> */}
           </form>
 
           {/* Botón de Descarga */}
           <div className="flex justify-center mt-10">
             <button
-              onClick={descargarGrafica}
-              className="bg-blue-500 text-white p-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+              onClick={() => setBotonDescarga(true)}
+              className="btn bg-blue-500 text-white p-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
             >
               Descargar Reporte
             </button>
@@ -238,32 +353,29 @@ const GraficasInstructor = () => {
               <div className="kpi-card bg-blue-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Total Aprendices</h3>
                 <p className="text-3xl font-bold">
-                  {filteredData.reduce((acc, curr) => acc + curr.Aprendices, 0)}
+                  {users.length}
+                  {/* {filteredData.reduce((acc, curr) => acc + curr.cantidad, 0)} */}
                 </p>
-                <span className="text-sm">Rango de fechas seleccionado</span>
               </div>
               <div className="kpi-card bg-green-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Promedio por Día</h3>
                 <p className="text-3xl font-bold">
                   {(
-                    filteredData.reduce(
-                      (acc, curr) => acc + curr.Aprendices,
-                      0
-                    ) / (filteredData.length || 1)
+                    filteredData.reduce((acc, curr) => acc + curr.cantidad, 0) /
+                    (filteredData.length || 1)
                   ).toFixed(2)}
                 </p>
-                <span className="text-sm">Rango de fechas seleccionado</span>
               </div>
               <div className="kpi-card bg-yellow-500 text-white p-4 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold">Día con Mayor Entrada</h3>
                 <p className="text-3xl font-bold">
+                  26/09/2024 (
                   {filteredData.reduce(
-                    (max, curr) =>
-                      curr.Aprendices > max ? curr.Aprendices : max,
+                    (max, curr) => (curr.cantidad > max ? curr.cantidad : max),
                     0
                   )}
+                  )
                 </p>
-                <span className="text-sm">Rango de fechas seleccionado</span>
               </div>
             </div>
 
@@ -277,16 +389,16 @@ const GraficasInstructor = () => {
                     >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis
-                        dataKey="name"
+                        dataKey={selectedTiempo}
                         label={{
-                          value: "Fecha",
+                          value: selectedTiempo,
                           position: "insideBottom",
                           offset: -8,
                         }}
                       />
                       <YAxis
                         label={{
-                          value: "Aprendices",
+                          value: "Aprendiz",
                           angle: -90,
                           position: "insideLeft",
                         }}
@@ -294,7 +406,7 @@ const GraficasInstructor = () => {
                       <Tooltip cursor={{ fill: "rgba(0, 0, 0, 0.1)" }} />
                       <Legend />
                       <Bar
-                        dataKey="Aprendices"
+                        dataKey="Aprendiz"
                         fill="#82ca9d"
                         animationDuration={1500}
                       />
@@ -307,8 +419,8 @@ const GraficasInstructor = () => {
                     <PieChart>
                       <Pie
                         data={filteredData}
-                        dataKey="Aprendices"
-                        nameKey="name"
+                        dataKey="Aprendiz"
+                        nameKey={selectedTiempo}
                         outerRadius={100}
                         fill="#8884d8"
                         label
@@ -329,7 +441,9 @@ const GraficasInstructor = () => {
             </main>
           </div>
 
-          <Footer />
+          <div className="mt-80">
+            <Footer />
+          </div>
         </div>
       ) : (
         <p className="text-red-500 ">
